@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QRenderWidget</class>
+ <widget class="QWidget" name="QRenderWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1978</width>
+    <height>1141</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QRenderWidget</string>
+  </property>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>1921</width>
+     <height>1121</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QDirectX11Widget" name="frame">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>320</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="currentIndex">
+       <number>2</number>
+      </property>
+      <widget class="QSceneController" name="tab_SceneController">
+       <attribute name="title">
+        <string>Scene Controller</string>
+       </attribute>
+      </widget>
+      <widget class="QObjectController" name="tab_ObjectController">
+       <attribute name="title">
+        <string>Object Controller</string>
+       </attribute>
+      </widget>
+      <widget class="QLightController" name="tab_LightController">
+       <attribute name="title">
+        <string>Light Controller</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QDirectX11Widget</class>
+   <extends>QFrame</extends>
+   <header>QDirectX11Widget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QSceneController</class>
+   <extends>QWidget</extends>
+   <header>QSceneController.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QObjectController</class>
+   <extends>QWidget</extends>
+   <header>QObjectController.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QLightController</class>
+   <extends>QWidget</extends>
+   <header>QLightController.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

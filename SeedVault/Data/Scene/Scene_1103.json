@@ -1,0 +1,74 @@
+{
+	"Scene" : 
+	{
+		"m_GameObject_V" : 
+		[
+			{
+				"GameObject2200" : 
+				{
+					"m_Component_V" : 
+					[
+						true,
+						true,
+						true,
+						true
+					],
+					"m_GameObjectId" : 2200,
+					"m_Name" : "giraffa_png",
+					"m_bContinual" : false,
+					"m_bEnable" : true
+				}
+			},
+			{
+				"GameObject2201" : 
+				{
+					"m_Component_V" : 
+					[
+						true,
+						true,
+						true,
+						true
+					],
+					"m_GameObjectId" : 2201,
+					"m_Name" : "Button",
+					"m_bContinual" : false,
+					"m_bEnable" : true
+				}
+			},
+			{
+				"GameObject2202" : 
+				{
+					"m_Component_V" : 
+					[
+						true,
+						true,
+						true,
+						true
+					],
+					"m_GameObjectId" : 2202,
+					"m_Name" : "TestObject1",
+					"m_bContinual" : false,
+					"m_bEnable" : true
+				}
+			},
+			{
+				"GameObject2203" : 
+				{
+					"m_Component_V" : 
+					[
+						true,
+						true,
+						true
+					],
+					"m_GameObjectId" : 2203,
+					"m_Name" : "SpriteMainCamera",
+					"m_bContinual" : false,
+					"m_bEnable" : true
+				}
+			}
+		],
+		"m_SceneId" : 1103,
+		"m_SceneName" : "CLTestScene2D"
+	},
+	"Version" : 0.10000000149011612
+}

@@ -1,0 +1,18 @@
+	* 전반적인 구조에 대한 짤막한 생각들 *
+
+Scene을 생성하면 SceneManager내 컨테이너에 넣어준다
+Scene을 Renderer(Engine)에서 전부 Render해준다
+Scene의 Update는 게임의 로직관련 내용이 들어간다
+Scene이 MeshObject를 알아야한다 - MeshObjectManager를 들고있어야한다?
+
+MeshObjectManager는 ASEParser와 TextureManager를 알고 그 내용들을 string으로 MeshObject에 대입시켜준다
+MeshObjectManager는 Scene이 알고, Scene에서 필요할때 Object를 생성할 수 있게끔 함수를 만들어준다
+
+MeshObjectManager는 어떻게 찢어놔야할까
+
+EngineDemo에 만드는것은 일단 뒤로하고 엔진 내부에서 TestScene에 만든다
+
+// 2021.07.25
+ASEParser를 새 프로젝트로 뺐다.
+Blur를 시도하는중이다.
+왜 죠가 파싱이 안되는지 모르겠다...

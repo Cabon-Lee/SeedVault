@@ -1,0 +1,7 @@
+9/27 월
+
+1. fbx sdk lib 달기
+
+2. fbx sdk 규황이꺼보고 루팡하기
+
+3. effect .fx .hlsl 구조 알아보기

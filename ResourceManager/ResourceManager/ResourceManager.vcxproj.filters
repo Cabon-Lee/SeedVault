@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="DLL">
+      <UniqueIdentifier>{4dbb110c-40a6-494b-8eb2-ff3e6a1ab9d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PCH">
+      <UniqueIdentifier>{dfe62085-dc78-4c46-8626-0012a54ab666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IResourceManager">
+      <UniqueIdentifier>{46f940b7-1356-44b3-bd9d-72cecce0c3b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buffer">
+      <UniqueIdentifier>{a25a5e8f-4ee0-4c37-bb0a-17442bed2406}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11">
+      <UniqueIdentifier>{21d84b13-4521-43ca-af58-58399e1d692c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11\DX11ResourceManager">
+      <UniqueIdentifier>{792c05c0-3ac6-428f-9ed3-9d0cbb46e71f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11\Buffer">
+      <UniqueIdentifier>{ec845a3c-64d7-435c-aa93-37edc9dc89aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11\Buffer\Vertex/Index">
+      <UniqueIdentifier>{beb81aec-171e-4170-b6e0-97fe37474ecd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11\Buffer\InputLayout">
+      <UniqueIdentifier>{8321ddf2-ae93-4b18-b739-66ca9fbcdad9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11\MeshFactory">
+      <UniqueIdentifier>{ccfe6c48-6b56-40c6-909b-26f841ed5f3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Deserialize">
+      <UniqueIdentifier>{c29c2537-c01b-41a8-b8bc-50395c77e863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11\Shader">
+      <UniqueIdentifier>{ae6e0aba-e0c0-491b-bc5b-3b1338cee7f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11\Material">
+      <UniqueIdentifier>{dc598ef5-44d5-45e7-840d-111833163cc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialize">
+      <UniqueIdentifier>{1d4d5849-e123-42c6-9297-921963d32063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11\Center">
+      <UniqueIdentifier>{b3cd8210-8c53-4c48-8d3f-d5377091602a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11ResourceManager.h">
+      <Filter>DX11\DX11ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcerDLLDefine.h">
+      <Filter>DLL</Filter>
+    </ClInclude>
+    <ClInclude Include="InputLayout.h">
+      <Filter>DX11\Buffer\InputLayout</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11MeshFactory.h">
+      <Filter>DX11\MeshFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryDeserializer.h">
+      <Filter>Deserialize</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders.h">
+      <Filter>DX11\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Includes\IResourceManager.h">
+      <Filter>IResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Includes\MaterialData.h">
+      <Filter>DX11\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="MatSerializer.h">
+      <Filter>Serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="MatDeserializer.h">
+      <Filter>Deserialize</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Includes\VertexHelper.h">
+      <Filter>DX11\Buffer\Vertex/Index</Filter>
+    </ClInclude>
+    <ClInclude Include="CenterCreator.h">
+      <Filter>DX11\Center</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>DLL</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>PCH</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11ResourceManager.cpp">
+      <Filter>DX11\DX11ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexHelper.cpp">
+      <Filter>DX11\Buffer\Vertex/Index</Filter>
+    </ClCompile>
+    <ClCompile Include="InputLayout.cpp">
+      <Filter>DX11\Buffer\InputLayout</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11MeshFactory.cpp">
+      <Filter>DX11\MeshFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryDeserializer.cpp">
+      <Filter>Deserialize</Filter>
+    </ClCompile>
+    <ClCompile Include="Shaders.cpp">
+      <Filter>DX11\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="MatSerializer.cpp">
+      <Filter>Serialize</Filter>
+    </ClCompile>
+    <ClCompile Include="MatDeserializer.cpp">
+      <Filter>Deserialize</Filter>
+    </ClCompile>
+    <ClCompile Include="CenterCreator.cpp">
+      <Filter>DX11\Center</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,14 @@
+1. 프로젝트 설정 공유 or 재사용 msdn
+https://docs.microsoft.com/ko-kr/cpp/build/create-reusable-property-configurations?view=msvc-160
+
+2. 빌드후 이벤트 : 라이브러리 헤더 따로 뺴기
+
++ 파싱 전부 파악하고있는지 물어보기
++ 어떤식으로 공부하면 좋을까 (내생각에는 하나만 잡고 파는게 나을거같음(파서)) 
+
+21.10.11 월
+3. 노드 부모-자식 구조(포인터 받아서 저장)
+4. 본
+5. 스키닝
+6. 애니메이션
+

@@ -1,0 +1,411 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="PCH">
+      <UniqueIdentifier>{105545db-91b5-4aac-9033-caeb5187d58e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets">
+      <UniqueIdentifier>{0aca788c-22d7-4486-b10f-bd81e9146149}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\GameScene">
+      <UniqueIdentifier>{0552c334-79fd-4626-989e-8d44c76ae9fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{1b7da78d-ad53-420b-9a72-db7eeeac55c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts">
+      <UniqueIdentifier>{4cf23e2c-1f11-46a0-858c-7517198ec3fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts\Camera">
+      <UniqueIdentifier>{74b804af-757b-42ce-b903-822590fd2da9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts\Systems">
+      <UniqueIdentifier>{7097b5be-a898-40dc-b6d3-c6dfc73f3aed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts\ModelViewr">
+      <UniqueIdentifier>{bb706cd0-2097-4b5c-974f-70e392374baf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts\Def">
+      <UniqueIdentifier>{dc0a4e41-2eb2-4876-a5b7-4c2d2985511f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts\Character">
+      <UniqueIdentifier>{8342adb9-d683-4ae3-9204-887f73460cda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts\Character\NPC">
+      <UniqueIdentifier>{add19956-4861-4b79-afd9-ae733ca90ee5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Json">
+      <UniqueIdentifier>{d50e8158-ab50-4e27-ad99-fcda038d6487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Json\JsonLoader">
+      <UniqueIdentifier>{4dd60488-06e0-4958-a738-d623c7863559}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ComponentEngine">
+      <UniqueIdentifier>{0d5c3355-bdb0-43e2-9108-86be9081fcb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts\Inventory">
+      <UniqueIdentifier>{4260b56a-19bd-464d-90c1-a134b6578e76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts\Inventory\Item">
+      <UniqueIdentifier>{0306cfb8-2749-4953-a883-48c3f514066f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts\Character\NPC\Enemy">
+      <UniqueIdentifier>{d4d9b48c-b777-4b53-accc-11d38f49e8c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts\Character\NPC\BehaviorTree">
+      <UniqueIdentifier>{c9d9e425-9ad8-49c7-b722-8da8c02e040c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts\Character\NPC\Enemy\Zombie">
+      <UniqueIdentifier>{efeb26e7-07e6-4167-8bd6-b4aa9f9f2a41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts\Battle">
+      <UniqueIdentifier>{c87f3d0e-e105-4477-82e2-c6baabed3cb7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="CLTestSceneYH.h">
+      <Filter>_Assets\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SeedVault.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraController.h">
+      <Filter>_Assets\Scripts\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CLViewerScene.h">
+      <Filter>_Assets\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>_Assets\Scripts\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="CLPhysXTestSceneJH.h">
+      <Filter>_Assets\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CLInput.h">
+      <Filter>_Assets\Scripts\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraBehavior.h">
+      <Filter>_Assets\Scripts\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CLTestScene2D.h">
+      <Filter>_Assets\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelController.h">
+      <Filter>_Assets\Scripts\ModelViewr</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcesPathDef.h">
+      <Filter>_Assets\Scripts\Def</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTree_Base.h">
+      <Filter>_Assets\Scripts\Character\NPC\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>_Assets\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerController.h">
+      <Filter>_Assets\Scripts\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonLoader_CL.h">
+      <Filter>Json\JsonLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\allocator.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\assertions.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\config.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\forwards.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\json.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\json_features.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\json_tool.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\reader.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\value.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\version.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\writer.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="CLTestHJ.h">
+      <Filter>_Assets\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="OrbitCamera.h">
+      <Filter>_Assets\Scripts\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CLMaterialTest.h">
+      <Filter>_Assets\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CLMainScene.h">
+      <Filter>_Assets\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Health.h">
+      <Filter>_Assets\Scripts\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageData.h">
+      <Filter>_Assets\Scripts\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="CLTestNavMeshScene.h">
+      <Filter>_Assets\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CLAnimation.h">
+      <Filter>_Assets\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>_Assets\Scripts\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="CLTestInGameUI.h">
+      <Filter>_Assets\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="IItem.h">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemBuilder.h">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Ammo.h">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Flask.h">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Alcohol.h">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_AI.h">
+      <Filter>_Assets\Scripts\Character\NPC\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Move.h">
+      <Filter>_Assets\Scripts\Character\NPC\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="MuzzleFlash.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="HealSyringe.h">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Herb.h">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie_Runner_AI.h">
+      <Filter>_Assets\Scripts\Character\NPC\Enemy\Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie_Runner_Move.h">
+      <Filter>_Assets\Scripts\Character\NPC\Enemy\Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="MuzzleFlash.h">
+      <Filter>_Assets\Scripts\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="HitPoint.h">
+      <Filter>_Assets\Scripts\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectBuilder.h">
+      <Filter>_Assets\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="EquipmentController.h">
+      <Filter>_Assets\Scripts\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>_Assets\Scripts</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>PCH</Filter>
+    </ClCompile>
+    <ClCompile Include="CLTestSceneYH.cpp">
+      <Filter>_Assets\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SeedVault.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraController.cpp">
+      <Filter>_Assets\Scripts\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CLViewerScene.cpp">
+      <Filter>_Assets\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CLPhysXTestSceneJH.cpp">
+      <Filter>_Assets\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CLInput.cpp">
+      <Filter>_Assets\Scripts\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraBehavior.cpp">
+      <Filter>_Assets\Scripts\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CLTestScene2D.cpp">
+      <Filter>_Assets\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelController.cpp">
+      <Filter>_Assets\Scripts\ModelViewr</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTree_Base.cpp">
+      <Filter>_Assets\Scripts\Character\NPC\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>_Assets\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerController.cpp">
+      <Filter>_Assets\Scripts\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonLoader_CL.cpp">
+      <Filter>Json\JsonLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GameEngine\JsonSerializer\json\json_reader.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GameEngine\JsonSerializer\json\json_value.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GameEngine\JsonSerializer\json\json_writer.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GameEngine\GameEngine\ComponentBase.cpp">
+      <Filter>ComponentEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GameEngine\GameEngine\GameObject.cpp">
+      <Filter>ComponentEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CLTestHJ.cpp">
+      <Filter>_Assets\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="OrbitCamera.cpp">
+      <Filter>_Assets\Scripts\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CLMaterialTest.cpp">
+      <Filter>_Assets\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CLMainScene.cpp">
+      <Filter>_Assets\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Health.cpp">
+      <Filter>_Assets\Scripts\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="DamageData.cpp">
+      <Filter>_Assets\Scripts\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="CLTestNavMeshScene.cpp">
+      <Filter>_Assets\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CLAnimation.cpp">
+      <Filter>_Assets\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>_Assets\Scripts\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="CLTestInGameUI.cpp">
+      <Filter>_Assets\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="IItem.cpp">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemBuilder.cpp">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Ammo.cpp">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Flask.cpp">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Herb.cpp">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_AI.cpp">
+      <Filter>_Assets\Scripts\Character\NPC\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Move.cpp">
+      <Filter>_Assets\Scripts\Character\NPC\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="MuzzleFlash.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Alcohol.cpp">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="HealSyringe.cpp">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie_Runner_AI.cpp">
+      <Filter>_Assets\Scripts\Character\NPC\Enemy\Zombie</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie_Runner_Move.cpp">
+      <Filter>_Assets\Scripts\Character\NPC\Enemy\Zombie</Filter>
+    </ClCompile>
+    <ClCompile Include="MuzzleFlash.cpp">
+      <Filter>_Assets\Scripts\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="HitPoint.cpp">
+      <Filter>_Assets\Scripts\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectBuilder.cpp">
+      <Filter>_Assets\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Gun.cpp">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="EquipmentController.cpp">
+      <Filter>_Assets\Scripts\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>_Assets\Scripts</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SeedVault.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="SeedVault.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\GameEngine\JsonSerializer\json\json_valueiterator.inl">
+      <Filter>Json</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{738d8c9f-de77-40b5-beb6-5d321de691ee}</ProjectGuid>
+    <RootNamespace>SeedVault</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)..\..\GameEngine\GameEngine;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\GameEngine\;$(SolutionDir)..\GameEngine\JsonSerializer;$(SolutionDir)..\GameEngine\GameEngine;$(SolutionDir)..\GameEngine\ComponentEngine;$(SolutionDir)..\GameEngine\IdSystem;$(SolutionDir)..\SubSystem\Includes;$(SolutionDir)..\GameEngine\Includes;$(SolutionDir)..\GameEngine\PhysX\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DisableSpecificWarnings>4005</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>NotSet</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GameEngine_Debug.lib;libfbxsdkd_x64.lib;DirectXTKd_x64.lib;SubSystem_Debug.lib;IdSystem.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)..\Lib\libfbxsdk.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\GameEngine\;$(SolutionDir)..\GameEngine\JsonSerializer;$(SolutionDir)..\GameEngine\GameEngine;$(SolutionDir)..\GameEngine\ComponentEngine;$(SolutionDir)..\GameEngine\IdSystem;$(SolutionDir)..\SubSystem\Includes;$(SolutionDir)..\GameEngine\Includes;$(SolutionDir)..\GameEngine\PhysX\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4005</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GameEngine_Release.lib;DirectX11Engine_Release.lib;libfbxsdk.lib;DirectXTK_x64.lib;PhysX_64_Release.lib;PhysXCommon_64_Release.lib;PhysXFoundation_64_Release.lib;PhysXCharacterKinematic_static_64_Release.lib;PhysXCooking_64_Release.lib;PhysXExtensions_static_64_Release.lib;PhysXPvdSDK_static_64_Release.lib;PhysXVehicle_static_64_Release.lib;SubSystem_Release.lib;%(AdditionalDependencies);IdSystem.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\allocator.h" />
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\assertions.h" />
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\config.h" />
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\forwards.h" />
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\json.h" />
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\json_features.h" />
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\json_tool.h" />
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\reader.h" />
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\value.h" />
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\version.h" />
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\writer.h" />
+    <ClInclude Include="Alcohol.h" />
+    <ClInclude Include="Ammo.h" />
+    <ClInclude Include="BehaviorTree_Base.h" />
+    <ClInclude Include="CameraBehavior.h" />
+    <ClInclude Include="CameraController.h" />
+    <ClInclude Include="EquipmentController.h" />
+    <ClInclude Include="ObjectBuilder.h" />
+    <ClInclude Include="CLAnimation.h" />
+    <ClInclude Include="CLInput.h" />
+    <ClInclude Include="CLMainScene.h" />
+    <ClInclude Include="CLMaterialTest.h" />
+    <ClInclude Include="CLPhysXTestSceneJH.h" />
+    <ClInclude Include="CLTestHJ.h" />
+    <ClInclude Include="CLTestInGameUI.h" />
+    <ClInclude Include="CLTestNavMeshScene.h" />
+    <ClInclude Include="CLTestScene2D.h" />
+    <ClInclude Include="CLViewerScene.h" />
+    <ClInclude Include="DamageData.h" />
+    <ClInclude Include="Enemy_Move.h" />
+    <ClInclude Include="Enemy_AI.h" />
+    <ClInclude Include="HitPoint.h" />
+    <ClInclude Include="MuzzleFlash.h" />
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="HealSyringe.h" />
+    <ClInclude Include="Health.h" />
+    <ClInclude Include="Herb.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="IItem.h" />
+    <ClInclude Include="ItemBuilder.h" />
+    <ClInclude Include="JsonLoader_CL.h" />
+    <ClInclude Include="OrbitCamera.h" />
+    <ClInclude Include="ResourcesPathDef.h" />
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="ModelController.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="PlayerController.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SeedVault.h" />
+    <ClInclude Include="Settings.h" />
+    <ClInclude Include="Flask.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="CLTestSceneYH.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="Zombie_Runner_AI.h" />
+    <ClInclude Include="Zombie_Runner_Move.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\GameEngine\GameEngine\ComponentBase.cpp" />
+    <ClCompile Include="..\..\GameEngine\GameEngine\GameObject.cpp" />
+    <ClCompile Include="..\..\GameEngine\JsonSerializer\json\json_reader.cpp" />
+    <ClCompile Include="..\..\GameEngine\JsonSerializer\json\json_value.cpp" />
+    <ClCompile Include="..\..\GameEngine\JsonSerializer\json\json_writer.cpp" />
+    <ClCompile Include="Alcohol.cpp" />
+    <ClCompile Include="Ammo.cpp" />
+    <ClCompile Include="BehaviorTree_Base.cpp" />
+    <ClCompile Include="CameraBehavior.cpp" />
+    <ClCompile Include="CameraController.cpp" />
+    <ClCompile Include="EquipmentController.cpp" />
+    <ClCompile Include="ObjectBuilder.cpp" />
+    <ClCompile Include="CLAnimation.cpp" />
+    <ClCompile Include="CLInput.cpp" />
+    <ClCompile Include="CLMainScene.cpp" />
+    <ClCompile Include="CLMaterialTest.cpp" />
+    <ClCompile Include="CLPhysXTestSceneJH.cpp" />
+    <ClCompile Include="CLTestHJ.cpp" />
+    <ClCompile Include="CLTestInGameUI.cpp" />
+    <ClCompile Include="CLTestNavMeshScene.cpp" />
+    <ClCompile Include="CLTestScene2D.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="CLViewerScene.cpp" />
+    <ClCompile Include="DamageData.cpp" />
+    <ClCompile Include="Enemy_Move.cpp" />
+    <ClCompile Include="Enemy_AI.cpp" />
+    <ClCompile Include="HitPoint.cpp" />
+    <ClCompile Include="MuzzleFlash.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Gun.cpp" />
+    <ClCompile Include="HealSyringe.cpp" />
+    <ClCompile Include="Health.cpp" />
+    <ClCompile Include="Herb.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="IItem.cpp" />
+    <ClCompile Include="ItemBuilder.cpp" />
+    <ClCompile Include="JsonLoader_CL.cpp" />
+    <ClCompile Include="ModelController.cpp" />
+    <ClCompile Include="OrbitCamera.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="SeedVault.cpp" />
+    <ClCompile Include="CLTestSceneYH.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Flask.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="Zombie_Runner_AI.cpp" />
+    <ClCompile Include="Zombie_Runner_Move.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SeedVault.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="SeedVault.ico" />
+    <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\GameEngine\JsonSerializer\json\json_valueiterator.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

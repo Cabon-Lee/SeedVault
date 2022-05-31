@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="binaryExample">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="typeidExample">
+      <UniqueIdentifier>{4a1a1160-0e52-4f88-be81-aa89f92d502b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lambda">
+      <UniqueIdentifier>{64c8c18e-8aee-4d73-9bdf-d69ca03d4e48}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="binaryExample.cpp">
+      <Filter>binaryExample</Filter>
+    </ClCompile>
+    <ClCompile Include="binary.cpp">
+      <Filter>binaryExample</Filter>
+    </ClCompile>
+    <ClCompile Include="typeidExample.cpp">
+      <Filter>typeidExample</Filter>
+    </ClCompile>
+    <ClCompile Include="functionObject.cpp">
+      <Filter>Lambda</Filter>
+    </ClCompile>
+    <ClCompile Include="functionPointer.cpp">
+      <Filter>Lambda</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="vertex.h">
+      <Filter>binaryExample</Filter>
+    </ClInclude>
+    <ClInclude Include="binary.h">
+      <Filter>binaryExample</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="valueCategory.txt">
+      <Filter>typeidExample</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

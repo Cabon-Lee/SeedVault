@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="txt">
+      <UniqueIdentifier>{c9bde970-26d5-490a-89aa-fca816c21bbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBXParser">
+      <UniqueIdentifier>{aff838bb-cc41-41ee-b9ec-bfb1bddde7ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ASEParser">
+      <UniqueIdentifier>{c72d6539-f452-4882-bf6e-fd944a3c29bb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="txt\할것.txt">
+      <Filter>txt</Filter>
+    </Text>
+    <Text Include="txt\완료.txt">
+      <Filter>txt</Filter>
+    </Text>
+    <Text Include="txt\fbx 라이브러리 붙이는법.txt">
+      <Filter>txt</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FbxParser.cpp">
+      <Filter>FBXParser</Filter>
+    </ClCompile>
+    <ClCompile Include="ParsingDataClass.cpp" />
+    <ClCompile Include="Lexer.cpp">
+      <Filter>ASEParser</Filter>
+    </ClCompile>
+    <ClCompile Include="ASEParser.cpp">
+      <Filter>ASEParser</Filter>
+    </ClCompile>
+    <ClCompile Include="ASEFile.cpp">
+      <Filter>ASEParser</Filter>
+    </ClCompile>
+    <ClCompile Include="BoneWeights.cpp">
+      <Filter>FBXParser</Filter>
+    </ClCompile>
+    <ClCompile Include="JMFBXParser.cpp">
+      <Filter>FBXParser</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ParsingDataClass.h" />
+    <ClInclude Include="FBXParser.h">
+      <Filter>FBXParser</Filter>
+    </ClInclude>
+    <ClInclude Include="Lexer.h">
+      <Filter>ASEParser</Filter>
+    </ClInclude>
+    <ClInclude Include="ASEParser.h">
+      <Filter>ASEParser</Filter>
+    </ClInclude>
+    <ClInclude Include="ASEFile.h">
+      <Filter>ASEParser</Filter>
+    </ClInclude>
+    <ClInclude Include="BoneWeights.h">
+      <Filter>FBXParser</Filter>
+    </ClInclude>
+    <ClInclude Include="JMFBXParser.h">
+      <Filter>FBXParser</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

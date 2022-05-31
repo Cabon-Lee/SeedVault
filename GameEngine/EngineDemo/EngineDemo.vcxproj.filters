@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="WinMain">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="DemoProcess">
+      <UniqueIdentifier>{50b177a1-19d7-47e9-94f3-de397f35d3b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestScene">
+      <UniqueIdentifier>{3a8add85-47df-4e80-9e56-f30d3eed23f4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>WinMain</Filter>
+    </ClCompile>
+    <ClCompile Include="DemoProcess.cpp">
+      <Filter>DemoProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene1.cpp">
+      <Filter>TestScene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DemoProcess.h">
+      <Filter>DemoProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="DLLEL.h">
+      <Filter>WinMain</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene1.h">
+      <Filter>TestScene</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

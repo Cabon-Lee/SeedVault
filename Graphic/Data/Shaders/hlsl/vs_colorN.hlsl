@@ -1,0 +1,32 @@
+#pragma pack_matrix( row_major )
+
+cbuffer perObjectBuffer : register(b0)
+{
+    float4x4 wvpMatrix;
+    float4x4 worldMatrix;
+};
+
+struct VS_INPUT
+{
+    float3 inPos : POSITION;
+    float3 inNormal : NORMAL;
+    float4 inColor : COLOR;
+};
+
+struct VS_OUTPUT
+{
+    float4 outPosition : SV_POSITION;
+    float3 outNormal : NORMAL;
+    float4 outColor : COLOR;
+};
+
+VS_OUTPUT main(VS_INPUT input)
+{
+    VS_OUTPUT output;
+    
+    output.outPosition = mul(float4(input.inPos, 1.0f), wvpMatrix);
+    output.outNormal = normalize(mul(float4(input.inNormal, 0.f), worldMatrix));
+    output.outColor = input.inColor;
+    
+    return output;
+}

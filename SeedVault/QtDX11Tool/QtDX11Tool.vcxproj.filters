@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+    </Filter>
+    <Filter Include="QtWidget">
+      <UniqueIdentifier>{dd7582f3-7421-42bc-b0ee-77b51345fec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PCH">
+      <UniqueIdentifier>{391c7304-3952-43c4-9a92-7d11e4378785}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Json">
+      <UniqueIdentifier>{cd00e99f-7873-414a-8b41-e85398ff33d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{fb5fb568-3cc5-4ee4-8dc9-bf027656d8fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\ComponentEngine">
+      <UniqueIdentifier>{be128e50-ffd7-4617-ab8f-c1db1ea7810c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{99a6a7de-d933-41b7-99c8-9cdb129d2039}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Json\JsonLoader">
+      <UniqueIdentifier>{3b49a1e0-0649-45ef-b118-954bc5f2ea96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="QtWidget\Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="QMain.qrc">
+      <Filter>QtWidget\Resource Files</Filter>
+    </QtRcc>
+    <QtUic Include="QMain.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QMain.cpp">
+      <Filter>QtWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="QtScene00.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GameEngine\GameEngine\ComponentBase.cpp">
+      <Filter>Component\ComponentEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GameEngine\GameEngine\GameObject.cpp">
+      <Filter>Component\ComponentEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>PCH</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GameEngine\JsonSerializer\json\json_reader.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GameEngine\JsonSerializer\json\json_value.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GameEngine\JsonSerializer\json\json_writer.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="QDirectX11Widget.cpp">
+      <Filter>QtWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="QRenderWidget.cpp">
+      <Filter>QtWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="QtInput.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonLoader_QT.cpp">
+      <Filter>Json\JsonLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="QObjectController.cpp">
+      <Filter>QtWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="QSceneController.cpp">
+      <Filter>QtWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="QGameObject.cpp">
+      <Filter>QtWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="QStringHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QLightController.cpp">
+      <Filter>QtWidget</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="QMain.h">
+      <Filter>QtWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="QRenderWidget.h">
+      <Filter>QtWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="QDirectX11Widget.h">
+      <Filter>QtWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="QSceneController.h">
+      <Filter>QtWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="QObjectController.h">
+      <Filter>QtWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="QGameObject.h">
+      <Filter>QtWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="QLightController.h">
+      <Filter>QtWidget</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="QtScene00.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\allocator.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\assertions.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\config.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\forwards.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\json.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\json_features.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\json_tool.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\reader.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\value.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\version.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GameEngine\JsonSerializer\json\writer.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="QtInput.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonLoader_QT.h">
+      <Filter>Json\JsonLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="QStringHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="QDirectX11Widget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QRenderWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QSceneController.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QGameObject.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QObjectController.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QLightController.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\GameEngine\JsonSerializer\json\json_valueiterator.inl">
+      <Filter>Json</Filter>
+    </None>
+  </ItemGroup>
+</Project>

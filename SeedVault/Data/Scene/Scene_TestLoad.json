@@ -1,0 +1,2719 @@
+{
+	"Scene" : 
+	{
+		"m_CurrentCamreaName" : "FreeCamera",
+		"m_GameObject_V" : 
+		[
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33427,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 1.0,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 1.0,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 1.0,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22010,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"GameManager" : 
+							{
+								"m_ComponentId" : 33428,
+								"m_GameState" : 0,
+								"m_bEnable" : true,
+								"s_bDebugMode" : false,
+								"s_bIsUIVisible" : true,
+								"s_bTPSMode" : false
+							}
+						}
+					],
+					"m_GameObjectId" : 22010,
+					"m_Name" : "GameManager",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33429,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 1.0,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 1.0,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 1.0,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22011,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"MeshFilter" : 
+							{
+								"m_ComponentId" : 33630,
+								"m_Index" : 0,
+								"m_MeshName" : "",
+								"m_bEnable" : true
+							}
+						},
+						{
+							"MeshRenderer" : 
+							{
+								"m_CastShadow" : true,
+								"m_ComponentId" : 33031,
+								"m_IsGizmoOn" : true,
+								"m_bEnable" : true,
+								"m_eRasterizer" : 0,
+								"m_eTopology" : 0
+							}
+						}
+					],
+					"m_GameObjectId" : 22011,
+					"m_Name" : "YH_Axis",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33432,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 1.0,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 1.0,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 1.0,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22012,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"Light" : 
+							{
+								"m_CastShadow" : true,
+								"m_Color" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_ComponentId" : 33033,
+								"m_FalloffEnd" : 0.0,
+								"m_FalloffStart" : 0.0,
+								"m_Intensity" : 1.0,
+								"m_IsTextured" : false,
+								"m_SpotPower" : 0.0,
+								"m_TextureName" : "",
+								"m_bEnable" : true,
+								"m_eLightType" : 0
+							}
+						}
+					],
+					"m_GameObjectId" : 22012,
+					"m_Name" : "Directional Light",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33434,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 1.0,
+										"_12" : 1.3513290468836203e-05,
+										"_13" : -8.3519843485646561e-08,
+										"_14" : 0.0,
+										"_21" : -1.3513290468836203e-05,
+										"_22" : 1.0,
+										"_23" : -6.2885095530873514e-07,
+										"_24" : 0.0,
+										"_31" : 8.351134539452687e-08,
+										"_32" : 6.2885209217711235e-07,
+										"_33" : 1.0,
+										"_34" : 0.0,
+										"_41" : -0.003981888759881258,
+										"_42" : 0.99999725818634033,
+										"_43" : 20.001789093017578,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : -0.003981888759881258,
+										"y" : 0.99999725818634033,
+										"z" : 20.001789093017578
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -3.1442576187146187e-07,
+										"y" : 4.1757797220043358e-08,
+										"z" : 6.7566452344181016e-06
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22013,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"MeshFilter" : 
+							{
+								"m_ComponentId" : 33635,
+								"m_Index" : 0,
+								"m_MeshName" : "box_size_1.bin",
+								"m_bEnable" : true
+							}
+						},
+						{
+							"MeshRenderer" : 
+							{
+								"m_CastShadow" : true,
+								"m_ComponentId" : 33036,
+								"m_IsGizmoOn" : false,
+								"m_bEnable" : true,
+								"m_eRasterizer" : 0,
+								"m_eTopology" : 0
+							}
+						},
+						{
+							"PhysicsActor" : 
+							{
+								"g_UserIndex" : 2,
+								"m_ComponentId" : 33137,
+								"m_GeometryType" : 1,
+								"m_PhysActorIndex" : 0,
+								"m_RigidType" : 1,
+								"m_UserIndex" : 1,
+								"m_Velcity" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_bEnable" : true
+							}
+						},
+						{
+							"Health" : 
+							{
+								"m_Hp" : 10,
+								"m_bEnable" : true,
+								"m_bInvincible" : false,
+								"m_bIsDead" : false
+							}
+						}
+					],
+					"m_GameObjectId" : 22013,
+					"m_Name" : "Test Cube1",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33439,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 1.0,
+										"_12" : 1.3707982361665927e-05,
+										"_13" : 5.0525676442703116e-07,
+										"_14" : 0.0,
+										"_21" : -1.3707982361665927e-05,
+										"_22" : 1.0,
+										"_23" : -6.491343356174184e-07,
+										"_24" : 0.0,
+										"_31" : -5.0526563200037344e-07,
+										"_32" : 6.4912740072031738e-07,
+										"_33" : 1.0,
+										"_34" : 0.0,
+										"_41" : 9.9980878829956055,
+										"_42" : 0.99999606609344482,
+										"_43" : 20.001495361328125,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 9.9980878829956055,
+										"y" : 0.99999606609344482,
+										"z" : 20.001495361328125
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -3.2456543408443395e-07,
+										"y" : -2.5263059910685115e-07,
+										"z" : 6.8539911808329634e-06
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22014,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"MeshFilter" : 
+							{
+								"m_ComponentId" : 33640,
+								"m_Index" : 0,
+								"m_MeshName" : "box_size_1.bin",
+								"m_bEnable" : true
+							}
+						},
+						{
+							"MeshRenderer" : 
+							{
+								"m_CastShadow" : true,
+								"m_ComponentId" : 33041,
+								"m_IsGizmoOn" : false,
+								"m_bEnable" : true,
+								"m_eRasterizer" : 0,
+								"m_eTopology" : 0
+							}
+						},
+						{
+							"PhysicsActor" : 
+							{
+								"g_UserIndex" : 2,
+								"m_ComponentId" : 33142,
+								"m_GeometryType" : 1,
+								"m_PhysActorIndex" : 0,
+								"m_RigidType" : 1,
+								"m_UserIndex" : 2,
+								"m_Velcity" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_bEnable" : true
+							}
+						},
+						{
+							"Health" : 
+							{
+								"m_Hp" : 10,
+								"m_bEnable" : true,
+								"m_bInvincible" : false,
+								"m_bIsDead" : false
+							}
+						}
+					],
+					"m_GameObjectId" : 22014,
+					"m_Name" : "Test Cube2",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33444,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 91.650054931640625,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : -0.02879488468170166,
+										"_12" : 0.0,
+										"_13" : -0.99958527088165283,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 1.0,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.99958527088165283,
+										"_32" : 0.0,
+										"_33" : -0.02879488468170166,
+										"_34" : 0.0,
+										"_41" : -7.0067014694213867,
+										"_42" : 0.0,
+										"_43" : 4.3184704780578613,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : -7.0067014694213867,
+										"y" : 0.0,
+										"z" : 4.3184704780578613
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 0.69685184955596924,
+										"x" : 0.0,
+										"y" : 0.71721506118774414,
+										"z" : 0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22015,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"PlayerController" : 
+							{
+								"m_Animator" : 0,
+								"m_CameraParent" : 33449,
+								"m_ComponentId" : 33445,
+								"m_CrouchSpeed" : 2.0,
+								"m_LastHitTarget" : 0,
+								"m_MoveSpeed" : 5.0,
+								"m_MovingMode" : 0,
+								"m_PoseMode" : 0,
+								"m_SprintSpeed" : 15.0,
+								"m_StandSpeed" : 5.0,
+								"m_bEnable" : true,
+								"s_H" : 0.0,
+								"s_HForAnim" : 0.0,
+								"s_V" : 0.0,
+								"s_VForAnim" : 0.0,
+								"s_bAim" : false,
+								"s_bCrouch" : false,
+								"s_bSprint" : false
+							}
+						}
+					],
+					"m_GameObjectId" : 22015,
+					"m_Name" : "Player",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33446,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 190.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : -0.049240380525588989,
+										"_12" : 0.0,
+										"_13" : 0.0086824167519807816,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 0.05000000074505806,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : -0.0086824167519807816,
+										"_32" : 0.0,
+										"_33" : -0.049240380525588989,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : -0.087155818939208984,
+										"x" : 0.0,
+										"y" : 0.99619466066360474,
+										"z" : 0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.05000000074505806,
+										"y" : 0.05000000074505806,
+										"z" : 0.05000000074505806
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22016,
+								"m_pParent" : 33444
+							}
+						},
+						{
+							"MeshFilter" : 
+							{
+								"m_ComponentId" : 33647,
+								"m_Index" : 0,
+								"m_MeshName" : "Player_Walk Forward.bin",
+								"m_bEnable" : true
+							}
+						},
+						{
+							"MeshRenderer" : 
+							{
+								"m_CastShadow" : true,
+								"m_ComponentId" : 33048,
+								"m_IsGizmoOn" : false,
+								"m_bEnable" : true,
+								"m_eRasterizer" : 0,
+								"m_eTopology" : 0
+							}
+						}
+					],
+					"m_GameObjectId" : 22016,
+					"m_Name" : "Mesh",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 22015
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33449,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 344.29998779296875,
+										"y" : 91.650054931640625,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : -0.028794910758733749,
+										"_12" : -2.9802322387695312e-08,
+										"_13" : -0.99958521127700806,
+										"_14" : 0.0,
+										"_21" : -0.27048838138580322,
+										"_22" : 0.96269172430038452,
+										"_23" : 0.0077919065952301025,
+										"_24" : 0.0,
+										"_31" : 0.9622923731803894,
+										"_32" : 0.2706005871295929,
+										"_33" : -0.027720630168914795,
+										"_34" : 0.0,
+										"_41" : -7.1029305458068848,
+										"_42" : 0.77293992042541504,
+										"_43" : 4.3212423324584961,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : -7.1029305458068848,
+										"y" : 0.77293992042541504,
+										"z" : 4.3212423324584961
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 0.69032162427902222,
+										"x" : -0.095176167786121368,
+										"y" : 0.71049404144287109,
+										"z" : 0.097957365214824677
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22017,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"OrbitCamera" : 
+							{
+								"m_ComponentId" : 33450,
+								"m_Distance" : 0.10000000149011612,
+								"m_FocusPosition" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : -7.0067014694213867,
+										"y" : 0.80000001192092896,
+										"z" : 4.3184704780578613
+									}
+								},
+								"m_FocusTarget" : 33444,
+								"m_MaxVerticalAngle" : 50.0,
+								"m_MinVerticalAngle" : -40.0,
+								"m_RotationAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector2" : 
+									{
+										"x" : -15.699996948242188,
+										"y" : 91.650054931640625
+									}
+								},
+								"m_RotationSpeed" : 100.0,
+								"m_bEnable" : true
+							}
+						}
+					],
+					"m_GameObjectId" : 22017,
+					"m_Name" : "CameraParent",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33451,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 1.0,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 1.0,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 1.0,
+										"_34" : 0.0,
+										"_41" : 0.60000026226043701,
+										"_42" : 0.23000006377696991,
+										"_43" : -1.3000004291534424,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.60000026226043701,
+										"y" : 0.23000006377696991,
+										"z" : -1.3000004291534424
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22018,
+								"m_pParent" : 33449
+							}
+						},
+						{
+							"Camera" : 
+							{
+								"m_Aspect" : 1.9232323169708252,
+								"m_ComponentId" : 33552,
+								"m_FarZ" : 10000.0,
+								"m_FovY" : 0.8020978569984436,
+								"m_Look" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.96229255199432373,
+										"y" : 0.27060064673423767,
+										"z" : -0.027720635756850243
+									}
+								},
+								"m_Name" : "YH_MainCamera",
+								"m_NearZ" : 1.0,
+								"m_bEnable" : true
+							}
+						},
+						{
+							"CameraBehavior" : 
+							{
+								"m_CameraSpeed" : 7.0,
+								"m_ComponentId" : 33453,
+								"m_CrouchCameraDefaultPos" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.60000002384185791,
+										"y" : 0.030000001192092896,
+										"z" : -1.2999999523162842
+									}
+								},
+								"m_CrouchZoomInPos" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.62999999523162842,
+										"y" : 0.049999997019767761,
+										"z" : -1.3999999761581421
+									}
+								},
+								"m_CurrentCameraDefaultPos" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.60000002384185791,
+										"y" : 0.23000000417232513,
+										"z" : -1.2999999523162842
+									}
+								},
+								"m_CurrentFov" : 0.8020978569984436,
+								"m_CurrentZoomInPos" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.62999999523162842,
+										"y" : 0.25,
+										"z" : -1.3999999761581421
+									}
+								},
+								"m_StandCameraDefaultPos" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.60000002384185791,
+										"y" : 0.23000000417232513,
+										"z" : -1.2999999523162842
+									}
+								},
+								"m_ZoomInFov" : 0.58539819717407227,
+								"m_ZoomInPosition" : 33454,
+								"m_ZoomOutFov" : 0.78539818525314331,
+								"m_bEnable" : true,
+								"m_pObject" : 22018,
+								"m_pParent" : 0
+							}
+						}
+					],
+					"m_GameObjectId" : 22018,
+					"m_Name" : "YH_MainCamera",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 22017
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33454,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 1.0,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 1.0,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 1.0,
+										"_34" : 0.0,
+										"_41" : 0.62999999523162842,
+										"_42" : 0.25,
+										"_43" : -1.3999999761581421,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.62999999523162842,
+										"y" : 0.25,
+										"z" : -1.3999999761581421
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22019,
+								"m_pParent" : 33449
+							}
+						}
+					],
+					"m_GameObjectId" : 22019,
+					"m_Name" : "ZoomInPosition",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 22017
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33455,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 51.199981689453125,
+										"y" : 147.75009155273438,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : -0.84572857618331909,
+										"_12" : 0.0,
+										"_13" : -0.53361314535140991,
+										"_14" : 0.0,
+										"_21" : 0.41586488485336304,
+										"_22" : 0.62660402059555054,
+										"_23" : -0.65910828113555908,
+										"_24" : 0.0,
+										"_31" : 0.33436411619186401,
+										"_32" : -0.77933776378631592,
+										"_33" : -0.52993690967559814,
+										"_34" : 0.0,
+										"_41" : -12.832563400268555,
+										"_42" : 16.076393127441406,
+										"_43" : 16.548587799072266,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : -12.832563400268555,
+										"y" : 16.076393127441406,
+										"z" : 16.548587799072266
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 0.25046873092651367,
+										"x" : 0.12000446766614914,
+										"y" : 0.86635291576385498,
+										"z" : -0.41508662700653076
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22020,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"Camera" : 
+							{
+								"m_Aspect" : 1.9232323169708252,
+								"m_ComponentId" : 33556,
+								"m_FarZ" : 10000.0,
+								"m_FovY" : 0.78539818525314331,
+								"m_Look" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.3343641459941864,
+										"y" : -0.77933788299560547,
+										"z" : -0.52993696928024292
+									}
+								},
+								"m_Name" : "FreeCamera",
+								"m_NearZ" : 1.0,
+								"m_bEnable" : true
+							}
+						},
+						{
+							"CameraController" : 
+							{
+								"m_ComponentId" : 33457,
+								"m_RotationAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector2" : 
+									{
+										"x" : 51.199981689453125,
+										"y" : 147.75009155273438
+									}
+								},
+								"m_bEnable" : true,
+								"m_eMovingMode" : 0
+							}
+						}
+					],
+					"m_GameObjectId" : 22020,
+					"m_Name" : "FreeCamera",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33458,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 0.5,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 0.5,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 0.5,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.5,
+										"y" : 0.5,
+										"z" : 0.5
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22021,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"MeshFilter" : 
+							{
+								"m_ComponentId" : 33659,
+								"m_Index" : 0,
+								"m_MeshName" : "uv.bin",
+								"m_bEnable" : true
+							}
+						},
+						{
+							"MeshRenderer" : 
+							{
+								"m_CastShadow" : true,
+								"m_ComponentId" : 33060,
+								"m_IsGizmoOn" : false,
+								"m_bEnable" : true,
+								"m_eRasterizer" : 0,
+								"m_eTopology" : 0
+							}
+						}
+					],
+					"m_GameObjectId" : 22021,
+					"m_Name" : "WayPoint_1",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33461,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 0.5,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 0.5,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 0.5,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 5.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 5.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.5,
+										"y" : 0.5,
+										"z" : 0.5
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22022,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"MeshFilter" : 
+							{
+								"m_ComponentId" : 33662,
+								"m_Index" : 0,
+								"m_MeshName" : "uv.bin",
+								"m_bEnable" : true
+							}
+						},
+						{
+							"MeshRenderer" : 
+							{
+								"m_CastShadow" : true,
+								"m_ComponentId" : 33063,
+								"m_IsGizmoOn" : false,
+								"m_bEnable" : true,
+								"m_eRasterizer" : 0,
+								"m_eTopology" : 0
+							}
+						}
+					],
+					"m_GameObjectId" : 22022,
+					"m_Name" : "WayPoint_2",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33464,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 0.5,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 0.5,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 0.5,
+										"_34" : 0.0,
+										"_41" : 5.0,
+										"_42" : 0.0,
+										"_43" : 5.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 5.0,
+										"y" : 0.0,
+										"z" : 5.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.5,
+										"y" : 0.5,
+										"z" : 0.5
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22023,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"MeshFilter" : 
+							{
+								"m_ComponentId" : 33665,
+								"m_Index" : 0,
+								"m_MeshName" : "uv.bin",
+								"m_bEnable" : true
+							}
+						},
+						{
+							"MeshRenderer" : 
+							{
+								"m_CastShadow" : true,
+								"m_ComponentId" : 33066,
+								"m_IsGizmoOn" : false,
+								"m_bEnable" : true,
+								"m_eRasterizer" : 0,
+								"m_eTopology" : 0
+							}
+						}
+					],
+					"m_GameObjectId" : 22023,
+					"m_Name" : "WayPoint_3",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33467,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 0.5,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 0.5,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 0.5,
+										"_34" : 0.0,
+										"_41" : 5.0,
+										"_42" : 0.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 5.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.5,
+										"y" : 0.5,
+										"z" : 0.5
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22024,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"MeshFilter" : 
+							{
+								"m_ComponentId" : 33668,
+								"m_Index" : 0,
+								"m_MeshName" : "uv.bin",
+								"m_bEnable" : true
+							}
+						},
+						{
+							"MeshRenderer" : 
+							{
+								"m_CastShadow" : true,
+								"m_ComponentId" : 33069,
+								"m_IsGizmoOn" : false,
+								"m_bEnable" : true,
+								"m_eRasterizer" : 0,
+								"m_eTopology" : 0
+							}
+						}
+					],
+					"m_GameObjectId" : 22024,
+					"m_Name" : "WayPoint_4",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33470,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 0.0099999997764825821,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 0.0099999997764825821,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 0.0099999997764825821,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 1.5956606864929199,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 1.6123610734939575
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0099999997764825821,
+										"y" : 0.0099999997764825821,
+										"z" : 0.0099999997764825821
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22025,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"MeshFilter" : 
+							{
+								"m_ComponentId" : 33671,
+								"m_Index" : 0,
+								"m_MeshName" : "GIRL_fbx.bin",
+								"m_bEnable" : true
+							}
+						},
+						{
+							"MeshRenderer" : 
+							{
+								"m_CastShadow" : true,
+								"m_ComponentId" : 33072,
+								"m_IsGizmoOn" : false,
+								"m_bEnable" : true,
+								"m_eRasterizer" : 0,
+								"m_eTopology" : 0
+							}
+						},
+						{
+							"EnemyMove" : 
+							{
+								"m_ComponentId" : 33473,
+								"m_CurrentWayPointIndex" : 1,
+								"m_Dir" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.016700400039553642
+									}
+								},
+								"m_MoveSpeed" : 1.0,
+								"m_PlayerPosition" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : -7.0067014694213867,
+										"y" : 0.0,
+										"z" : 4.3184704780578613
+									}
+								},
+								"m_State" : 2,
+								"m_Timer" : 5.0,
+								"m_ViewSight" : 
+								{
+									"struct ViewSight" : 
+									{
+										"angle" : 140.0,
+										"leftSight" : 70.0,
+										"rightSight" : 290.0
+									}
+								},
+								"m_WaitTime" : 5.0,
+								"m_WayPointSize" : 4,
+								"m_bEnable" : true,
+								"m_bHasPlayer" : false
+							},
+							"m_WayPointsComponentId_V" : 
+							[
+								33464,
+								33468,
+								33472,
+								33476
+							]
+						},
+						{
+							"Enemy_AI" : 
+							{
+								"m_ComponentId" : 33474,
+								"m_bEnable" : true
+							}
+						}
+					],
+					"m_GameObjectId" : 22025,
+					"m_Name" : "Monster_1",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33475,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 180.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : -10.0,
+										"_12" : 0.0,
+										"_13" : 2.3841860183893004e-06,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 10.0,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : -2.4080279672489269e-06,
+										"_32" : 0.0,
+										"_33" : -10.100000381469727,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : -1.1920930376163597e-07,
+										"x" : 0.0,
+										"y" : 1.0,
+										"z" : 0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 10.0,
+										"y" : 10.0,
+										"z" : 10.100000381469727
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22026,
+								"m_pParent" : 33470
+							}
+						},
+						{
+							"MeshFilter" : 
+							{
+								"m_ComponentId" : 33676,
+								"m_Index" : 0,
+								"m_MeshName" : "Partner_Walk.bin",
+								"m_bEnable" : true
+							}
+						},
+						{
+							"MeshRenderer" : 
+							{
+								"m_CastShadow" : true,
+								"m_ComponentId" : 33077,
+								"m_IsGizmoOn" : false,
+								"m_bEnable" : true,
+								"m_eRasterizer" : 0,
+								"m_eTopology" : 0
+							}
+						}
+					],
+					"m_GameObjectId" : 22026,
+					"m_Name" : "Mon_1_Mesh",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 22025
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33478,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 271.05084228515625,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 0.00018339931557420641,
+										"_12" : 0.0,
+										"_13" : 0.0099983187392354012,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 0.0099999997764825821,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : -0.0099983187392354012,
+										"_32" : 0.0,
+										"_33" : 0.00018339931557420641,
+										"_34" : 0.0,
+										"_41" : 2.544752836227417,
+										"_42" : 0.0,
+										"_43" : 4.9533228874206543,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 2.5280551910400391,
+										"y" : 0.0,
+										"z" : 4.9536290168762207
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : -0.71356141567230225,
+										"x" : 0.0,
+										"y" : 0.70059263706207275,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0099999997764825821,
+										"y" : 0.0099999997764825821,
+										"z" : 0.0099999997764825821
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22027,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"MeshFilter" : 
+							{
+								"m_ComponentId" : 33679,
+								"m_Index" : 0,
+								"m_MeshName" : "GIRL_fbx.bin",
+								"m_bEnable" : true
+							}
+						},
+						{
+							"MeshRenderer" : 
+							{
+								"m_CastShadow" : true,
+								"m_ComponentId" : 33080,
+								"m_IsGizmoOn" : false,
+								"m_bEnable" : true,
+								"m_eRasterizer" : 0,
+								"m_eTopology" : 0
+							}
+						},
+						{
+							"EnemyMove" : 
+							{
+								"m_ComponentId" : 33481,
+								"m_CurrentWayPointIndex" : 2,
+								"m_Dir" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : -0.016697591170668602,
+										"y" : 0.0,
+										"z" : 0.00030627546948380768
+									}
+								},
+								"m_MoveSpeed" : 1.0,
+								"m_PlayerPosition" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : -7.0067014694213867,
+										"y" : 0.0,
+										"z" : 4.3184704780578613
+									}
+								},
+								"m_State" : 2,
+								"m_Timer" : 0.5,
+								"m_ViewSight" : 
+								{
+									"struct ViewSight" : 
+									{
+										"angle" : 140.0,
+										"leftSight" : 341.05084228515625,
+										"rightSight" : 201.05084228515625
+									}
+								},
+								"m_WaitTime" : 0.5,
+								"m_WayPointSize" : 4,
+								"m_bEnable" : true,
+								"m_bHasPlayer" : false
+							},
+							"m_WayPointsComponentId_V" : 
+							[
+								33476,
+								33472,
+								33468,
+								33464
+							]
+						},
+						{
+							"Enemy_AI" : 
+							{
+								"m_ComponentId" : 33482,
+								"m_bEnable" : true
+							}
+						}
+					],
+					"m_GameObjectId" : 22027,
+					"m_Name" : "Monster_2",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33483,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 180.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : -10.0,
+										"_12" : 0.0,
+										"_13" : 2.3841860183893004e-06,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 10.0,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : -2.4080279672489269e-06,
+										"_32" : 0.0,
+										"_33" : -10.100000381469727,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : -1.1920930376163597e-07,
+										"x" : 0.0,
+										"y" : 1.0,
+										"z" : 0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 10.0,
+										"y" : 10.0,
+										"z" : 10.100000381469727
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22028,
+								"m_pParent" : 33478
+							}
+						},
+						{
+							"MeshFilter" : 
+							{
+								"m_ComponentId" : 33684,
+								"m_Index" : 0,
+								"m_MeshName" : "Partner_Walk.bin",
+								"m_bEnable" : true
+							}
+						},
+						{
+							"MeshRenderer" : 
+							{
+								"m_CastShadow" : true,
+								"m_ComponentId" : 33085,
+								"m_IsGizmoOn" : false,
+								"m_bEnable" : true,
+								"m_eRasterizer" : 0,
+								"m_eTopology" : 0
+							}
+						}
+					],
+					"m_GameObjectId" : 22028,
+					"m_Name" : "Mon_2_Mesh",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 22027
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33486,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 1.0,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 1.0,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 1.0,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22029,
+								"m_pParent" : 0
+							}
+						}
+					],
+					"m_GameObjectId" : 22029,
+					"m_Name" : "txtMonster_1_Name",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33487,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 1.0,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 1.0,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 1.0,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22030,
+								"m_pParent" : 0
+							}
+						}
+					],
+					"m_GameObjectId" : 22030,
+					"m_Name" : "txtMonster_1_State",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33488,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 219.00001525878906,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 155.0,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 0.0,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 219.00001525878906,
+										"y" : 155.0,
+										"z" : 0.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22031,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"Button" : 
+							{
+								"m_ComponentId" : 33089,
+								"m_OffSprite" : "../Data/Image/button_start_up.png",
+								"m_OnSprite" : "../Data/Image/button_start_down.png",
+								"m_PivotX" : 1.0,
+								"m_PivotY" : 1.0,
+								"m_ProportionX" : 0.30000001192092896,
+								"m_ProportionY" : 0.5,
+								"m_bEnable" : true
+							}
+						}
+					],
+					"m_GameObjectId" : 22031,
+					"m_Name" : "Button1",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33490,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 30.000001907348633,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 30.000001907348633,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 0.0,
+										"_34" : 0.0,
+										"_41" : 952.0,
+										"_42" : 495.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 952.0,
+										"y" : 495.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 30.000001907348633,
+										"y" : 30.000001907348633,
+										"z" : 0.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22032,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"Sprite" : 
+							{
+								"m_ComponentId" : 33091,
+								"m_PivotX" : 0.0,
+								"m_PivotY" : 0.0,
+								"m_ProportionX" : 1.2000000476837158,
+								"m_ProportionY" : 1.2000000476837158,
+								"m_SpriteName" : "../Data/Image/dot.png",
+								"m_bEnable" : true
+							}
+						}
+					],
+					"m_GameObjectId" : 22032,
+					"m_Name" : "CrossHead",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33492,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 1.0,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 1.0,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 1.0,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22033,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"Camera" : 
+							{
+								"m_Aspect" : 1.9232323169708252,
+								"m_ComponentId" : 33593,
+								"m_FarZ" : 10000.0,
+								"m_FovY" : 0.78539818525314331,
+								"m_Look" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 1.0
+									}
+								},
+								"m_Name" : "EngineCamera",
+								"m_NearZ" : 1.0,
+								"m_bEnable" : true
+							}
+						}
+					],
+					"m_GameObjectId" : 22033,
+					"m_Name" : "EngineCamera",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			},
+			{
+				"GameObject" : 
+				{
+					"m_Component_V" : 
+					[
+						{
+							"Transform" : 
+							{
+								"m_ComponentId" : 33494,
+								"m_EulerAngles" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_LocalTM" : 
+								{
+									"struct DirectX::SimpleMath::Matrix" : 
+									{
+										"_11" : 1.0,
+										"_12" : 0.0,
+										"_13" : 0.0,
+										"_14" : 0.0,
+										"_21" : 0.0,
+										"_22" : 1.0,
+										"_23" : 0.0,
+										"_24" : 0.0,
+										"_31" : 0.0,
+										"_32" : 0.0,
+										"_33" : 1.0,
+										"_34" : 0.0,
+										"_41" : 0.0,
+										"_42" : 0.0,
+										"_43" : 0.0,
+										"_44" : 1.0
+									}
+								},
+								"m_Position" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 0.0
+									}
+								},
+								"m_Rotation" : 
+								{
+									"struct DirectX::SimpleMath::Quaternion" : 
+									{
+										"w" : 1.0,
+										"x" : -0.0,
+										"y" : 0.0,
+										"z" : -0.0
+									}
+								},
+								"m_Scale" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 1.0,
+										"y" : 1.0,
+										"z" : 1.0
+									}
+								},
+								"m_bEnable" : true,
+								"m_pObject" : 22034,
+								"m_pParent" : 0
+							}
+						},
+						{
+							"Camera" : 
+							{
+								"m_Aspect" : 1.9232323169708252,
+								"m_ComponentId" : 33595,
+								"m_FarZ" : 10000.0,
+								"m_FovY" : 0.78539818525314331,
+								"m_Look" : 
+								{
+									"struct DirectX::SimpleMath::Vector3" : 
+									{
+										"x" : 0.0,
+										"y" : 0.0,
+										"z" : 1.0
+									}
+								},
+								"m_Name" : "EngineCamera",
+								"m_NearZ" : 1.0,
+								"m_bEnable" : true
+							}
+						}
+					],
+					"m_GameObjectId" : 22034,
+					"m_Name" : "EngineCamera",
+					"m_bContinual" : false,
+					"m_bEnable" : true,
+					"m_pParent" : 0
+				}
+			}
+		],
+		"m_SceneId" : 1107,
+		"m_SceneName" : "TestLoad",
+		"m_bPhysicsScene" : true
+	},
+	"Version" : 0.10000000149011612
+}

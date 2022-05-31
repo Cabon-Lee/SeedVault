@@ -1,0 +1,3 @@
+﻿  ComponentBase.cpp
+D:\GA2ndFinal_HuriPyeo\5_Project\GameEngine\ComponentEngine\ComponentBase.cpp(73,29): error C2039: 'SetComponentId': 'ComponentBase'의 멤버가 아닙니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\GameEngine\ComponentEngine\ComponentBase.h(32): message : 'ComponentBase' 선언을 참조하십시오.
