@@ -2235,7 +2235,7 @@ bool Renderer::AnimationProcess(
 	const unsigned int animationIndex,
 	unsigned int& keyFrame,
 	const DirectX::SimpleMath::Matrix& worldTM,
-	bool isStorePreAni,
+	DirectX::SimpleMath::Matrix* pPrevWorld,
 	float offsetAngle)
 {
 	bool _isAnimationOver = false;
@@ -2259,7 +2259,7 @@ bool Renderer::AnimationProcess(
 
 		// 넘어온 키프레임을 써야 모든 애니메이션을 가진 객체들이 독립적으로 행동한다
 		_nowModel->m_pSkeleton->AnimateByAnimationClip(
-			_nowAnimData, worldTM, keyFrame, true, offsetAngle);
+			_nowAnimData, worldTM, keyFrame, pPrevWorld, offsetAngle);
 		break;
 	}
 	case eANIM_TYPE::MESH:
@@ -2280,6 +2280,8 @@ bool Renderer::AnimationCrossFading(
 	unsigned int fadingPeriod,
 	bool& fadingOver,
 	const DirectX::SimpleMath::Matrix& worldTM,
+	DirectX::SimpleMath::Matrix* pPrevWorld,
+	DirectX::SimpleMath::Matrix* pInterpolateTM,
 	float offsetAngle /*= 0.0f*/)
 {
 	bool _isAnimationOver = false;
@@ -2315,12 +2317,10 @@ bool Renderer::AnimationCrossFading(
 
 	// easeIn 애니메이션은 무조건 0부터 시작하므로
 	// fading될 Period만 알고 있으면 언제 종료할지도 알 수 있다
-	//_nowModel->m_pSkeleton->AnimationCrossFading(
-	//	_easeInAnimData, _easeOutAnimData, worldTM,
-	//	easeInKeyFrame, easeOutKeyFrame,
-	//	_blendUnit * easeInKeyFrame, offsetAngle);
 	_nowModel->m_pSkeleton->CrossFadingByPrevAnimatoinTM(
-		_easeInAnimData, worldTM, easeInKeyFrame, _blendUnit * easeInKeyFrame);
+		_easeInAnimData, worldTM, 
+		pPrevWorld, pInterpolateTM,
+		easeInKeyFrame, _blendUnit * easeInKeyFrame);
 
 
 	if (easeInKeyFrame >= _fadingLimitKeyFrame)

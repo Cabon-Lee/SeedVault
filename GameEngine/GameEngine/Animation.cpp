@@ -17,12 +17,19 @@ Animation::Animation()
 	memset(m_BoneOffsetTM, 0, sizeof(DirectX::XMMATRIX) * 96);
 
 	m_TargetBoneTM = new DirectX::XMMATRIX();
+
+	m_pPrevAnimatonTM = static_cast<DirectX::SimpleMath::Matrix*>(malloc(sizeof(DirectX::SimpleMath::Matrix) * 96));
+	memset(m_pPrevAnimatonTM, 0, sizeof(DirectX::SimpleMath::Matrix) * 96);
+	m_pInterpolateAnimationTM = static_cast<DirectX::SimpleMath::Matrix*>(malloc(sizeof(DirectX::SimpleMath::Matrix) * 96));
+	memset(m_pInterpolateAnimationTM, 0, sizeof(DirectX::SimpleMath::Matrix) * 96);
 }
 
 Animation::~Animation()
 {
 	delete(m_BoneOffsetTM);
 	delete(m_TargetBoneTM);
+	delete(m_pPrevAnimatonTM);
+	delete(m_pInterpolateAnimationTM);
 }
 
 void Animation::Start()
@@ -47,7 +54,7 @@ void Animation::Update(float dTime)
 		m_AnimationClipIndex,
 		m_NowKeyFrame,
 		m_pMyObject->m_Transform->GetWorld(),
-		true,
+		m_pPrevAnimatonTM,
 		m_OffsetAnlge);
 
 	m_pIRenderer->EndAnimation(
@@ -94,6 +101,12 @@ bool Animation::TimeCheck(float dTime)
 	}
 
 	return false;
+}
+
+void Animation::CopyPrevAnimation()
+{
+	for (unsigned int i = 0; i < 96; i++)
+		m_pInterpolateAnimationTM[i] = m_pPrevAnimatonTM[i];
 }
 
 void Animation::ObserverUpdate(std::shared_ptr<IResourceManager> pReosureManager)

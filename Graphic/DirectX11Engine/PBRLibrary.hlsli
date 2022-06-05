@@ -61,6 +61,7 @@ float D_GGX(float roughness, float NoH, const float3 n, const float3 h)
     float3 NxH = cross(n, h);
     float a = NoH * roughness;
     float k = roughness / (dot(NxH, NxH) + a * a);
+    //float k = roughness / (clamp(dot(NxH, NxH), 0.0, 1.0) + a * a);
     float d = k * k * (1.0 / PI);
     return saturateMediump(d);
 }
@@ -308,7 +309,7 @@ float DistributionGGX(float3 N, float3 H, float roughness)
 {
     float a = roughness * roughness;
     float a2 = a * a;
-    float NdotH = max(dot(N, H), 0.0);
+    float NdotH = clamp(dot(N, H), 0.0, 0.99);
     float NdotH2 = NdotH * NdotH;
 	
     float num = a2;
@@ -333,6 +334,9 @@ float4 IBL_PBR_CookTorrance(float4 baseColor, float3 normal,
     float3 lightColor, float3 lightDir, float3 viewDir,
     half smoothness, half metallic, float3 ambient)
 {
+    
+    lightDir = normalize(lightDir);
+    
     smoothness = max(smoothness, 0.1);
     
     float3 H = normalize(viewDir + lightDir);
@@ -341,7 +345,6 @@ float4 IBL_PBR_CookTorrance(float4 baseColor, float3 normal,
     float NoL = max(dot(normal, lightDir), 0.1);
     float LoH = max(dot(lightDir, H), 0.0);
     //float NoL = (max(dot(normal, lightDir), 0.0) * 0.5) + 0.5;
-    
     
     float3 F0 = lerp(float3(0.04, 0.04, 0.04), baseColor.xyz, metallic);
     float perceptualRoughness = SmoothnessToPerceptualRoughness(smoothness);
@@ -353,7 +356,7 @@ float4 IBL_PBR_CookTorrance(float4 baseColor, float3 normal,
 
         // cook-torrance brdf
         float NDF = D_GGX(roughness, NoH, normal, H);
-        //float NDF = DistributionGGX(normal, H, smoothness);
+        //float NDF = DistributionGGX(normal, H, perceptualRoughness);
         //float NDF = DistributionTerm(roughness, NoH);
         float G = GeometrySmith2(normal, viewDir, lightDir, perceptualRoughness);
         float3 F = fresnelSchlick(max(dot(normal, viewDir), 0.0), F0);
@@ -363,7 +366,7 @@ float4 IBL_PBR_CookTorrance(float4 baseColor, float3 normal,
         kD *= 1.0 - metallic;
 
         float3 numerator = NDF * G * F;
-        float denominator = 4.0 * max(dot(normal, viewDir), 0.0) * max(dot(normal, lightDir), 0.0);
+        float denominator = 4.0 * max(dot(normal, viewDir), 0.0) * max(dot(normal, lightDir), 0.0) + 0.0001;
         float3 specular = numerator / max(denominator, 0.001);
         float3 diffuse = kD * baseColor.xyz * 0.31831; // 1/PI
         

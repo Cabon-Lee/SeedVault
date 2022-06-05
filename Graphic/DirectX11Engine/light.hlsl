@@ -68,7 +68,7 @@ float3 NormalSampleToWorldSpace(float3 normalMapSample, float3 unitNormalW, floa
 	
     float3 bumpeNormalW = mul(normalT, TBN);
 	
-    return bumpeNormalW;
+    return normalize(bumpeNormalW);
 }
 
 float CalcAttenuation(float d, float falloffStart, float falloffEnd)

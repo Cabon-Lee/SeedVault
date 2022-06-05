@@ -1,0 +1,46 @@
+﻿  Renderer.cpp
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\Renderer.cpp(103,38): warning C4312: 'reinterpret_cast': 'int'에서 더 큰 'HWND'(으)로의 변환입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.h(66,36): warning C4838: 'LONG'에서 'float'(으)로의 변환에는 축소 변환이 필요합니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\Renderer.cpp(1932): message : 컴파일되는 함수 템플릿 인스턴스화 'const T &PixelPicking::PixelPickingFromSRV<DeferredPixel>(Microsoft::WRL::ComPtr<ID3D11DeviceContext>,POINT,UINT,UINT,ID3D11ShaderResourceView *[],UINT,StagingBuffer<T> *)'에 대한 참조를 확인하세요.
+          with
+          [
+              T=DeferredPixel
+          ]
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.h(66,36): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.h(66,48): warning C4838: 'LONG'에서 'float'(으)로의 변환에는 축소 변환이 필요합니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.h(66,48): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.h(83,51): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.h(84,52): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  DirectX11Engine.vcxproj -> D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\DirectX11Engine_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\DirectX11Engine_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\FmodAudioEngine.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\GameEngine_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\IdSystem.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\libfbxsdk.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCommon_64.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCommon_64_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCooking_64.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCooking_64_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXFoundation_64.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXFoundation_64_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysX_64.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysX_64_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\ResourceManager_Debug.dll
+         14개 파일이 복사되었습니다.
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\ComponentEngine_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\DirectX11Engine_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\FmodAudioEngine.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\GameEngine_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\IdSystem.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCharacterKinematic_static_64_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCommon_64.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCooking_64.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXExtensions_static_64.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXExtensions_static_64_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXFoundation_64.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXPvdSDK_static_64_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXVehicle_static_64_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysX_64.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\ResourceManager_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\SubSystem_Debug.lib
+         16개 파일이 복사되었습니다.

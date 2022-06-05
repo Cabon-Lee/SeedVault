@@ -259,7 +259,7 @@ public:
 		const unsigned int animationIndex,
 		unsigned int& keyFrame,
 		const DirectX::SimpleMath::Matrix& worldTM,
-		bool isStorePreAni,
+		DirectX::SimpleMath::Matrix* pPrevWorld,
 		float offsetAngle = 0.0f) abstract;
 
 	virtual bool AnimationCrossFading(
@@ -271,6 +271,8 @@ public:
 		unsigned int fadingPeriod,
 		bool& fadingOver,
 		const DirectX::SimpleMath::Matrix& worldTM,
+		DirectX::SimpleMath::Matrix* pPrevWorld,
+		DirectX::SimpleMath::Matrix* pInterpolateTM,
 		float offsetAngle = 0.0f) abstract;
 
 	virtual bool MaskingAnimation(

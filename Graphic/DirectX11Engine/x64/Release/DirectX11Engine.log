@@ -1,0 +1,2 @@
+﻿LINK : fatal error C1047: 개체 또는 라이브러리 파일 'D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\..\..\Lib\SubSystem_Release.lib'이(가) 다른 개체(예: 'x64\Release\Adaptation.obj')와 다른 버전의 컴파일러에서 만들어졌습니다. 같은 컴파일러를 사용하여 모든 개체 및 라이브러리를 다시 빌드하세요.
+LINK : fatal error LNK1257: 코드를 생성하지 못했습니다.

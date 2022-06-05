@@ -177,7 +177,6 @@ struct BoneNodeData
 	DirectX::SimpleMath::Matrix worldTM;
 	DirectX::SimpleMath::Matrix bindPoseTM;
 	DirectX::SimpleMath::Matrix animationTM;
-	DirectX::SimpleMath::Matrix prevAnimationTM;
 
 	// BoneOffSetTM을 들고 있기 위한 새로운 변수
 	DirectX::SimpleMath::Matrix nowBoneOffsetTM;
@@ -212,13 +211,14 @@ struct SkeletonData
 		std::shared_ptr<AnimationClipData> animationClip,
 		const DirectX::SimpleMath::Matrix& worldTM,
 		unsigned int animIndex,
-		bool isCopy,
+		DirectX::SimpleMath::Matrix* pPrevWorld,
 		float offsetAngle = 0.0f);
 
 	void AnimationCrossFading(
 		std::shared_ptr<AnimationClipData> easeInAnimClip,
 		std::shared_ptr<AnimationClipData> easeOutAnimClip,
 		const DirectX::SimpleMath::Matrix& worldTM,
+		DirectX::SimpleMath::Matrix* pPrevWorld,
 		unsigned int easeInAnimIndex,
 		unsigned int easeOutAnimIdex,
 		float blending,
@@ -228,6 +228,8 @@ struct SkeletonData
 	void CrossFadingByPrevAnimatoinTM(
 		std::shared_ptr<AnimationClipData> easeInAnimClip,
 		const DirectX::SimpleMath::Matrix& worldTM,
+		DirectX::SimpleMath::Matrix* pPrevWorld,
+		DirectX::SimpleMath::Matrix* pInterpolateTM,
 		unsigned int easeInAnimIndex,
 		float blending);
 

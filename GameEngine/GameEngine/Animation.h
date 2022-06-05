@@ -46,6 +46,11 @@ public:
 
 	eANIM_FRAMERATE m_AnimationFrameRate;
 
+	void CopyPrevAnimation();
+
+	DirectX::SimpleMath::Matrix* m_pPrevAnimatonTM;
+	DirectX::SimpleMath::Matrix* m_pInterpolateAnimationTM;
+
 protected:
 	std::shared_ptr<IRenderer> m_pIRenderer;
 	std::shared_ptr<IResourceManager> m_pIResourceManager;

@@ -48,6 +48,9 @@ void Transition::TransitionUpdate()
 		{
 			_now->m_IsCrossFadingOver = false;
 		}
+
+		// 전이가 되었다는 것을 알려준다
+		_currState->m_pMyAnimLayer->m_IsStateChanged = true;
 	}
 }
 
@@ -235,6 +238,12 @@ void AnimLayer::LayerUpdate(GameObject* pGameObject, MeshFilter* pMeshFilter, st
 	_pCurrState->Update();
 	_pCurrState->m_NowKeyFrame++;
 
+	if (m_IsStateChanged == true)
+	{
+		m_pMyAnimation->CopyPrevAnimation();
+		m_IsStateChanged = false;
+	}
+
 	// 로코모션을 제외한 모든 애니메이션에 해당 애니메이션이 끝났는지 묻는다
 	bool _isAnimationOver = false;
 	switch (m_MaskingType)
@@ -252,8 +261,9 @@ void AnimLayer::LayerUpdate(GameObject* pGameObject, MeshFilter* pMeshFilter, st
 			pRenderer->AnimationProcess( pMeshFilter->GetModelMeshIndex(),
 				_pCurrState->m_AnimationIndex, _pCurrState->m_NowKeyFrame,
 				pGameObject->m_Transform->GetWorld(),
-				true,
+				m_pMyAnimation->m_pPrevAnimatonTM,
 				_pCurrState->m_StateOffsetAngle);
+
 			break;
 		}
 		
@@ -271,6 +281,8 @@ void AnimLayer::LayerUpdate(GameObject* pGameObject, MeshFilter* pMeshFilter, st
 					_pNowTransition->m_IsCrossFadingOver,	
 					// 크로스 페이딩이 끝났는지 bool&로 가져온다
 					pGameObject->m_Transform->GetWorld(),
+					m_pMyAnimation->m_pPrevAnimatonTM,
+					m_pMyAnimation->m_pInterpolateAnimationTM,
 					_pCurrState->m_StateOffsetAngle);
 
 				pRenderer->EndAnimation(
@@ -286,8 +298,9 @@ void AnimLayer::LayerUpdate(GameObject* pGameObject, MeshFilter* pMeshFilter, st
 			_pCurrState->m_AnimationIndex,
 			_pCurrState->m_NowKeyFrame,
 			pGameObject->m_Transform->GetWorld(),
-			_pNowTransition->m_IsCrossFadingOver,
+			m_pMyAnimation->m_pPrevAnimatonTM,
 			_pCurrState->m_StateOffsetAngle);
+
 		break;
 
 	}

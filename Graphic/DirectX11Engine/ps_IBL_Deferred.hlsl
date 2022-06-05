@@ -88,10 +88,12 @@ PS_GBUFFER_OUT main(VS_OUTPUT pin) : SV_Target
     if (length(normalMapSample) == 0.0f)
     {
         deferredOut.NormalMap = float4(((pin.outNormal * _nowNormalFactor) * 0.5f + 0.5f), 1.0f);
+        //deferredOut.NormalMap = float4(((pin.outNormal * _nowNormalFactor)), 1.0f);
     }
     else
     {
         deferredOut.NormalMap = float4(((NormalSampleToWorldSpace(normalMapSample, pin.outNormal, pin.outTangent) * _nowNormalFactor) * 0.5f) + 0.5f, 1.0f);
+        //deferredOut.NormalMap = float4((NormalSampleToWorldSpace(normalMapSample, pin.outNormal, pin.outTangent) * _nowNormalFactor), 1.0f);
     }
     
     deferredOut.Position = float4(pin.outWorldPos.xyz, 1 - (pin.outPosition.z / pin.outPosition.w));

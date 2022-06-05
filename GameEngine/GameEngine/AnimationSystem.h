@@ -222,6 +222,7 @@ public:
 	_DLL void SetEnabled(const bool val);
 
 	bool m_bEnabled;	// 레이어 On/Off 상태 True면 적용(업데이트)
+	bool m_IsStateChanged;
 
 private:
 	// 지금 도달해있는 state가 누구인지를 알려줄 방법이 필요

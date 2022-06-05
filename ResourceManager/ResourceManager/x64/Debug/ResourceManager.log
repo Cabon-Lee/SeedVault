@@ -1,0 +1,97 @@
+﻿  DX11MeshFactory.cpp
+  DX11ResourceManager.cpp
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(235,23): warning C4101: 'desc' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(727,37): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(731,28): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(752,37): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(756,28): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(777,37): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(781,28): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(802,37): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(806,28): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(825,37): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(829,28): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(848,37): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(852,28): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(872,37): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(876,28): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(895,37): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(899,28): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(918,37): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(922,28): warning C4101: 'e' :참조되지 않은 지역 변수입니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include\utility(193,48): warning C4267: '초기화 중': 'size_t'에서 '_Ty2'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+          with
+          [
+              _Ty2=unsigned int
+          ]
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(57): message : 컴파일되는 함수 템플릿 인스턴스화 'std::pair<std::string,unsigned int>::pair<std::string&,unsigned __int64,0>(_Other1,_Other2 &&) noexcept(false)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Other1=std::string &,
+              _Other2=unsigned __int64
+          ]
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(57): message : 컴파일되는 함수 템플릿 인스턴스화 'std::pair<std::string,unsigned int>::pair<std::string&,unsigned __int64,0>(_Other1,_Other2 &&) noexcept(false)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Other1=std::string &,
+              _Other2=unsigned __int64
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include\xutility(138,73): warning C4244: '인수': '_Ty'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+          with
+          [
+              _Ty=int
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include\memory(2186): message : 컴파일되는 함수 템플릿 인스턴스화 'void std::_Construct_in_place<_Ty,std::string&,UINT&,UINT&,int,Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>&>(_Ty &,std::string &,UINT &,UINT &,int &&,Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> &) noexcept(false)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Ty=SpriteData
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include\memory(2906): message : 컴파일되는 함수 템플릿 인스턴스화 'std::_Ref_count_obj2<_Ty>::_Ref_count_obj2<std::string&,UINT&,UINT&,int,Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>&>(std::string &,UINT &,UINT &,int &&,Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> &)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Ty=SpriteData
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include\memory(2907): message : 컴파일되는 함수 템플릿 인스턴스화 'std::_Ref_count_obj2<_Ty>::_Ref_count_obj2<std::string&,UINT&,UINT&,int,Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>&>(std::string &,UINT &,UINT &,int &&,Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> &)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Ty=SpriteData
+          ]
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(350): message : 컴파일되는 함수 템플릿 인스턴스화 'std::shared_ptr<SpriteData> std::make_shared<SpriteData,std::string&,UINT&,UINT&,int,Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>&>(std::string &,UINT &,UINT &,int &&,Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> &)'에 대한 참조를 확인하세요.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include\xutility(138,73): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  MatSerializer.cpp
+  코드를 생성하고 있습니다...
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(686): warning C4715: 'DX11ResourceManager::GetMaterialCalibrateFactor': 모든 제어 경로에서 값을 반환하지는 않습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\ResourceManager\ResourceManager\DX11ResourceManager.cpp(632): warning C4172: 지역 변수 또는 임시의 주소를 반환하고 있습니다.
+  ResourceManager.vcxproj -> D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\ResourceManager_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\DirectX11Engine_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\FmodAudioEngine.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\GameEngine_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\IdSystem.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\libfbxsdk.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCommon_64.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCommon_64_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCooking_64.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCooking_64_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXFoundation_64.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXFoundation_64_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysX_64.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysX_64_Debug.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\ResourceManager_Debug.dll
+         14개 파일이 복사되었습니다.
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\ComponentEngine_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\DirectX11Engine_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\FmodAudioEngine.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\GameEngine_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\IdSystem.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCharacterKinematic_static_64_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCommon_64.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCooking_64.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXExtensions_static_64.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXExtensions_static_64_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXFoundation_64.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXPvdSDK_static_64_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXVehicle_static_64_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysX_64.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\ResourceManager_Debug.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\SubSystem_Debug.lib
+         16개 파일이 복사되었습니다.

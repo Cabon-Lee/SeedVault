@@ -154,7 +154,7 @@ void SkeletonData::AnimateByAnimationClip(
 	std::shared_ptr<AnimationClipData> animationClip,
 	const DirectX::SimpleMath::Matrix& worldTM,
 	unsigned int animIndex,
-	bool isCopy,
+	DirectX::SimpleMath::Matrix* pPrevWorld,
 	float offsetAngle)
 {
 	// 애니메이션에 따라 누워있는게 있어서 오프셋 각도를 Root에 곱해 변형을 준다
@@ -183,8 +183,6 @@ void SkeletonData::AnimateByAnimationClip(
 		pBones_V.front()->animationTM = animationClip->keyFrames_V[0][animIndex] * worldTM;
 	}
 
-
-
 	for (int i = 1; i < pBones_V.size(); i++)
 	{
 		// i는 본의 인덱스
@@ -196,10 +194,12 @@ void SkeletonData::AnimateByAnimationClip(
 	// 위 연산이 끝나면 재귀를 통해 모든 애니메이션의 월드행렬을 새로 정의한다
 	CalculateAnimTransform(pBones_V.front());
 
-	for (int i = 0; i < pBones_V.size(); i++)
+	if (pPrevWorld != nullptr)
 	{
-		if (isCopy == true)
-			pBones_V[i]->prevAnimationTM = pBones_V[i]->worldTM;
+		for (int i = 0; i < pBones_V.size(); i++)
+		{
+			pPrevWorld[i] = pBones_V[i]->worldTM;
+		}
 	}
 }
 
@@ -233,6 +233,7 @@ void SkeletonData::AnimationCrossFading(
 	std::shared_ptr<AnimationClipData> easeInAnimClip,
 	std::shared_ptr<AnimationClipData> easeOutAnimClip,
 	const DirectX::SimpleMath::Matrix& worldTM,
+	DirectX::SimpleMath::Matrix* pPrevWorld,
 	unsigned int easeInAnimIndex,
 	unsigned int easeOutAnimIdex,
 	float blending,
@@ -270,11 +271,21 @@ void SkeletonData::AnimationCrossFading(
 	// 위 연산이 끝나면 재귀를 통해 모든 애니메이션의 월드행렬을 새로 정의한다
 	CalculateAnimTransform(pBones_V.front());
 
+	// 크로스 페이딩에서도 애니메이션 정보를 저장해둔다
+	if (pPrevWorld != nullptr)
+	{
+		for (int i = 0; i < pBones_V.size(); i++)
+		{
+			pPrevWorld[i] = pBones_V[i]->worldTM;
+		}
+	}
 }
 
 void SkeletonData::CrossFadingByPrevAnimatoinTM(
 	std::shared_ptr<AnimationClipData> easeInAnimClip, 
 	const DirectX::SimpleMath::Matrix& worldTM,
+	DirectX::SimpleMath::Matrix* pPrevWorld,
+	DirectX::SimpleMath::Matrix* pInterpolateTM,
 	unsigned int easeInAnimIndex, float blending)
 {
 	const auto yaw = 90 * DirectX::XM_PI / 180.0f;
@@ -299,10 +310,11 @@ void SkeletonData::CrossFadingByPrevAnimatoinTM(
 	// 위 연산이 끝나면 재귀를 통해 모든 애니메이션의 월드행렬을 새로 정의한다
 	CalculateAnimTransform(pBones_V.front());
 
+	// 크로스 페이딩에서도 값을 계속 복사해준다
 	for (int i = 0; i < pBones_V.size(); i++)
 	{
-		pBones_V[i]->worldTM = 
-			MatrixLerp(pBones_V[i]->worldTM, pBones_V[i]->prevAnimationTM, blending);
+		pBones_V[i]->worldTM = MatrixLerp(pBones_V[i]->worldTM, pInterpolateTM[i], blending);
+		pPrevWorld[i] = pBones_V[i]->worldTM;
 	}
 }
 

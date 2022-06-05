@@ -177,7 +177,7 @@ public:
 		const unsigned int animationIndex,
 		unsigned int& keyFrame,
 		const DirectX::SimpleMath::Matrix& worldTM,
-		bool isStorePreAni,
+		DirectX::SimpleMath::Matrix* pPrevWorld,
 		float offsetAngle = 0.0f) override;
 
 	// bool 값은 CrossFading이 끝났는지를 묻는다
@@ -190,6 +190,8 @@ public:
 		unsigned int fadingPeriod,
 		bool& fadingOver,
 		const DirectX::SimpleMath::Matrix& worldTM,
+		DirectX::SimpleMath::Matrix* pPrevWorld,
+		DirectX::SimpleMath::Matrix* pInterpolateTM,
 		float offsetAngle = 0.0f) override;
 
 	virtual bool MaskingAnimation(
