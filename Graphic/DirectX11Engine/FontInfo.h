@@ -1,20 +1,11 @@
 #pragma once
 #include <dwrite.h>
 #include <dwrite_3.h>
+#include <EffectUIEnum.h>
 
 #include <memory>
 
 struct Text_Queue_Info;
-
-enum class UIAxis
-{
-	None,
-	RightUp,
-	RightDown,
-	LeftUp,
-	LeftDown,
-	Center,
-};
 
 class FontInfo
 {
@@ -50,7 +41,7 @@ public:
 	float m_PosX;		// 텍스트 그리기 시작점 X
 	float m_PosY;		// 텍스트 그리기 시작점 Y
 
-	UIAxis m_textPivotType;
-
+	eUIAxis m_textPivotType;	//
+	eTextPoint m_textPoint;
 };
 

@@ -75,7 +75,7 @@ public:
 
    /// how to replace to our renderer??
 
-   // Added by Yoking
+   // Added by √÷ ø‰ »Ø
    _DLL physx::PxRigidActor* FindPxRigidActor(PhysicsActor* actor);
    void ChangePxRigidActor(PhysicsActor* actor);
    void ReleasePxActor(PhysicsActor* actor);

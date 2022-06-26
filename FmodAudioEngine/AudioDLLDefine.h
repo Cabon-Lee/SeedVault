@@ -11,5 +11,13 @@
 // DLL 을 사용하기 위한 헤더파일. "import" 로 선언.
 #define _FADLL  __declspec(dllimport)
 //#define _TEMPLATE extern
+#ifdef _WIN64
+#ifdef _DEBUG
+#pragma comment(lib, "FmodAudioEngine_Debug.lib")		//64bit + debug
 
+#else
+#pragma comment(lib, "FmodAudioEngine_Release.lib")		//64bit.
+
+#endif 
+#endif   
 #endif 

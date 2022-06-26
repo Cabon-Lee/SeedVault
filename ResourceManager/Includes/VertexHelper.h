@@ -21,7 +21,7 @@ namespace Vertex
 	struct SerializerVertex
 	{
 		SerializerVertex()
-			: pos(0, 0, 0), texCoord(0, 0), normal(0, 0, 0), weights(0, 0, 0), rgba(0, 0, 0, 0), tangent(0, 0, 0)
+			: pos(0, 0, 0), texCoord(0, 0), normal(0, 0, 0), weights(0, 0, 0), rgba(0, 0, 0, 0), tangent(0, 0, 0, 0)
 		{
 			boneIndices[0] = 0;
 			boneIndices[1] = 0;
@@ -34,9 +34,10 @@ namespace Vertex
 			float u, float v,
 			float w1, float w2, float w3,
 			float r, float g, float b, float a,
-			float tx, float ty, float tz,
+			float tx, float ty, float tz, float tw,
 			BYTE indx1, BYTE indx2, BYTE indx3, BYTE indx4)
-			: pos(x, y, z), normal(nx, ny, nz), texCoord(u, v), weights(w1, w2, w3), rgba(r, g, b, a), tangent(tx, ty, tz)
+			: pos(x, y, z), normal(nx, ny, nz), texCoord(u, v), weights(w1, w2, w3), rgba(r, g, b, a), 
+			tangent(tx, ty, tz, tw)
 		{
 			boneIndices[0] = indx1;
 			boneIndices[1] = indx2;
@@ -48,10 +49,9 @@ namespace Vertex
 		XMFLOAT4 rgba;
 		XMFLOAT2 texCoord;
 		XMFLOAT3 normal;
-		XMFLOAT3 tangent;
+		XMFLOAT4 tangent;
 		XMFLOAT3 weights;
 		UINT boneIndices[4];
-		//BYTE boneIndices[4];
 	};
 
 	struct Vertex2D
@@ -144,20 +144,20 @@ namespace Vertex
 	struct Vertex
 	{
 		Vertex()
-			: pos(0, 0, 0), normal(0, 0, 0), texCoord(0, 0), tangent(0, 0, 0)
+			: pos(0, 0, 0), normal(0, 0, 0), texCoord(0, 0), tangent(0, 0, 0, 0)
 		{}
 
 		Vertex(float x, float y, float z,
 			float nx, float ny, float nz,
 			float u, float v,
 			float tx, float ty, float tz)
-			: pos(x, y, z), normal(nx, ny, nz), texCoord(u, v), tangent(tx, ty, tz) {}
+			: pos(x, y, z), normal(nx, ny, nz), texCoord(u, v), tangent(tx, ty, tz, 1.0f) {}
 
 		XMFLOAT3 pos;
 		XMFLOAT3 normal;
 		XMFLOAT2 texCoord;
 		// Ãß°¡
-		XMFLOAT3 tangent;
+		XMFLOAT4 tangent;
 	};
 
 	struct VertexTangentU
@@ -213,7 +213,7 @@ namespace Vertex
 	struct VertexNormalSkinned
 	{
 		VertexNormalSkinned()
-			: pos(0, 0, 0), normal(0, 0, 0), texCoord(0, 0), tangent(0, 0, 0), weights()
+			: pos(0, 0, 0), normal(0, 0, 0), texCoord(0, 0), tangent(0, 0, 0, 0), weights()
 		{
 			boneIndices[0] = 0;
 			boneIndices[1] = 0;
@@ -226,7 +226,7 @@ namespace Vertex
 			float u, float v,
 			float w1, float w2, float w3,
 			BYTE indx1, BYTE indx2, BYTE indx3, BYTE indx4)
-			: pos(x, y, z), normal(nx, ny, nz), texCoord(u, v), tangent(0, 0, 0), weights()
+			: pos(x, y, z), normal(nx, ny, nz), texCoord(u, v), tangent(0, 0, 0, 0), weights()
 		{
 			boneIndices[0] = indx1;
 			boneIndices[1] = indx2;
@@ -237,9 +237,24 @@ namespace Vertex
 		XMFLOAT3 pos;
 		XMFLOAT3 normal;
 		XMFLOAT2 texCoord;
-		XMFLOAT3 tangent;
+		XMFLOAT4 tangent;
 		FLOAT weights[4];
 		UINT boneIndices[4];
+	};
+
+	struct VertexPosNormalTex
+	{
+		VertexPosNormalTex()
+			: pos(0, 0, 0), normal(0, 0, 0), tex(0, 0) {}
+		VertexPosNormalTex(
+			float x, float y, float z,
+			float nx, float ny, float nz,
+			float u, float v)
+			: pos(x, y, z), normal(nx, ny, nz), tex(u, v) {}
+			
+		XMFLOAT3 pos;
+		XMFLOAT3 normal;
+		XMFLOAT2 tex;
 	};
 
 }

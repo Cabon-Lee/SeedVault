@@ -76,22 +76,41 @@ void CLMaterialTest::Initialize()
 	_newObj->SetObjectName("TestObject1");
 
 	MeshFilter* _newMesh = new MeshFilter();
+	_newMesh->SetMesh("Rifle_Aim.bin");
+	
 	_newObj->AddComponent<MeshFilter>(_newMesh);
 	_newObj->AddComponent<MeshRenderer>(new MeshRenderer);
+
+
+	GameObject* _AssassinIcon = DLLEngine::CreateObject(DLLEngine::GetNowScene());
+	_AssassinIcon->SetObjectName("AssassinIcon");
+	_AssassinIcon->m_Transform->SetPosition({ 0.f, 0.f, 0.f });
+
+	Billboard* _AssassinSprite = new Billboard;
+	_AssassinSprite->SeteResourceType(eResourceType::eSingleImage);
+	_AssassinSprite->SetRotationType(eRotationType::LookAt);
+	_AssassinSprite->m_SpriteName_V.push_back("UI_Assassin.png");
+	_AssassinSprite->SetProportion(1.0f, 1.0f);
+	_AssassinSprite->SetPivot(1.0f, 1.0f);
+
+	_AssassinIcon->AddComponent<Billboard>(_AssassinSprite);
+	//_AssassinIcon->SetParent(obj);
+
 	/*
 	
 	//_newObj->AddComponent<MeshFilter>(new MeshFilter);
 	//_newObj->AddComponent<MeshRenderer>(new MeshRenderer);
-	_newObj->AddComponent<Light>(new Light{});
+	//_newObj->AddComponent<Light>(new Light{});
 
+	/*
 	ParticleSpawner* _newSpawner = new ParticleSpawner{};
-	_newSpawner->AddSpriteName("RifleFront10.png");
+	_newSpawner->AddSpriteName("dia.png");
 	_newObj->AddComponent<ParticleSpawner>(_newSpawner);
 	m_MuzzleFlash = new MuzzleFlash;
 	_newObj->AddComponent<MuzzleFlash>(m_MuzzleFlash);
 	
 
-	*/
+	
 	GameObject* _hitPoint = DLLEngine::CreateObject(this);
 	_hitPoint->SetObjectName("HitPoint");
 	ParticleSpawner* _newSpawner2 = new ParticleSpawner{};
@@ -100,10 +119,11 @@ void CLMaterialTest::Initialize()
 	m_HitPoint = new class HitPoint();
 	_hitPoint->AddComponent<HitPoint>(m_HitPoint);
 
+	*/
 
 	/*
 	Animation* _newAnim = new Animation();
-	_newAnim->m_AnimationClipName = "Rifle_Aim_mixamo.com.001.anim";
+	_newAnim->m_AnimationClipName = "Rifle_Aim_mixamo.com.anim";
 	_newObj->AddComponent< Animation>(_newAnim);
 
 	_newAnim->SetTagetBone(5);
@@ -206,11 +226,11 @@ void CLMaterialTest::Initialize()
 	//m_TestObject5->AddComponent<MeshFilter>(new MeshFilter);
 	//m_TestObject5->GetComponent<MeshFilter>()->SetMesh("Sphere.bin");
 	//m_TestObject5->AddComponent<MeshRenderer>(new MeshRenderer);
-	//
+	
 	//m_ReflectionProbe = DLLEngine::CreateObject(this);
 	//m_ReflectionProbe->SetObjectName("ReflectionProbe");
 	//m_ReflectionProbe->AddComponent<ReflectionProbeCamera>(new ReflectionProbeCamera);
-	//
+	
 	//m_ReflectionProbe2 = DLLEngine::CreateObject(this);
 	//m_ReflectionProbe2->SetObjectName("ReflectionProbe2");
 	//m_ReflectionProbe2->AddComponent<ReflectionProbeCamera>(new ReflectionProbeCamera);
@@ -227,7 +247,7 @@ void CLMaterialTest::Initialize()
 
 	Camera* _newCamera = new Camera("testCam");
 	_newCamera->SetDrawSkyBox(true);
-	_newCamera->SetSkyBoxTextureName("satara_night.png");
+	_newCamera->SetSkyBoxTextureName("satara_night_no_lamps_8k.hdr");
 	m_pMainCamera->AddComponent<Camera>(_newCamera);
 	DLLEngine::SetNowCamera("testCam");
 
@@ -244,7 +264,7 @@ void CLMaterialTest::Update(float dTime)
 	if (DLLInput::InputKeyUp(static_cast<int>(0x01)) == true)
 	{
 		//m_MuzzleFlash->Fire();
-		m_HitPoint->GetHitPoint();
+		//m_HitPoint->GetHitPoint();
 	}
 
 }

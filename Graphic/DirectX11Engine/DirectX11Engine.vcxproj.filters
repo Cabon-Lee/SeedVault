@@ -217,6 +217,15 @@
     <Filter Include="Renderer\PostProcess\AntiAliasing">
       <UniqueIdentifier>{f9f00b4d-769b-4c63-bee4-5f02116bbde2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Renderer\PostProcess\SSAO">
+      <UniqueIdentifier>{b6bf9aaf-5ee6-45de-b4f0-6421626d41b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\PostProcess\SSAO">
+      <UniqueIdentifier>{520796d8-00a8-43ce-933a-f55d9f7c32ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LoadingScene">
+      <UniqueIdentifier>{12c87eb8-19cf-446d-9b19-228a07a3fc4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="align16.h">
@@ -437,6 +446,12 @@
     <ClInclude Include="..\..\ResourceManager\Includes\VertexHelper.h">
       <Filter>Resource\Buffer</Filter>
     </ClInclude>
+    <ClInclude Include="SSAO.h">
+      <Filter>Renderer\PostProcess\SSAO</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadingScene.h">
+      <Filter>LoadingScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Effects.cpp">
@@ -613,6 +628,12 @@
     </ClCompile>
     <ClCompile Include="FXAA.cpp">
       <Filter>Renderer\PostProcess\AntiAliasing</Filter>
+    </ClCompile>
+    <ClCompile Include="SSAO.cpp">
+      <Filter>Renderer\PostProcess\SSAO</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadingScene.cpp">
+      <Filter>LoadingScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -906,6 +927,18 @@
     </FxCompile>
     <FxCompile Include="ps_None_IBL_Deferred.hlsl">
       <Filter>Resource\Shader\HLSL\IBL</Filter>
+    </FxCompile>
+    <FxCompile Include="vs_SSAO.hlsl">
+      <Filter>Resource\Shader\PostProcess\SSAO</Filter>
+    </FxCompile>
+    <FxCompile Include="ps_SSAO.hlsl">
+      <Filter>Resource\Shader\PostProcess\SSAO</Filter>
+    </FxCompile>
+    <FxCompile Include="vs_SSAOBlur.hlsl">
+      <Filter>Resource\Shader\PostProcess\SSAO</Filter>
+    </FxCompile>
+    <FxCompile Include="ps_SSAOBlur.hlsl">
+      <Filter>Resource\Shader\PostProcess\SSAO</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

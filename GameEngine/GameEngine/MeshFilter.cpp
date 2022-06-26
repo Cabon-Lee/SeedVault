@@ -255,6 +255,8 @@ _DLL const char* MeshFilter::GetName_char()
 _DLL void MeshFilter::SetMesh(const std::string name)
 {
 	m_MeshName = name;
+
+	SetMesh();
 }
 
 void MeshFilter::SetMesh()

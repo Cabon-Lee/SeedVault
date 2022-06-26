@@ -76,7 +76,7 @@ public:
 	void Update_Restrat();	
 	const bool& GetIsPaused();
 
-	// Added By Yoking
+	// Added By √÷ ø‰ »Ø
 	_DLL bool GetDebugRenderMode() const;
 	_DLL void SetDebugRenderMode(const bool& val);
 

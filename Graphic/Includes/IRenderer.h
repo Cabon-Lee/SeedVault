@@ -56,11 +56,12 @@ struct IRenderOption
 		, isHDRRender(false), isAdaptation(false)
 		, isDownSampling(false), isBlur(false)
 		, isBloom(true)
-		, hdrWhite(5.0f), hdrMiddleGrey(12.0f), adaptation(0.0f)
+		, hdrWhite(5.0f), hdrMiddleGrey(12.0f), adaptation(3.0f)
 		, isBoomFilter(false), isColorAdjust(false)
-		, bloomScale(10), bloomThreshold(0.1f), intensity(0.2f), adjustFactor(1.0f)
+		, bloomScale(4), bloomThreshold(12.3f), intensity(3.5f), adjustFactor(0.366f)
 		, sampleScale(0), blurCount(0)
 		, isQT(false)
+		, bDebugRenderMode(false)
 	{};
 
 	float dTime;
@@ -88,6 +89,7 @@ struct IRenderOption
 	int blurCount;
 
 	bool isQT;
+	bool bDebugRenderMode;	// 기즈모 같이 개발할 때 필요한 부분 렌더 여부
 };
 
 
@@ -154,11 +156,14 @@ public:
 	virtual IRenderOption GetRenderOption()abstract;
 	virtual IRendererDebugInfo GetRenderDebugInfo() abstract;
 	virtual void* GetDeferredInfo() abstract;
+	virtual void ExecuteCommandLine() abstract;
+	virtual BOOL ContextInUse(BOOL isUse) abstract;
 
 	virtual void CameraUpdate(
 		const DirectX::XMMATRIX& worldTM,
 		const DirectX::XMMATRIX& viewTM,
-		const DirectX::XMMATRIX& projTM) abstract;
+		const DirectX::XMMATRIX& projTM,
+		float fovy, float farZ) abstract;
 
 	virtual void CameraSkyBoxRender(const unsigned int textureIdx) abstract;
 
@@ -196,7 +201,7 @@ public:
 	virtual void DebugQueueProcess() abstract;
 	virtual void UIPassBind() abstract;
 
-	virtual unsigned int  SpawnParticle(ParticleProperty* particle) abstract;
+	virtual unsigned int SpawnParticle(ParticleProperty* particle) abstract;
 
 	// 피킹
 	virtual void Clicked(bool IsClicked, POINT mousePos) abstract;
@@ -211,10 +216,19 @@ public:
 	virtual void DrawSpriteEdge(const DirectX::XMMATRIX& worldTM) abstract;
 
 	virtual void DrawBillboard(const unsigned int modelIndex, const DirectX::XMMATRIX& worldTM) abstract;
+	virtual void DrawBillboardUI() abstract;
 
 	virtual unsigned int FontInfoInitialize(std::shared_ptr<Text_Queue_Info> pFontDesc) abstract;
 	virtual void OneResizeTextPos(unsigned int fontinfoIndex) abstract;
 	virtual void DrawD2DText(std::shared_ptr<TextBlock> pTextBlock) abstract;
+
+
+	virtual void SetLoadingSceneImage(
+		const std::string& imagePath, 
+		const std::string& VertexShaderPath, 
+		const std::string& PixelShaderPath, 
+		float frame) abstract;
+	virtual void DrawLoadingScene() abstract;
 
 	virtual void DrawDebugging(
 		const DirectX::SimpleMath::Vector3& origin,
@@ -245,7 +259,9 @@ public:
 		const DirectX::SimpleMath::Matrix& projTM) abstract;
 
 	virtual void ReflectionProbeBaking(
-		const unsigned int sceneIndex, const unsigned int probeIndex) abstract;
+		const unsigned int sceneIndex, 
+		const std::string& sceneName,
+		const unsigned int probeIndex) abstract;
 
 	virtual void SetReflectionBakedDDS(
 		unsigned int probeIndex,

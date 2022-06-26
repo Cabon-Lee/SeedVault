@@ -38,7 +38,7 @@ struct VS_OUTPUT
     float3 outWorldPos : POSITION;
     float3 outNormal : NORMAL;
     float2 outTexCoord : TEXCOORD;
-    float3 outTangent : TANGENT;
+    float4 outTangent : TANGENT;
     float4 ShadowPosH[4] : TEXCOORD1;
 };
 
@@ -82,7 +82,6 @@ PS_GBUFFER_OUT main(VS_OUTPUT pin) : SV_Target
     }
     else
     {
-        //deferredOut.NormalMap = float4((NormalSampleToWorldSpace(normalMapSample, normal, pin.outTangent) * 0.5f) + 0.5f, 1.0f);
         deferredOut.NormalMap = float4((NormalSampleToWorldSpace(normalMapSample, pin.outNormal, pin.outTangent) * 0.5f) + 0.5f, 1.0f);
     }
     

@@ -71,6 +71,7 @@ struct GraphicMaterial
 		, metallic(0.0f)
 		, normalFactor(1.0f)
 		, emissiveFactor(1.0f)
+		, isTransparency(false)
 	{
 		// 매직넘버 -1을 넣어서 -1인 경우에는 null을 PS에 넘긴다
 		memset(textureArray, -1, sizeof(textureArray));

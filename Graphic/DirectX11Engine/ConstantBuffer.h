@@ -63,6 +63,21 @@ public:
 		this->deviceContext->Unmap(buffer.Get(), 0);
 		return true;
 	}
+
+	bool ApplyChanges(ID3D11DeviceContext* pDeferredContext)
+	{
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		HRESULT hr = pDeferredContext->Map(buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		if (FAILED(hr))
+		{
+			ErrorLogger::Log(hr, L"상수버퍼를 map시키는데 실패했습니다");
+			return false;
+		}
+		CopyMemory(mappedResource.pData, &data, sizeof(T));
+		pDeferredContext->Unmap(buffer.Get(), 0);
+		return true;
+	}
+
 };
 
 #endif // ConstantBuffer_h__

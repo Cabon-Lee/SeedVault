@@ -6,7 +6,7 @@
 /// 
 /// 인게임에선 마우스 이동에 따라서 카메라가 궤도 이동 해야함
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// 
 /// </summary>
 
@@ -39,17 +39,18 @@ public:
 	struct OrbitCamera_Save* m_SaveData;
 
 private:
-	Transform* m_FocusTarget;			// 초점(타겟 오브젝트)
-	Vector3 m_FocusPosition;			// 초점(타겟) 포지션
+	PlayerController* m_PlayerController;	// 플레이어 컨트롤러
+	Transform* m_FocusTarget;				// 초점(타겟 오브젝트)
+	Vector3 m_FocusPosition;				// 초점(타겟) 포지션
 
-	float m_Distance;					// 초점으로부터의 거리
-	float m_RotationSpeed;				// 회전 속도
+	float m_Distance;						// 초점으로부터의 거리
+	float m_RotationSpeed;					// 회전 속도
 
-	Vector2 m_RotationAngles;			// 궤도 각
+	Vector2 m_RotationAngles;				// 궤도 각
 	
 	// 제한각도
-	float m_MaxVerticalAngle;			// x(pitch)
-	float m_MinVerticalAngle;			// y(yaw)
+	float m_MaxVerticalAngle;				// x(pitch)
+	float m_MinVerticalAngle;				// y(yaw)
 
 };
 

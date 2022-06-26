@@ -4,6 +4,8 @@
 
 CameraBehavior::CameraBehavior()
 	: ComponentBase(ComponentType::GameLogic)
+	, m_PlayerController(nullptr)
+
 	, m_ZoomInPosition(nullptr)
 	, m_Camera(nullptr)
 
@@ -32,6 +34,14 @@ CameraBehavior::~CameraBehavior()
 
 void CameraBehavior::Start()
 {
+	// 플레이어 컨트롤러 연결
+	GameObject* _player = DLLEngine::FindGameObjectByName("Player");
+	if (_player != nullptr)
+	{
+		m_PlayerController = _player->GetComponent<PlayerController>();
+	}
+	assert(m_PlayerController != nullptr);
+
 	// 메인 카메라 컴포넌트 연결
 	GameObject* mainCameraObj = DLLEngine::FindGameObjectByName("MainCamera");
 	assert(mainCameraObj != nullptr);
@@ -69,7 +79,7 @@ void CameraBehavior::Start()
 void CameraBehavior::Update(float dTime)
 {
 	// 플레이어 자세(Stand or Crouch) 체크
-	if (PlayerController::s_bCrouch)
+	if (m_PlayerController->m_bCrouch)
 	{
 		m_CurrentZoomInPos = m_CrouchZoomInPos;
 		m_CurrentCameraDefaultPos = m_CrouchCameraDefaultPos;
@@ -81,7 +91,7 @@ void CameraBehavior::Update(float dTime)
 	}
 
 	// 플레이어가 조준중이면
-	if (PlayerController::s_bAim)
+	if (m_PlayerController->m_bAim)
 	{
 		// 카메라 줌인
 		CameraZoomIn();
@@ -99,25 +109,28 @@ void CameraBehavior::Update(float dTime)
 
 		const SimpleMath::Vector3& _ori = m_ZoomInPosition->m_WorldPosition;
 		//SimpleMath::Vector3 _dir = -m_ZoomInPosition->m_WorldTM.Forward();
-		SimpleMath::Vector3 _dir = { m_Transform->m_WorldPosition.x, m_Transform->m_WorldPosition.y - 0.5f, m_Transform->m_WorldPosition.z };
+		SimpleMath::Vector3 _dir = { m_Transform->m_WorldPosition.x, m_Transform->m_WorldPosition.y /*- 0.5f*/, m_Transform->m_WorldPosition.z - 0.5f};
 		_dir -= _ori;
 		_dir.Normalize();
 
 		float _distZoomInPosToCamera = SimpleMath::Vector3::Distance(_ori, m_Transform->m_WorldPosition);
 
 		RaycastHit _hit;
-		_hit = *DLLEngine::CheckRaycastHit(_ori, _dir, _distZoomInPosToCamera);
+		_hit = *DLLEngine::CheckRaycastHit(_ori, _dir , _distZoomInPosToCamera);
 
 		if (_hit.actor != nullptr
-			&& _hit.actor->GetMyObject()->GetTag() == "Wall")
+			//&& _hit.actor->GetMyObject()->GetTag() == "Wall"
+			)
 		{
+			CA_TRACE("카메라 충돌");
 
 			float _distPlayerToHitPos = Vector3::Distance(_player->m_Transform->m_WorldPosition, _hit.position);
-			if (_distPlayerToHitPos < 2.0f)
+			//if (_distPlayerToHitPos < 2.0f)
 			{
 				SimpleMath::Vector3 pos = m_CurrentZoomInPos - m_Transform->m_WorldTM.Forward() * 0.2f;
 
-				m_Transform->m_Position = Vector3::Lerp(m_Transform->GetLocalPosition(), pos, CL::Input::s_DeltaTime * m_CameraSpeed);
+				//m_Transform->m_Position = Vector3::Lerp(m_Transform->GetLocalPosition(), pos, CL::Input::s_DeltaTime * m_CameraSpeed);
+				m_Transform->m_Position = Vector3::Lerp(m_Transform->GetLocalPosition(), m_CurrentZoomInPos, CL::Input::s_DeltaTime * m_CameraSpeed);
 			}
 		}
 	}

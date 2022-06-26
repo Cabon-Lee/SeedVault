@@ -27,6 +27,7 @@ public:
 	virtual void Start() override;
 	virtual void Update(float dTime) override {};
 	virtual void OnRender() override;
+	virtual void OnUIRender() override;
 
 	_DLL void SeteResourceType(eResourceType resourceType);
 	_DLL void SetRotationType(eRotationType rotationType);

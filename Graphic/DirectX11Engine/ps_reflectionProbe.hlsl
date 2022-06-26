@@ -33,7 +33,7 @@ struct VS_OUTPUT
     float3 outWorldPos : POSITION;
     float3 outNormal : NORMAL;
     float2 outTexCoord : TEXCOORD;
-    float3 outTangent : TANGENT;
+    float4 outTangent : TANGENT;
 };
 
 
@@ -46,13 +46,15 @@ float4 main(VS_OUTPUT pin) : SV_TARGET
 	// Sample texture.
     texColor = objTexture.Sample(objSamplerState, pin.outTexCoord);
     
-    float3 toEyeW = -normalize(EyePos.xyz - pin.outWorldPos.xyz);   // 기존과 다르게 -를 붙여야 검은 점이 사라진다... 이유는 아직 모름
+    float3 toEyeW = normalize(EyePos.xyz - pin.outWorldPos.xyz);   // 기존과 다르게 -를 붙여야 검은 점이 사라진다... 이유는 아직 모름
     
     float4 MRMap = objMetalRough.Sample(objSamplerState, pin.outTexCoord);
     float nowMetalFactor = saturate(MRMap.r * metallic);
     float nowRoughnessFactor = saturate(MRMap.g * smoothness);
     
     float4 finalColor = 0.0;
+    finalColor = texColor;
+    /*
     finalColor = CalcLight(
               0,                    // 라이트 종류
               DirLight,             // 라이트 정보
@@ -63,6 +65,7 @@ float4 main(VS_OUTPUT pin) : SV_TARGET
               nowRoughnessFactor,   // 러프니스
               nowMetalFactor,       // 메탈릭
               float3(0.0, 0.0, 0.0));
+    */
     finalColor.w = 1.0f;
     
     

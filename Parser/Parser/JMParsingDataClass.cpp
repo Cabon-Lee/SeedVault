@@ -124,6 +124,78 @@ namespace JMParserData
 		return false;
 	}
 
+	Float4Func::Float4Func(const Float4& origin)
+	{
+		this->x = origin.x;
+		this->y = origin.y;
+		this->z = origin.z;
+		this->w = origin.w;
+	}
+
+	Float4Func::Float4Func(float f1, float f2, float f3, float f4)
+	{
+		this->x = f1;		this->y = f2;		this->z = f3;		this->w = f4;
+	}
+
+	JMParserData::Float4& Float4Func::operator=(const Float4& vec4)
+	{
+		this->x = vec4.x;
+		this->y = vec4.y;
+		this->z = vec4.z;
+		this->w = vec4.w;
+
+		return *this;
+	}
+
+	JMParserData::Float4& Float4Func::operator+=(const Float4& vec4)
+	{
+		this->x += vec4.x;
+		this->y += vec4.y;
+		this->z += vec4.z;
+		this->w += vec4.w;
+
+		return *this;
+	}
+
+	JMParserData::Float4 Float4Func::operator+(Float4& vec4)
+	{
+		this->x += vec4.x;
+		this->y += vec4.y;
+		this->z += vec4.z;
+		this->w += vec4.w;
+
+		return *this;
+	}
+
+	JMParserData::Float4 Float4Func::operator-(Float4& vec4)
+	{
+		this->x -= vec4.x;
+		this->y -= vec4.y;
+		this->z -= vec4.z;
+		this->w -= vec4.w;
+
+		return *this;
+	}
+
+	bool Float4Func::operator!=(Float4& vec4)
+	{
+		if (this->x == vec4.x && this->y == vec4.y && this->z == vec4.z && this->w == vec4.w)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	bool Float4Func::operator==(Float4& vec4)
+	{
+		if (this->x != vec4.x || this->y != vec4.y || this->z != vec4.z || this->w != vec4.w)
+		{
+			return true;
+		}
+		return false;
+	}
+
+
 	///-----------------------------------------
 	/// Float4x4
 	///-----------------------------------------
@@ -134,7 +206,7 @@ namespace JMParserData
 	Vertex::Vertex()
 		: pos()
 		, normal()
-		, binomral()
+		, binormal()
 		, tangent()
 		, index(0)
 		, u(0.0f)
@@ -227,6 +299,8 @@ namespace JMParserData
 		delete pOptIndex;
 		pOptIndex = nullptr;
 	}
+
+
 
 
 

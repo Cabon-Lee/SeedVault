@@ -14,6 +14,8 @@ struct AnimationClipData;
 struct GraphicMaterial;
 struct ID3D11ShaderResourceView;
 struct SpriteData;
+struct QuestBlock;
+struct DialogueBlock;
 
 class NaviMeshSet;
 
@@ -28,6 +30,8 @@ __interface IResourceManager
 	virtual void LoadShaderFile(std::string& fileName) abstract;
 	virtual void LoadMatFile(std::string& fileName) abstract;
 	virtual void LoadIBLFile(std::string& fileName) abstract;
+	virtual void LoadQuestTextFile(std::string& fileName) abstract;
+	virtual void LoadDialogueTextFile(std::string& fileName) abstract;
 
 	virtual void SaveMatFile(unsigned int, int idx) abstract;
 	virtual void LoadMatFile(unsigned int, int idx) abstract;
@@ -61,6 +65,12 @@ __interface IResourceManager
 	virtual std::shared_ptr<VertexShader> GetVertexShader(unsigned int idx) abstract;
 	virtual std::shared_ptr<PixelShader> GetPixelShader(unsigned int idx) abstract;
 	virtual std::shared_ptr<GeometryShader> GetGeometryShader(unsigned int idx) abstract;
+
+	virtual std::vector<QuestBlock> GetQuestText(const std::string& name) abstract;
+	virtual std::vector<DialogueBlock> GetDialogueText(const std::string& name) abstract;
+	
+	virtual std::unordered_map<std::string, std::vector<struct QuestBlock>> GetWholeQuestText() abstract;
+	virtual std::unordered_map<std::string, std::vector<struct DialogueBlock>> GetWholeDialogueText() abstract;
 
 	virtual Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> GetIBLImage(const std::string& name) abstract;
 	virtual Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> GetIBLImage(unsigned int idx) abstract;

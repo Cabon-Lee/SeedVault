@@ -61,6 +61,7 @@ float Timer::TotalTime()const
 
 float Timer::DeltaTime() const
 {
+    //CA_TRACE("%f", (float)m_Dtime);
    return (float)m_Dtime;
 }
 
@@ -134,7 +135,7 @@ void Timer::Tick()
 
 void Timer::SetDeltaTime(double delta)
 {
-    m_ElapsedTime = delta;
+    m_Dtime = delta;
 }
 
 bool Timer::FixFrame(float fps)

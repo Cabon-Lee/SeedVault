@@ -107,7 +107,8 @@ void CLMainScene::Initialize()
 			300.0f,		// lineWidth
 			20.0f,		// lineSpace
 			20.0f,		// fontSize
-			UIAxis::None
+			eUIAxis::None,
+			eTextPoint::LeftUP
 		);
 		m_pPlayer->AddComponent<Text>(text);
 
@@ -123,7 +124,7 @@ void CLMainScene::Initialize()
 			m_pPlayerMesh->m_Transform->SetScale({ 0.05f, 0.05f, 0.05f });	// 모델이 너무 커서 스케일 조정..
 
 			MeshFilter* _Mesh = new MeshFilter();
-			_Mesh->SetMesh(CL::ResourcePath::MESH_PLAYER_Rifle);
+			_Mesh->SetMesh(CL::ResourcePath::MESH_PLAYER_RIFLE);
 			m_pPlayerMesh->AddComponent<MeshFilter>(_Mesh);
 
 			MaterialComponent* _Material = new MaterialComponent();
@@ -211,29 +212,29 @@ void CLMainScene::Initialize()
 							// Stand_Idle -> Walking
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->AddTrnasition(Stand_Walk_Forward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(0)->m_FadingPeriod = 80;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(0)->AddParameter(0.1f, &PlayerController::s_V, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(0)->AddParameter(0.1f, &_playerController->m_V, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->AddTrnasition(Stand_Walk_Backward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(1)->m_FadingPeriod = 80;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(1)->AddParameter(-0.1f, &PlayerController::s_V, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(1)->AddParameter(-0.1f, &_playerController->m_V, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->AddTrnasition(Stand_Walk_Left);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(2)->m_FadingPeriod = 80;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(2)->AddParameter(-0.1f, &PlayerController::s_H, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(2)->AddParameter(-0.1f, &_playerController->m_H, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->AddTrnasition(Stand_Walk_Right);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(3)->m_FadingPeriod = 80;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(3)->AddParameter(0.1f, &PlayerController::s_H, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(3)->AddParameter(0.1f, &_playerController->m_H, true);
 
 							// Stand_Idle -> Sprint
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->AddTrnasition(Stand_Sprint);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(4)->m_FadingPeriod = 80;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(4)->AddParameter(0.1f, &PlayerController::s_VForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(4)->AddParameter(&PlayerController::s_bSprint, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(4)->AddParameter(0.1f, &_playerController->m_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(4)->AddParameter(&_playerController->m_bSprint, true);
 
 							// Stand_Idle -> "Crouch_Idle"
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->AddTrnasition(Crouch_Idle);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(5)->AddParameter(&PlayerController::s_bCrouch, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(5)->AddParameter(&_playerController->m_bCrouch, true);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Idle)->m_Transition_V->at(5)->m_FadingPeriod = 5;
 
 						}
@@ -242,32 +243,32 @@ void CLMainScene::Initialize()
 						{
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->AddTrnasition(Stand_Idle);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(0)->m_FadingPeriod = 5;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(0)->AddParameter(0.1f, &PlayerController::s_V, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(0)->AddParameter(0.1f, &PlayerController::s_VForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(0)->AddParameter(-0.1f, &PlayerController::s_H, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(0)->AddParameter(0.1f, &PlayerController::s_H, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(0)->AddParameter(0.1f, &_playerController->m_V, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(0)->AddParameter(0.1f, &_playerController->m_VForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(0)->AddParameter(-0.1f, &_playerController->m_H, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(0)->AddParameter(0.1f, &_playerController->m_H, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->AddTrnasition(Stand_Walk_Left);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(1)->m_FadingPeriod = 15;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(1)->AddParameter(0.1f, &PlayerController::s_VForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(1)->AddParameter(-0.1f, &PlayerController::s_HForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(1)->AddParameter(0.1f, &_playerController->m_VForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(1)->AddParameter(-0.1f, &_playerController->m_HForAnim, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->AddTrnasition(Stand_Walk_Right);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(2)->m_FadingPeriod = 15;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(2)->AddParameter(0.1f, &PlayerController::s_VForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(2)->AddParameter(0.1f, &PlayerController::s_HForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(2)->AddParameter(0.1f, &_playerController->m_VForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(2)->AddParameter(0.1f, &_playerController->m_HForAnim, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->AddTrnasition(Stand_Sprint);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(3)->m_FadingPeriod = 15;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(3)->AddParameter(&PlayerController::s_bSprint, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(3)->AddParameter(&_playerController->m_bSprint, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->AddTrnasition(Stand_Walk_Backward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(4)->m_FadingPeriod = 80;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(4)->AddParameter(1.0f, &PlayerController::s_VForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(4)->AddParameter(-0.1f, &PlayerController::s_V, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(4)->AddParameter(1.0f, &_playerController->m_VForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(4)->AddParameter(-0.1f, &_playerController->m_V, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->AddTrnasition(Crouch_Walk_Forward);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(5)->AddParameter(&PlayerController::s_bCrouch, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(5)->AddParameter(&_playerController->m_bCrouch, true);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Forward)->m_Transition_V->at(5)->m_FadingPeriod = 30;
 						}
 
@@ -275,28 +276,28 @@ void CLMainScene::Initialize()
 						{
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->AddTrnasition(Stand_Idle);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(0)->m_FadingPeriod = 5;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(0)->AddParameter(-0.1f, &PlayerController::s_V, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(0)->AddParameter(-0.1f, &PlayerController::s_VForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(0)->AddParameter(-0.1f, &PlayerController::s_H, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(0)->AddParameter(0.1f, &PlayerController::s_H, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(0)->AddParameter(-0.1f, &_playerController->m_V, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(0)->AddParameter(-0.1f, &_playerController->m_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(0)->AddParameter(-0.1f, &_playerController->m_H, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(0)->AddParameter(0.1f, &_playerController->m_H, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->AddTrnasition(Stand_Walk_Left);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(1)->m_FadingPeriod = 15;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(1)->AddParameter(-0.1f, &PlayerController::s_VForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(1)->AddParameter(-0.1f, &PlayerController::s_HForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(1)->AddParameter(-0.1f, &_playerController->m_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(1)->AddParameter(-0.1f, &_playerController->m_HForAnim, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->AddTrnasition(Stand_Walk_Right);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(2)->m_FadingPeriod = 15;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(2)->AddParameter(-0.1f, &PlayerController::s_VForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(2)->AddParameter(0.1f, &PlayerController::s_HForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(2)->AddParameter(-0.1f, &_playerController->m_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(2)->AddParameter(0.1f, &_playerController->m_HForAnim, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->AddTrnasition(Stand_Walk_Forward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(3)->m_FadingPeriod = 15;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(3)->AddParameter(-0.1f, &PlayerController::s_VForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(3)->AddParameter(0.1f, &PlayerController::s_V, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(3)->AddParameter(-0.1f, &_playerController->m_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(3)->AddParameter(0.1f, &_playerController->m_V, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->AddTrnasition(Crouch_Walk_Backward);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(4)->AddParameter(&PlayerController::s_bCrouch, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(4)->AddParameter(&_playerController->m_bCrouch, true);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Backward)->m_Transition_V->at(4)->m_FadingPeriod = 30;
 						}
 
@@ -304,33 +305,33 @@ void CLMainScene::Initialize()
 						{
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->AddTrnasition(Stand_Walk_Right);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(0)->m_FadingPeriod = 80;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(0)->AddParameter(-1.0f, &PlayerController::s_HForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(0)->AddParameter(0.1f, &PlayerController::s_H, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(0)->AddParameter(-1.0f, &_playerController->m_HForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(0)->AddParameter(0.1f, &_playerController->m_H, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->AddTrnasition(Stand_Idle);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(1)->m_FadingPeriod = 5;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(1)->AddParameter(-0.1f, &PlayerController::s_H, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(1)->AddParameter(-0.1f, &PlayerController::s_HForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(1)->AddParameter(-0.1f, &PlayerController::s_V, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(1)->AddParameter(0.1f, &PlayerController::s_V, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(1)->AddParameter(-0.1f, &_playerController->m_H, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(1)->AddParameter(-0.1f, &_playerController->m_HForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(1)->AddParameter(-0.1f, &_playerController->m_V, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(1)->AddParameter(0.1f, &_playerController->m_V, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->AddTrnasition(Stand_Walk_Forward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(2)->m_FadingPeriod = 15;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(2)->AddParameter(0.1f, &PlayerController::s_VForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(2)->AddParameter(-0.1f, &PlayerController::s_HForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(2)->AddParameter(0.1f, &_playerController->m_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(2)->AddParameter(-0.1f, &_playerController->m_HForAnim, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->AddTrnasition(Stand_Walk_Backward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(3)->m_FadingPeriod = 15;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(3)->AddParameter(-0.1f, &PlayerController::s_VForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(3)->AddParameter(-0.1f, &PlayerController::s_HForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(3)->AddParameter(-0.1f, &_playerController->m_VForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(3)->AddParameter(-0.1f, &_playerController->m_HForAnim, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->AddTrnasition(Stand_Sprint);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(4)->m_FadingPeriod = 15;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(4)->AddParameter(0.1f, &PlayerController::s_VForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(4)->AddParameter(&PlayerController::s_bSprint, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(4)->AddParameter(0.1f, &_playerController->m_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(4)->AddParameter(&_playerController->m_bSprint, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->AddTrnasition(Crouch_Walk_Left);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(5)->AddParameter(&PlayerController::s_bCrouch, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(5)->AddParameter(&_playerController->m_bCrouch, true);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Left)->m_Transition_V->at(5)->m_FadingPeriod = 30;
 						}
 
@@ -338,34 +339,34 @@ void CLMainScene::Initialize()
 						{
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->AddTrnasition(Stand_Walk_Left);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(0)->m_FadingPeriod = 80;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(0)->AddParameter(1.0f, &PlayerController::s_HForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(0)->AddParameter(-0.1f, &PlayerController::s_H, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(0)->AddParameter(1.0f, &_playerController->m_HForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(0)->AddParameter(-0.1f, &_playerController->m_H, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->AddTrnasition(Stand_Idle);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(1)->m_FadingPeriod = 5;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(1)->AddParameter(0.1f, &PlayerController::s_HForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(1)->AddParameter(0.1f, &PlayerController::s_H, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(1)->AddParameter(-0.1f, &PlayerController::s_V, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(1)->AddParameter(0.1f, &PlayerController::s_V, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(1)->AddParameter(0.1f, &_playerController->m_HForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(1)->AddParameter(0.1f, &_playerController->m_H, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(1)->AddParameter(-0.1f, &_playerController->m_V, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(1)->AddParameter(0.1f, &_playerController->m_V, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->AddTrnasition(Stand_Walk_Forward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(2)->m_FadingPeriod = 15;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(2)->AddParameter(0.1f, &PlayerController::s_HForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(2)->AddParameter(0.1f, &PlayerController::s_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(2)->AddParameter(0.1f, &_playerController->m_HForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(2)->AddParameter(0.1f, &_playerController->m_VForAnim, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->AddTrnasition(Stand_Walk_Backward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(3)->m_FadingPeriod = 15;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(3)->AddParameter(0.1f, &PlayerController::s_HForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(3)->AddParameter(-0.1f, &PlayerController::s_VForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(3)->AddParameter(0.1f, &_playerController->m_HForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(3)->AddParameter(-0.1f, &_playerController->m_VForAnim, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->AddTrnasition(Stand_Sprint);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(4)->m_FadingPeriod = 15;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(4)->AddParameter(0.1f, &PlayerController::s_VForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(4)->AddParameter(&PlayerController::s_bSprint, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(4)->AddParameter(0.1f, &_playerController->m_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(4)->AddParameter(&_playerController->m_bSprint, true);
 
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->AddTrnasition(Crouch_Walk_Right);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(5)->AddParameter(&PlayerController::s_bCrouch, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(5)->AddParameter(&_playerController->m_bCrouch, true);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Walk_Right)->m_Transition_V->at(5)->m_FadingPeriod = 30;
 						}
 
@@ -373,7 +374,7 @@ void CLMainScene::Initialize()
 						{
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Sprint)->AddTrnasition(Stand_Walk_Forward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Sprint)->m_Transition_V->at(0)->m_FadingPeriod = 5;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Sprint)->m_Transition_V->at(0)->AddParameter(&PlayerController::s_bSprint, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Stand_Sprint)->m_Transition_V->at(0)->AddParameter(&_playerController->m_bSprint, false);
 
 						}
 					} // end of Stand
@@ -385,27 +386,27 @@ void CLMainScene::Initialize()
 						{
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->AddTrnasition(Stand_Idle);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(0)->m_FadingPeriod = 5;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(0)->AddParameter(&PlayerController::s_bCrouch, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(0)->AddParameter(&_playerController->m_bCrouch, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->AddTrnasition(Crouch_Walk_Forward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(1)->m_FadingPeriod = 10;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(1)->AddParameter(0.1f, &PlayerController::s_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(1)->AddParameter(0.1f, &_playerController->m_VForAnim, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->AddTrnasition(Crouch_Walk_Backward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(2)->m_FadingPeriod = 10;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(2)->AddParameter(-0.1f, &PlayerController::s_VForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(2)->AddParameter(-0.1f, &_playerController->m_VForAnim, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->AddTrnasition(Crouch_Walk_Left);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(3)->m_FadingPeriod = 10;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(3)->AddParameter(-0.1f, &PlayerController::s_HForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(3)->AddParameter(-0.1f, &_playerController->m_HForAnim, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->AddTrnasition(Crouch_Walk_Right);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(4)->m_FadingPeriod = 10;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(4)->AddParameter(0.1f, &PlayerController::s_HForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(4)->AddParameter(0.1f, &_playerController->m_HForAnim, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->AddTrnasition(Stand_Sprint);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(5)->m_FadingPeriod = 10;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(5)->AddParameter(&PlayerController::s_bSprint, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Idle)->m_Transition_V->at(5)->AddParameter(&_playerController->m_bSprint, true);
 
 						}
 
@@ -413,33 +414,33 @@ void CLMainScene::Initialize()
 						{
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->AddTrnasition(Crouch_Idle);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(0)->m_FadingPeriod = 3;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(0)->AddParameter(0.1f, &PlayerController::s_V, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(0)->AddParameter(0.1f, &PlayerController::s_VForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(0)->AddParameter(-0.001f, &PlayerController::s_H, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(0)->AddParameter(0.001f, &PlayerController::s_H, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(0)->AddParameter(0.1f, &_playerController->m_V, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(0)->AddParameter(0.1f, &_playerController->m_VForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(0)->AddParameter(-0.001f, &_playerController->m_H, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(0)->AddParameter(0.001f, &_playerController->m_H, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->AddTrnasition(Crouch_Walk_Left);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(1)->AddParameter(0.1f, &PlayerController::s_VForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(1)->AddParameter(0.1f, &_playerController->m_VForAnim, false);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(1)->m_FadingPeriod = 20;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(1)->AddParameter(-0.1f, &PlayerController::s_HForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(1)->AddParameter(-0.1f, &_playerController->m_HForAnim, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->AddTrnasition(Crouch_Walk_Right);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(2)->AddParameter(0.1f, &PlayerController::s_VForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(2)->AddParameter(0.1f, &_playerController->m_VForAnim, false);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(2)->m_FadingPeriod = 20;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(2)->AddParameter(0.1f, &PlayerController::s_HForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(2)->AddParameter(0.1f, &_playerController->m_HForAnim, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->AddTrnasition(Crouch_Walk_Backward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(3)->m_FadingPeriod = 30;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(3)->AddParameter(1.0f, &PlayerController::s_VForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(3)->AddParameter(-0.1f, &PlayerController::s_V, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(3)->AddParameter(1.0f, &_playerController->m_VForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(3)->AddParameter(-0.1f, &_playerController->m_V, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->AddTrnasition(Stand_Walk_Forward);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(4)->AddParameter(&PlayerController::s_bCrouch, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(4)->AddParameter(&_playerController->m_bCrouch, false);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(4)->m_FadingPeriod = 30;
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->AddTrnasition(Stand_Sprint);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(5)->m_FadingPeriod = 5;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(5)->AddParameter(&PlayerController::s_bSprint, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Forward)->m_Transition_V->at(5)->AddParameter(&_playerController->m_bSprint, true);
 
 						}
 
@@ -447,29 +448,29 @@ void CLMainScene::Initialize()
 						{
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->AddTrnasition(Crouch_Idle);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(0)->m_FadingPeriod = 3;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(0)->AddParameter(-0.1f, &PlayerController::s_V, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(0)->AddParameter(-0.1f, &PlayerController::s_VForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(0)->AddParameter(-0.001f, &PlayerController::s_H, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(0)->AddParameter(0.001f, &PlayerController::s_H, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(0)->AddParameter(-0.1f, &_playerController->m_V, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(0)->AddParameter(-0.1f, &_playerController->m_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(0)->AddParameter(-0.001f, &_playerController->m_H, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(0)->AddParameter(0.001f, &_playerController->m_H, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->AddTrnasition(Crouch_Walk_Left);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(1)->m_FadingPeriod = 10;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(1)->AddParameter(-0.1f, &PlayerController::s_VForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(1)->AddParameter(-0.1f, &PlayerController::s_HForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(1)->AddParameter(-0.1f, &_playerController->m_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(1)->AddParameter(-0.1f, &_playerController->m_HForAnim, false);
 
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->AddTrnasition(Crouch_Walk_Right);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(2)->m_FadingPeriod = 10;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(2)->AddParameter(-0.1f, &PlayerController::s_VForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(2)->AddParameter(0.1f, &PlayerController::s_HForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(2)->AddParameter(-0.1f, &_playerController->m_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(2)->AddParameter(0.1f, &_playerController->m_HForAnim, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->AddTrnasition(Crouch_Walk_Forward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(3)->m_FadingPeriod = 15;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(3)->AddParameter(-1.0f, &PlayerController::s_VForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(3)->AddParameter(0.1f, &PlayerController::s_V, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(3)->AddParameter(-1.0f, &_playerController->m_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(3)->AddParameter(0.1f, &_playerController->m_V, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->AddTrnasition(Stand_Walk_Backward);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(4)->AddParameter(&PlayerController::s_bCrouch, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(4)->AddParameter(&_playerController->m_bCrouch, false);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Backward)->m_Transition_V->at(4)->m_FadingPeriod = 30;
 
 						}
@@ -478,28 +479,28 @@ void CLMainScene::Initialize()
 						{
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->AddTrnasition(Crouch_Idle);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(0)->m_FadingPeriod = 3;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(0)->AddParameter(-0.1f, &PlayerController::s_H, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(0)->AddParameter(-0.1f, &PlayerController::s_HForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(0)->AddParameter(-0.001f, &PlayerController::s_V, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(0)->AddParameter(0.001f, &PlayerController::s_V, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(0)->AddParameter(-0.1f, &_playerController->m_H, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(0)->AddParameter(-0.1f, &_playerController->m_HForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(0)->AddParameter(-0.001f, &_playerController->m_V, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(0)->AddParameter(0.001f, &_playerController->m_V, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->AddTrnasition(Crouch_Walk_Forward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(1)->m_FadingPeriod = 5;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(1)->AddParameter(-0.1f, &PlayerController::s_HForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(1)->AddParameter(0.1f, &PlayerController::s_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(1)->AddParameter(-0.1f, &_playerController->m_HForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(1)->AddParameter(0.1f, &_playerController->m_VForAnim, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->AddTrnasition(Crouch_Walk_Backward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(2)->m_FadingPeriod = 5;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(2)->AddParameter(-0.1f, &PlayerController::s_HForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(2)->AddParameter(-0.1f, &PlayerController::s_VForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(2)->AddParameter(-0.1f, &_playerController->m_HForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(2)->AddParameter(-0.1f, &_playerController->m_VForAnim, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->AddTrnasition(Crouch_Walk_Right);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(3)->m_FadingPeriod = 30;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(3)->AddParameter(-1.0f, &PlayerController::s_HForAnim, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(3)->AddParameter(0.1f, &PlayerController::s_H, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(3)->AddParameter(-1.0f, &_playerController->m_HForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(3)->AddParameter(0.1f, &_playerController->m_H, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->AddTrnasition(Stand_Walk_Left);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(4)->AddParameter(&PlayerController::s_bCrouch, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(4)->AddParameter(&_playerController->m_bCrouch, false);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Left)->m_Transition_V->at(4)->m_FadingPeriod = 30;
 
 						}
@@ -508,29 +509,29 @@ void CLMainScene::Initialize()
 						{
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->AddTrnasition(Crouch_Idle);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(0)->m_FadingPeriod = 3;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(0)->AddParameter(0.1f, &PlayerController::s_H, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(0)->AddParameter(0.1f, &PlayerController::s_HForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(0)->AddParameter(-0.001f, &PlayerController::s_V, true);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(0)->AddParameter(0.001f, &PlayerController::s_V, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(0)->AddParameter(0.1f, &_playerController->m_H, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(0)->AddParameter(0.1f, &_playerController->m_HForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(0)->AddParameter(-0.001f, &_playerController->m_V, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(0)->AddParameter(0.001f, &_playerController->m_V, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->AddTrnasition(Crouch_Walk_Forward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(1)->m_FadingPeriod = 5;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(1)->AddParameter(0.1f, &PlayerController::s_HForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(1)->AddParameter(0.1f, &PlayerController::s_VForAnim, true);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(1)->AddParameter(0.1f, &_playerController->m_HForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(1)->AddParameter(0.1f, &_playerController->m_VForAnim, true);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->AddTrnasition(Crouch_Walk_Backward);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(2)->m_FadingPeriod = 5;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(2)->AddParameter(0.1f, &PlayerController::s_HForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(2)->AddParameter(-0.1f, &PlayerController::s_VForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(2)->AddParameter(0.1f, &_playerController->m_HForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(2)->AddParameter(-0.1f, &_playerController->m_VForAnim, false);
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->AddTrnasition(Crouch_Walk_Left);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(3)->m_FadingPeriod = 30;
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(3)->AddParameter(1.0f, &PlayerController::s_HForAnim, false);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(3)->AddParameter(-0.1f, &PlayerController::s_H, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(3)->AddParameter(1.0f, &_playerController->m_HForAnim, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(3)->AddParameter(-0.1f, &_playerController->m_H, false);
 
 
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->AddTrnasition(Stand_Walk_Right);
-							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(4)->AddParameter(&PlayerController::s_bCrouch, false);
+							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(4)->AddParameter(&_playerController->m_bCrouch, false);
 							_playerAnimator->GetAnimLayer(Movement)->GetState(Crouch_Walk_Right)->m_Transition_V->at(4)->m_FadingPeriod = 30;
 
 						}
@@ -546,7 +547,7 @@ void CLMainScene::Initialize()
 				_playerAnimator->AddAnimLayer("Aiming");
 				_playerAnimator->GetAnimLayer("Aiming")->SetEnabled(false);
 				_playerAnimator->GetAnimLayer("Aiming")->m_MaskingType = eMASKING_TYPE::OVERRINDING;
-				_playerAnimator->GetAnimLayer("Aiming")->AddLocomotion("UpAndDown", CL::ResourcePath::ANIM_PLAYER_RIFLE_PITCH, &PlayerController::s_PitchValue);
+				_playerAnimator->GetAnimLayer("Aiming")->AddLocomotion("UpAndDown", CL::ResourcePath::ANIM_PLAYER_RIFLE_PITCH, &_playerController->m_PitchValue);
 				//_playerAnimator->GetAnimLayer("Aiming")->AddStateMap("Aiming", CL::ResourcePath::ANIM_PLAYER_AIMING);
 			}
 

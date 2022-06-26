@@ -116,6 +116,7 @@ private:
 	JMParserData::Float3 ReadTangent(const FbxMesh* mesh, int controlPointIndex, int vertexCounter);
 	JMParserData::Float3 RadeBinormal(const FbxMesh* mesh, int controlPointIndex, int vertexCounter);
 	void MakeTangentSpace(const FbxMesh* mesh, int polygonIndex);
+	void MakeBinormal(int polygonIndex);
 
 	// Material ฐüทร
 	void GetMaterialTexture(FbxSurfaceMaterial* mat, MaterialDesc& outDesc);

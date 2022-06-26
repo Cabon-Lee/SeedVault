@@ -118,6 +118,9 @@
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PBRFunc.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_SSAOBlur.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_AddAccum.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -208,6 +211,9 @@
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_skyBox.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_SSAO.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\ps_test.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -215,6 +221,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_TransparentPass.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_SSAOBlur.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_ColorDebug.cso</FullPath>
@@ -248,6 +257,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_skyBox.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_SSAO.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_staticLightTexture.cso</FullPath>

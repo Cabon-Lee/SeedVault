@@ -5,6 +5,7 @@
 
 #include "MeshFilter.h"
 #include "MeshRenderer.h"
+#include "PhysicsGeometry.h"
 #include "PhysicsActor.h"
 
 
@@ -59,10 +60,11 @@ QObjectController::QObjectController(QWidget* parent)
 
 	connect(ui.checkBox_Enable, SIGNAL(stateChanged(int)), this, SLOT(checkEnable()));
 	connect(ui.pushButton_CreateObject, SIGNAL(clicked()), this, SLOT(createObject()));
-	connect(ui.pushButton_FindObject, SIGNAL(clicked()), this, SLOT(setCameraTocurrObj()));
+	connect(ui.pushButton_DebugRender, SIGNAL(clicked()), this, SLOT(setDebugRender()));
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), this, SLOT(deleteObject()));
 	connect(ui.lineEdit_ObjectName, SIGNAL(editingFinished()), this, SLOT(editObjectName()));
 	connect(ui.comboBox_ObjectList, SIGNAL(currentTextChanged(const QString&)), this, SLOT(selectCurrentObject()));
+	connect(ui.lineEdit_Tag, SIGNAL(editingFinished()), this, SLOT(editTag()));
 
 	connect(ui.doubleSpinBox_PositionX, SIGNAL(valueChanged(double)), this, SLOT(editPosX()));
 	connect(ui.doubleSpinBox_PositionY, SIGNAL(valueChanged(double)), this, SLOT(editPosY()));
@@ -108,9 +110,34 @@ QObjectController::QObjectController(QWidget* parent)
 	connect(ui.pushButton_BakeReflectionProbe, SIGNAL(clicked()), this, SLOT(bakeReflectionProbe()));
 	connect(ui.checkBox_ReflectionRender, SIGNAL(stateChanged(int)), this, SLOT(checkReflectionRender(int)));
 
-	connect(ui.comboBox_PhysicsActor, SIGNAL(currentTextChanged(const QString&)), this, SLOT(addPhysicsActor()));
+	connect(ui.pushButton_PhysicsActorAdd, SIGNAL(clicked()), this, SLOT(addPhysicsActor()));
 	connect(ui.pushButton_PhysicsActorDelete, SIGNAL(clicked()), this, SLOT(deletePhysicsActor()));
-	initializePhysicsAcotrList();
+	connect(ui.comboBox_PhysicsActor, SIGNAL(currentTextChanged(const QString&)), this, SLOT(setPhysicsActorType(const QString&)));
+	connect(ui.doubleSpinBox_BoxSizeX, SIGNAL(valueChanged(double)), this, SLOT(editBoxSize()));
+	connect(ui.doubleSpinBox_BoxSizeY, SIGNAL(valueChanged(double)), this, SLOT(editBoxSize()));
+	connect(ui.doubleSpinBox_BoxSizeZ, SIGNAL(valueChanged(double)), this, SLOT(editBoxSize()));
+	connect(ui.doubleSpinBox_SphereRadius, SIGNAL(valueChanged(double)), this, SLOT(editSphereRadius()));
+	connect(ui.checkBox_FreezePositionX, SIGNAL(stateChanged(int)), this, SLOT(checkFreezePosition()));
+	connect(ui.checkBox_FreezePositionY, SIGNAL(stateChanged(int)), this, SLOT(checkFreezePosition()));
+	connect(ui.checkBox_FreezePositionZ, SIGNAL(stateChanged(int)), this, SLOT(checkFreezePosition()));
+	connect(ui.checkBox_FreezeRotationX, SIGNAL(stateChanged(int)), this, SLOT(checkFreezeRotation()));
+	connect(ui.checkBox_FreezeRotationY, SIGNAL(stateChanged(int)), this, SLOT(checkFreezeRotation()));
+	connect(ui.checkBox_FreezeRotationZ, SIGNAL(stateChanged(int)), this, SLOT(checkFreezeRotation()));
+	connect(ui.checkBox_UseGravity, SIGNAL(stateChanged(int)), this, SLOT(checkUseGravity(int)));
+	connect(ui.checkBox_IsKinematic, SIGNAL(stateChanged(int)), this, SLOT(checkIsKinematic(int)));
+	connect(ui.radioButton_Dynamic, SIGNAL(clicked()), this, SLOT(clickDynamic()));
+	connect(ui.radioButton_Static, SIGNAL(clicked()), this, SLOT(clickStatic()));
+
+
+	ui.label_BoxSize->setVisible(false);
+	ui.label_BoxSizeX->setVisible(false);
+	ui.label_BoxSizeY->setVisible(false);
+	ui.label_BoxSizeZ->setVisible(false);
+	ui.doubleSpinBox_BoxSizeX->setVisible(false);
+	ui.doubleSpinBox_BoxSizeY->setVisible(false);
+	ui.doubleSpinBox_BoxSizeZ->setVisible(false);
+	ui.label_SphereRadius->setVisible(false);
+	ui.doubleSpinBox_SphereRadius->setVisible(false);
 
 	QString comboStyle = "QComboBox { combobox-popup: 0; }";
 
@@ -124,6 +151,7 @@ QObjectController::QObjectController(QWidget* parent)
 	ui.comboBox_MetalRough->setStyleSheet(comboStyle);
 	ui.comboBox_Emissive->setStyleSheet(comboStyle);
 	ui.comboBox_PhysicsActor->setStyleSheet(comboStyle);
+
 }
 
 QObjectController::~QObjectController()
@@ -175,14 +203,11 @@ void QObjectController::deleteObject()
 	SetObjectData();
 }
 
-void QObjectController::setCameraTocurrObj()
+void QObjectController::setDebugRender()
 {
-	if (m_pCurrentGameObject == nullptr)
-	{
-		return;
-	}
-
-	DLLEngine::GetNowCamera()->m_Transform->LookAtPitchAndYaw(m_pCurrentGameObject->m_Transform->m_Position);
+	static bool renderMode = false;
+	DLLEngine::SetDebugRenderMode(!renderMode);
+	renderMode = !renderMode;
 }
 
 void QObjectController::clickRenderWidget()
@@ -229,7 +254,7 @@ void QObjectController::Update()
 	//	}
 	//}
 
-	
+
 
 	updateMeshList();
 	UpdateTransformData();
@@ -313,6 +338,13 @@ void QObjectController::checkEnable()
 {
 	ui.checkBox_Enable->isChecked() ?		//체크되어있으면 enable
 		m_pCurrentGameObject->OnEnable() : m_pCurrentGameObject->OnDisable();
+}
+
+void QObjectController::editTag()
+{
+	char buff[200] = { 0, };
+	QStringToConstCharPtr(ui.lineEdit_Tag->text(), buff);
+	DLLEngine::SetTag(buff, m_pCurrentGameObject);
 }
 
 void QObjectController::editPosX()
@@ -411,7 +443,7 @@ void QObjectController::addMeshRenderer()
 	ui.comboBox_Albedo->setDisabled(false);
 	ui.comboBox_Normal->setDisabled(false);
 	ui.comboBox_MetalRough->setDisabled(false);
-	ui.comboBox_Emissive->setDisabled(false); 
+	ui.comboBox_Emissive->setDisabled(false);
 
 	ui.horizontalSlider_Metalic->setDisabled(false);
 	ui.horizontalSlider_NormalFactor->setDisabled(false);
@@ -683,167 +715,322 @@ void QObjectController::checkReflectionRender(int state)
 
 void QObjectController::addPhysicsActor()
 {
+	DLLGameObject::AddPhysicsActor(m_pCurrentGameObject);
 
-	if (ui.comboBox_PhysicsActor->currentText() == "Box")
-	{
-		if (m_PhysicsWidgets.m_PrevRigidType == "Sphere")
-		{
-			delete ui.formLayout->takeAt(ui.formLayout->count() - 1)->widget();
-		}
-
-		m_PhysicsWidgets.m_label_BSize = new QLabel("Size");
-		m_pCurrentGameObject->AddComponent<PhysicsActor>(new PhysicsActor({ 1, 1, 1 }, RigidType::Dynamic));
-		ui.formLayout->setWidget(ui.formLayout->count(), QFormLayout::SpanningRole, m_PhysicsWidgets.m_label_BSize);
-		m_PhysicsWidgets.m_lineEdit_BX = new QLineEdit();
-		m_PhysicsWidgets.m_lineEdit_BY = new QLineEdit();
-		m_PhysicsWidgets.m_lineEdit_BZ = new QLineEdit();
-		m_PhysicsWidgets.m_lineEdit_BX->setValidator(new QDoubleValidator(m_PhysicsWidgets.m_lineEdit_BX));
-		m_PhysicsWidgets.m_lineEdit_BY->setValidator(new QDoubleValidator(m_PhysicsWidgets.m_lineEdit_BY));
-		m_PhysicsWidgets.m_lineEdit_BZ->setValidator(new QDoubleValidator(m_PhysicsWidgets.m_lineEdit_BZ));
-
-		QHBoxLayout* _xyz = new QHBoxLayout();
-		m_PhysicsWidgets.m_label_BX = new QLabel("X");
-		m_PhysicsWidgets.m_label_BY = new QLabel("Y");
-		m_PhysicsWidgets.m_label_BZ = new QLabel("Z");
-
-		_xyz->addWidget(m_PhysicsWidgets.m_label_BX);
-		_xyz->addWidget(m_PhysicsWidgets.m_lineEdit_BX);
-		_xyz->addWidget(m_PhysicsWidgets.m_label_BY);
-		_xyz->addWidget(m_PhysicsWidgets.m_lineEdit_BY);
-		_xyz->addWidget(m_PhysicsWidgets.m_label_BZ);
-		_xyz->addWidget(m_PhysicsWidgets.m_lineEdit_BZ);
-		ui.formLayout->setLayout(ui.formLayout->count(), QFormLayout::SpanningRole, _xyz);
-
-		m_PhysicsWidgets.m_PrevRigidType = "Box";
-	}
-	else if (ui.comboBox_PhysicsActor->currentText() == "Sphere")
-	{
-		if (m_PhysicsWidgets.m_PrevRigidType == "Box")
-		{
-			delete ui.formLayout->takeAt(ui.formLayout->count() - 1)->widget();
-			delete ui.formLayout->takeAt(ui.formLayout->count() - 2)->widget();
-		}
-
-		m_pCurrentGameObject->AddComponent<PhysicsActor>(new PhysicsActor(1, RigidType::Dynamic));
-		m_PhysicsWidgets.m_label_SSize = new QLabel("Radius");
-
-		ui.formLayout->setWidget(ui.formLayout->count(), QFormLayout::LabelRole, m_PhysicsWidgets.m_label_SSize);
-		m_PhysicsWidgets.m_lineEdit_SRadius = new QLineEdit();
-		m_PhysicsWidgets.m_lineEdit_SRadius->setValidator(new QDoubleValidator(m_PhysicsWidgets.m_lineEdit_SRadius));
-		ui.formLayout->setWidget(ui.formLayout->count() - 1, QFormLayout::FieldRole, m_PhysicsWidgets.m_lineEdit_SRadius);
-
-		m_PhysicsWidgets.m_PrevRigidType = "Sphere";
-
-		//connect(_lineEdit, SIGNAL(editingFinished()), this, SLOT());
-	}
-	else
-	{
-
-	}
-
-
-	if (ui.comboBox_PhysicsActor->currentText() != "")
-	{
-		ui.pushButton_PhysicsActorDelete->setCheckable(true);
-		ui.radioButton_Dynamic->setCheckable(true);
-		ui.radioButton_Static->setCheckable(true);
-
-		if (m_pCurrentGameObject->GetComponent<PhysicsActor>()->GetRigidType() == RigidType::Dynamic)
-		{
-			ui.radioButton_Dynamic->setChecked(true);
-		}
-		else if (m_pCurrentGameObject->GetComponent<PhysicsActor>()->GetRigidType() == RigidType::Static)
-		{
-			ui.radioButton_Static->setChecked(true);
-		}
-	}
-
+	updatePhysicsActor();
+	ui.checkBox_IsKinematic->setChecked(true);
+	//checkIsKinematic(true);
 }
 
-void QObjectController::initializePhysicsAcotrList()
+void QObjectController::setPhysicsActorType(const QString& type)
 {
-	//아직은 피직스 기능을 봉인한다.
-	ui.pushButton_PhysicsActorDelete->setDisabled(true);
-	ui.comboBox_PhysicsActor->setDisabled(true);
-	ui.radioButton_Dynamic->setDisabled(true);
-	ui.radioButton_Static->setDisabled(true);
+	PhysicsActor* physicsActor = DLLGameObject::GetPhysicsActor(m_pCurrentGameObject);
 
-	ui.comboBox_PhysicsActor->addItem("");			//없다는 뜻
-	ui.comboBox_PhysicsActor->addItem("Box");
-	ui.comboBox_PhysicsActor->addItem("Sphere");
+	if (type == "Box")
+	{
+		ui.label_BoxSize->setVisible(true);
+		ui.label_BoxSizeX->setVisible(true);
+		ui.label_BoxSizeY->setVisible(true);
+		ui.label_BoxSizeZ->setVisible(true);
+		ui.doubleSpinBox_BoxSizeX->setVisible(true);
+		ui.doubleSpinBox_BoxSizeY->setVisible(true);
+		ui.doubleSpinBox_BoxSizeZ->setVisible(true);
+
+		ui.label_SphereRadius->setVisible(false);
+		ui.doubleSpinBox_SphereRadius->setVisible(false);
+
+		if (dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry()) == nullptr)
+		{
+			physicsActor->SetBoxCollider({ 1,1,1 },
+				physicsActor->GetRigidType() == RigidType::Dynamic ? RigidType::Dynamic : RigidType::Static);
+		}
+		else
+		{
+			physicsActor->SetBoxCollider({ dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().x,
+											dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().y,
+											dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().z },
+				physicsActor->GetRigidType() == RigidType::Dynamic ? RigidType::Dynamic : RigidType::Static);
+		}
+	}
+	else if (type == "Sphere")
+	{
+		ui.label_SphereRadius->setVisible(true);
+		ui.doubleSpinBox_SphereRadius->setVisible(true);
+
+		ui.label_BoxSize->setVisible(false);
+		ui.label_BoxSizeX->setVisible(false);
+		ui.label_BoxSizeY->setVisible(false);
+		ui.label_BoxSizeZ->setVisible(false);
+		ui.doubleSpinBox_BoxSizeX->setVisible(false);
+		ui.doubleSpinBox_BoxSizeY->setVisible(false);
+		ui.doubleSpinBox_BoxSizeZ->setVisible(false);
+
+		if (dynamic_cast<SphereGeometry*>(physicsActor->GetGeometry()) == nullptr)
+		{
+			physicsActor->SetSphereCollider(1,
+				physicsActor->GetRigidType() == RigidType::Dynamic ? RigidType::Dynamic : RigidType::Static);
+		}
+		else
+		{
+			physicsActor->SetSphereCollider(dynamic_cast<SphereGeometry*>(physicsActor->GetGeometry())->GetSphereRadius(),
+				physicsActor->GetRigidType() == RigidType::Dynamic ? RigidType::Dynamic : RigidType::Static);
+		}
+	}
+
 }
 
 void QObjectController::deletePhysicsActor()
 {
+	PhysicsActor* physicsActor = DLLGameObject::GetPhysicsActor(m_pCurrentGameObject);
+	DLLEngine::DerigisterComponent(physicsActor);
 
-	//m_PhysicsWidgets.m_label_BSize == nullptr ? void() : ui.formLayout->removeWidget(m_PhysicsWidgets.m_label_BSize);
-	//m_PhysicsWidgets.m_lineEdit_BX == nullptr ? void() : ui.formLayout->removeWidget(m_PhysicsWidgets.m_lineEdit_BX);
-	//m_PhysicsWidgets.m_lineEdit_BY == nullptr ? void() : ui.formLayout->removeWidget(m_PhysicsWidgets.m_lineEdit_BY);
-	//m_PhysicsWidgets.m_lineEdit_BZ == nullptr ? void() : ui.formLayout->removeWidget(m_PhysicsWidgets.m_lineEdit_BZ);
-	//m_PhysicsWidgets.m_label_BX == nullptr ? void() : ui.formLayout->removeWidget(m_PhysicsWidgets.m_label_BX);
-	//m_PhysicsWidgets.m_label_BY == nullptr ? void() : ui.formLayout->removeWidget(m_PhysicsWidgets.m_label_BY);
-	//m_PhysicsWidgets.m_label_BZ == nullptr ? void() : ui.formLayout->removeWidget(m_PhysicsWidgets.m_label_BZ);
+	ui.pushButton_PhysicsActorAdd->setDisabled(false);
+	ui.pushButton_PhysicsActorDelete->setDisabled(true);
 
-	//m_PhysicsWidgets.m_label_SSize == nullptr ? void() : ui.formLayout->removeWidget(m_PhysicsWidgets.m_label_SSize);
-	//m_PhysicsWidgets.m_lineEdit_SRadius == nullptr ? void() : ui.formLayout->removeWidget(m_PhysicsWidgets.m_lineEdit_SRadius);
+	ui.comboBox_PhysicsActor->setDisabled(true);
+	ui.radioButton_Dynamic->setDisabled(true);
+	ui.radioButton_Static->setDisabled(true);
 
-	if (m_pCurrentGameObject != nullptr)
-	{
-		if (m_pCurrentGameObject->GetComponent<PhysicsActor>() == nullptr)
-		{
+	ui.checkBox_UseGravity->setDisabled(true);
+	ui.checkBox_IsKinematic->setDisabled(true);
+	ui.checkBox_FreezePositionX->setDisabled(true);
+	ui.checkBox_FreezePositionY->setDisabled(true);
+	ui.checkBox_FreezePositionZ->setDisabled(true);
+	ui.checkBox_FreezeRotationX->setDisabled(true);
+	ui.checkBox_FreezeRotationY->setDisabled(true);
+	ui.checkBox_FreezeRotationZ->setDisabled(true);
 
-		}
-		else
-		{
-			DLLEngine::DerigisterComponent(m_pCurrentGameObject->GetComponent<PhysicsActor>());
-			updatePhysicsActor();
-		}
-	}
-
-
+	ui.label_BoxSize->setVisible(false);
+	ui.label_BoxSizeX->setVisible(false);
+	ui.label_BoxSizeY->setVisible(false);
+	ui.label_BoxSizeZ->setVisible(false);
+	ui.doubleSpinBox_BoxSizeX->setVisible(false);
+	ui.doubleSpinBox_BoxSizeY->setVisible(false);
+	ui.doubleSpinBox_BoxSizeZ->setVisible(false);
+	ui.label_SphereRadius->setVisible(false);
+	ui.doubleSpinBox_SphereRadius->setVisible(false);
 }
 
-void QObjectController::updateRigidType()
+void QObjectController::editBoxSize()
 {
-	//ui.radioButton_Dynamic->isChecked()?
-	//	m_pCurrentGameObject->GetComponent<PhysicsActor>()->setRigidType() 
-	///있어도 되나?
+	PhysicsActor* physicsActor = DLLGameObject::GetPhysicsActor(m_pCurrentGameObject);
+	physicsActor->SetBoxCollider({ static_cast<float>(ui.doubleSpinBox_BoxSizeX->value()),
+									static_cast<float>(ui.doubleSpinBox_BoxSizeY->value()),
+									static_cast<float>(ui.doubleSpinBox_BoxSizeZ->value()) },
+		ui.radioButton_Dynamic->isChecked() ? RigidType::Dynamic : RigidType::Static);
+}
+
+void QObjectController::editSphereRadius()
+{
+	PhysicsActor* physicsActor = DLLGameObject::GetPhysicsActor(m_pCurrentGameObject);
+	physicsActor->SetSphereCollider(static_cast<float>(ui.doubleSpinBox_SphereRadius->value()),
+		ui.radioButton_Dynamic->isChecked() ? RigidType::Dynamic : RigidType::Static);
+}
+
+void QObjectController::checkUseGravity(int value)
+{
+	PhysicsActor* physicsActor = DLLGameObject::GetPhysicsActor(m_pCurrentGameObject);
+	physicsActor->SetGravity(static_cast<bool>(value));
+
+	if (ui.comboBox_PhysicsActor->currentText() == "Box")
+	{
+		physicsActor->SetBoxCollider({ dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().x,
+								dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().y,
+								dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().z },
+			physicsActor->GetRigidType() == RigidType::Dynamic ? RigidType::Dynamic : RigidType::Static);
+	}
+	else
+	{
+		physicsActor->SetSphereCollider(dynamic_cast<SphereGeometry*>(physicsActor->GetGeometry())->GetSphereRadius(),
+			physicsActor->GetRigidType() == RigidType::Dynamic ? RigidType::Dynamic : RigidType::Static);
+	}
+}
+
+void QObjectController::checkIsKinematic(int value)
+{
+	PhysicsActor* physicsActor = DLLGameObject::GetPhysicsActor(m_pCurrentGameObject);
+	physicsActor->SetKinematic(static_cast<bool>(value));
+
+	if (ui.comboBox_PhysicsActor->currentText() == "Box")
+	{
+		physicsActor->SetBoxCollider({ dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().x,
+								dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().y,
+								dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().z },
+			physicsActor->GetRigidType() == RigidType::Dynamic ? RigidType::Dynamic : RigidType::Static);
+	}
+	else
+	{
+		physicsActor->SetSphereCollider(dynamic_cast<SphereGeometry*>(physicsActor->GetGeometry())->GetSphereRadius(),
+			physicsActor->GetRigidType() == RigidType::Dynamic ? RigidType::Dynamic : RigidType::Static);
+	}
+}
+
+
+void QObjectController::checkFreezePosition()
+{
+	PhysicsActor* physicsActor = DLLGameObject::GetPhysicsActor(m_pCurrentGameObject);
+	physicsActor->SetFreezePosition(ui.checkBox_FreezePositionX->isChecked(), ui.checkBox_FreezePositionY->isChecked(), ui.checkBox_FreezePositionZ->isChecked());
+}
+
+void QObjectController::checkFreezeRotation()
+{
+	PhysicsActor* physicsActor = DLLGameObject::GetPhysicsActor(m_pCurrentGameObject);
+	physicsActor->SetFreezeRotation(ui.checkBox_FreezeRotationX->isChecked(), ui.checkBox_FreezeRotationY->isChecked(), ui.checkBox_FreezeRotationZ->isChecked());
+}
+
+void QObjectController::clickDynamic()
+{
+	PhysicsActor* physicsActor = DLLGameObject::GetPhysicsActor(m_pCurrentGameObject);
+	if (ui.comboBox_PhysicsActor->currentText() == "Box")
+	{
+		physicsActor->SetBoxCollider({ dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().x,
+								dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().y,
+								dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().z },
+			RigidType::Dynamic);
+	}
+	else
+	{
+		physicsActor->SetSphereCollider(dynamic_cast<SphereGeometry*>(physicsActor->GetGeometry())->GetSphereRadius(),
+			RigidType::Dynamic);
+	}
+}
+
+void QObjectController::clickStatic()
+{
+	PhysicsActor* physicsActor = DLLGameObject::GetPhysicsActor(m_pCurrentGameObject);
+	if (ui.comboBox_PhysicsActor->currentText() == "Box")
+	{
+		physicsActor->SetBoxCollider({ dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().x,
+								dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().y,
+								dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().z },
+			RigidType::Static);
+	}
+	else
+	{
+		physicsActor->SetSphereCollider(dynamic_cast<SphereGeometry*>(physicsActor->GetGeometry())->GetSphereRadius(),
+			RigidType::Static);
+	}
+}
+
+void QObjectController::setRigidType()
+{
+	PhysicsActor* physicsActor = DLLGameObject::GetPhysicsActor(m_pCurrentGameObject);
+	if (ui.comboBox_PhysicsActor->currentText() == "Box")
+	{
+		editBoxSize();
+	}
+	else if (ui.comboBox_PhysicsActor->currentText() == "Sphere")
+	{
+		editSphereRadius();
+	}
 }
 
 void QObjectController::updatePhysicsActor()
 {
-	if (DLLGameObject::GetPhysicsActor(m_pCurrentGameObject) == nullptr)
+	PhysicsActor* physicsActor = DLLGameObject::GetPhysicsActor(m_pCurrentGameObject);
+
+	//존재 안한다.
+	if (physicsActor == nullptr)
 	{
-		ui.comboBox_PhysicsActor->setCurrentText("");
-		//존재하지 않는다면 버튼을 비활성화한다.
-		ui.pushButton_PhysicsActorDelete->setCheckable(false);
-		ui.radioButton_Dynamic->setCheckable(false);
-		ui.radioButton_Static->setCheckable(false);
+		ui.pushButton_PhysicsActorAdd->setDisabled(false);
+		ui.pushButton_PhysicsActorDelete->setDisabled(true);
+
+		ui.comboBox_PhysicsActor->setDisabled(true);
+		ui.radioButton_Dynamic->setDisabled(true);
+		ui.radioButton_Static->setDisabled(true);
+
+		ui.checkBox_UseGravity->setDisabled(true);
+		ui.checkBox_IsKinematic->setDisabled(true);
+		ui.checkBox_FreezePositionX->setDisabled(true);
+		ui.checkBox_FreezePositionY->setDisabled(true);
+		ui.checkBox_FreezePositionZ->setDisabled(true);
+		ui.checkBox_FreezeRotationX->setDisabled(true);
+		ui.checkBox_FreezeRotationY->setDisabled(true);
+		ui.checkBox_FreezeRotationZ->setDisabled(true);
+
+		ui.label_BoxSize->setVisible(false);
+		ui.label_BoxSizeX->setVisible(false);
+		ui.label_BoxSizeY->setVisible(false);
+		ui.label_BoxSizeZ->setVisible(false);
+		ui.doubleSpinBox_BoxSizeX->setVisible(false);
+		ui.doubleSpinBox_BoxSizeY->setVisible(false);
+		ui.doubleSpinBox_BoxSizeZ->setVisible(false);
+		ui.label_SphereRadius->setVisible(false);
+		ui.doubleSpinBox_SphereRadius->setVisible(false);
 	}
+	//존재한다?!
 	else
 	{
-		ui.pushButton_PhysicsActorDelete->setCheckable(true);
-		ui.radioButton_Dynamic->setCheckable(true);
-		ui.radioButton_Static->setCheckable(true);
+		ui.pushButton_PhysicsActorAdd->setDisabled(true);
+		ui.pushButton_PhysicsActorDelete->setDisabled(false);
+
+		ui.comboBox_PhysicsActor->setDisabled(false);
+		ui.radioButton_Dynamic->setDisabled(false);
+		ui.radioButton_Static->setDisabled(false);
+
+		ui.checkBox_UseGravity->setDisabled(false);
+		ui.checkBox_IsKinematic->setDisabled(false);
+		ui.checkBox_FreezePositionX->setDisabled(false);
+		ui.checkBox_FreezePositionY->setDisabled(false);
+		ui.checkBox_FreezePositionZ->setDisabled(false);
+		ui.checkBox_FreezeRotationX->setDisabled(false);
+		ui.checkBox_FreezeRotationY->setDisabled(false);
+		ui.checkBox_FreezeRotationZ->setDisabled(false);
+
+		setPhysicsActorType(physicsActor->GetGetGeometryType() == GeometryType::Box ? "Box" : "Shpere");
+		if (physicsActor->GetGetGeometryType() == GeometryType::Box)
+		{
+			disconnect(ui.doubleSpinBox_BoxSizeX, SIGNAL(valueChanged(double)), this, SLOT(editBoxSize()));
+			disconnect(ui.doubleSpinBox_BoxSizeY, SIGNAL(valueChanged(double)), this, SLOT(editBoxSize()));
+			disconnect(ui.doubleSpinBox_BoxSizeZ, SIGNAL(valueChanged(double)), this, SLOT(editBoxSize()));
+
+			ui.doubleSpinBox_BoxSizeX->setValue(dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().x);
+			ui.doubleSpinBox_BoxSizeY->setValue(dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().y);
+			ui.doubleSpinBox_BoxSizeZ->setValue(dynamic_cast<BoxGeometry*>(physicsActor->GetGeometry())->GetBoxSize().z);
+
+			connect(ui.doubleSpinBox_BoxSizeX, SIGNAL(valueChanged(double)), this, SLOT(editBoxSize()));
+			connect(ui.doubleSpinBox_BoxSizeY, SIGNAL(valueChanged(double)), this, SLOT(editBoxSize()));
+			connect(ui.doubleSpinBox_BoxSizeZ, SIGNAL(valueChanged(double)), this, SLOT(editBoxSize()));
+		}
+		else
+		{
+			disconnect(ui.doubleSpinBox_SphereRadius, SIGNAL(valueChanged(double)), this, SLOT(editSphereRadius()));
+			ui.doubleSpinBox_SphereRadius->setValue(dynamic_cast<SphereGeometry*>(physicsActor->GetGeometry())->GetSphereRadius());
+			connect(ui.doubleSpinBox_SphereRadius, SIGNAL(valueChanged(double)), this, SLOT(editSphereRadius()));
+		}
+
 		//라디오버튼
-		if (DLLGameObject::GetPhysicsActor(m_pCurrentGameObject)->GetRigidType() == RigidType::Dynamic)
+		if (physicsActor->GetRigidType() == RigidType::Dynamic)
 		{
 			ui.radioButton_Dynamic->setChecked(true);
 		}
-		else if (DLLGameObject::GetPhysicsActor(m_pCurrentGameObject)->GetRigidType() == RigidType::Static)
+		else if (physicsActor->GetRigidType() == RigidType::Static)
 		{
 			ui.radioButton_Static->setChecked(true);
 		}
-		//콤보박스
-		if (DLLGameObject::GetPhysicsActor(m_pCurrentGameObject)->GetGeometry()->GetType() == GeometryType::Box)
-		{
-			ui.comboBox_PhysicsActor->setCurrentText("Box");
-		}
-		else if (DLLGameObject::GetPhysicsActor(m_pCurrentGameObject)->GetGeometry()->GetType() == GeometryType::Sphere)
-		{
-			ui.comboBox_PhysicsActor->setCurrentText("Sphere");
-		}
 
+
+		ui.checkBox_UseGravity->setChecked(physicsActor->IsGravity());
+		ui.checkBox_IsKinematic->setChecked(physicsActor->IsKinematic());
+
+		disconnect(ui.checkBox_FreezePositionX, SIGNAL(stateChanged(int)), this, SLOT(checkFreezePosition()));
+		disconnect(ui.checkBox_FreezePositionY, SIGNAL(stateChanged(int)), this, SLOT(checkFreezePosition()));
+		disconnect(ui.checkBox_FreezePositionZ, SIGNAL(stateChanged(int)), this, SLOT(checkFreezePosition()));
+		disconnect(ui.checkBox_FreezeRotationX, SIGNAL(stateChanged(int)), this, SLOT(checkFreezeRotation()));
+		disconnect(ui.checkBox_FreezeRotationY, SIGNAL(stateChanged(int)), this, SLOT(checkFreezeRotation()));
+		disconnect(ui.checkBox_FreezeRotationZ, SIGNAL(stateChanged(int)), this, SLOT(checkFreezeRotation()));
+		ui.checkBox_FreezePositionX->setChecked(physicsActor->GetFreezePosition().x);
+		ui.checkBox_FreezePositionY->setChecked(physicsActor->GetFreezePosition().y);
+		ui.checkBox_FreezePositionZ->setChecked(physicsActor->GetFreezePosition().z);
+		ui.checkBox_FreezeRotationX->setChecked(physicsActor->GetFreezeRotation().x);
+		ui.checkBox_FreezeRotationY->setChecked(physicsActor->GetFreezeRotation().y);
+		ui.checkBox_FreezeRotationZ->setChecked(physicsActor->GetFreezeRotation().z);
+		connect(ui.checkBox_FreezePositionX, SIGNAL(stateChanged(int)), this, SLOT(checkFreezePosition()));
+		connect(ui.checkBox_FreezePositionY, SIGNAL(stateChanged(int)), this, SLOT(checkFreezePosition()));
+		connect(ui.checkBox_FreezePositionZ, SIGNAL(stateChanged(int)), this, SLOT(checkFreezePosition()));
+		connect(ui.checkBox_FreezeRotationX, SIGNAL(stateChanged(int)), this, SLOT(checkFreezeRotation()));
+		connect(ui.checkBox_FreezeRotationY, SIGNAL(stateChanged(int)), this, SLOT(checkFreezeRotation()));
+		connect(ui.checkBox_FreezeRotationZ, SIGNAL(stateChanged(int)), this, SLOT(checkFreezeRotation()));
 	}
 }
 
@@ -931,6 +1118,11 @@ void QObjectController::SetObjectData()
 	ui.checkBox_Enable->setChecked(m_pCurrentGameObject->GetIsEnabled());
 	ui.lineEdit_ObjectId->setText(QString::number(m_pCurrentGameObject->GetGameObjectId()));
 	ui.lineEdit_ObjectName->setText(ConstCharPtrToQString(DLLGameObject::GetName(m_pCurrentGameObject)));
+
+	disconnect(ui.lineEdit_Tag, SIGNAL(editingFinished()), this, SLOT(editTag()));
+	ui.lineEdit_Tag->setText(ConstCharPtrToQString(DLLGameObject::GetTag(m_pCurrentGameObject)));
+	connect(ui.lineEdit_Tag, SIGNAL(editingFinished()), this, SLOT(editTag()));
+
 
 	UpdateTransformData();
 

@@ -27,7 +27,7 @@ bool Flask::Use()
 	if (IsThrowing() == false && m_MyInventory->GetItemCount(IItem::Type::eFlask) > 0)
 	{
 		m_UseCoolTimeTimer = m_ThrowingSpeed;
-		PlayerController::s_bIsThrowing = true;
+		m_MyInventory->GetMyObject()->GetComponent<PlayerController>()->m_bIsThrowing = true;
 
 		CA_TRACE("[Flask] 투척 시작");
 
@@ -56,7 +56,7 @@ void Flask::CoolDown()
 	{
 		this->Throw();
 
-		PlayerController::s_bIsThrowing = false;
+		m_MyInventory->GetMyObject()->GetComponent<PlayerController>()->m_bIsThrowing = false;
 
 
 		// 투척 후 인벤토리의 Flask 갯수가 0이라면 바로 주무기로 교체한다
@@ -116,7 +116,7 @@ bool FireFlask::Use()
 	if (IsThrowing() == false && m_MyInventory->GetItemCount(IItem::Type::eFlask) > 0)
 	{
 		m_UseCoolTimeTimer = m_ThrowingSpeed;
-		PlayerController::s_bIsThrowing = true;
+		m_MyInventory->GetMyObject()->GetComponent<PlayerController>()->m_bIsThrowing = true;
 
 		CA_TRACE("[FireFlask] 투척 시작");
 
@@ -138,7 +138,7 @@ void FireFlask::CoolDown()
 	{
 		this->Throw();
 
-		PlayerController::s_bIsThrowing = false;
+		m_MyInventory->GetMyObject()->GetComponent<PlayerController>()->m_bIsThrowing = false;
 	}
 }
 

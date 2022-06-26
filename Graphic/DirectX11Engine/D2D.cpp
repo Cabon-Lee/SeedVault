@@ -1,6 +1,7 @@
 #include "D2D.h"
 #include "UIData.h"
 #include "FontInfo.h"
+#include "EffectUIEnum.h"
 
 #include "ComException.h"
 #include "ErrorLogger.h"
@@ -152,6 +153,7 @@ unsigned int D2D::FontInitialize(std::shared_ptr<Text_Queue_Info> pFontDesc)
 void D2D::Draw_AllText()
 {
 
+
 	D2D1_SIZE_F targetSize = m_2D_RenderTarget->GetSize();
 	m_2D_RenderTarget->BeginDraw();
 
@@ -190,49 +192,64 @@ void D2D::Draw_AllText()
 			textRange.startPosition = 0;
 			textRange.length = wcslen(_nowTextStrings[i]->text);
 
-
+			//_nowFontInfo->m_TextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 			_nowFontInfo->m_TextLayOut->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
 			_nowFontInfo->m_TextLayOut->SetFontSize(_nowFontInfo->m_FontSize, textRange);
 
+			DWRITE_TEXT_METRICS dtm;
+			_nowFontInfo->m_TextLayOut->GetMetrics(&dtm);
+			float minHeight = dtm.height;
+			float minWidth = dtm.widthIncludingTrailingWhitespace;
 
-			/// <summary>
-			/// 여기를 피벗종류에따라 바꿔조라
-			/// </summary>
-			/// 
+
+			/// 중심이되는 모서리에따라 포지션 변경됨
 			float _Xpos = 0;
 			float _Ypos = 0;
 
 			switch (_nowFontInfo->m_textPivotType)
 			{
-			case UIAxis::None:
-			case UIAxis::LeftUp:
+			case eUIAxis::None:
+			case eUIAxis::LeftUp:
 				_Xpos = _nowFontInfo->m_PosX;
 				_Ypos = _nowFontInfo->m_PosY;
 				break;
-			case UIAxis::RightUp:
+			case eUIAxis::RightUp:
 				_Xpos = m_ClientWidth - _nowFontInfo->m_PosX;
 				_Ypos = _nowFontInfo->m_PosY;
 				break;
-			case UIAxis::RightDown:
+			case eUIAxis::RightDown:
 				_Xpos = m_ClientWidth - _nowFontInfo->m_PosX;
 				_Ypos = m_ClientHeight - _nowFontInfo->m_PosY;
 				break;
-			case UIAxis::LeftDown:
+			case eUIAxis::LeftDown:
 				_Xpos = _nowFontInfo->m_PosX;
 				_Ypos = m_ClientHeight - _nowFontInfo->m_PosY;
+				break;
+			case eUIAxis::Center:
+				_Xpos = m_ClientWidth / 2 + _nowFontInfo->m_PosX;
+				_Ypos = m_ClientHeight / 2 + _nowFontInfo->m_PosY;
 				break;
 			}
 
-			m_2D_RenderTarget->DrawTextLayout(D2D1::Point2F(
-				//_Xpos, _Ypos + _nowLineSpace),
-				_Xpos, _Ypos),
-				_nowFontInfo->m_TextLayOut, m_TextColor);
-		}
+			switch (_nowFontInfo->m_textPoint)
+			{
+			case eTextPoint::LeftUP :
+				m_2D_RenderTarget->DrawTextLayout(
+					D2D1::Point2F(_Xpos , _Ypos),
+					_nowFontInfo->m_TextLayOut, m_TextColor);				
+				break;
 
+			case eTextPoint::Center:
+				m_2D_RenderTarget->DrawTextLayout(
+					D2D1::Point2F(_Xpos - minWidth / 2, _Ypos - minHeight / 2),
+					_nowFontInfo->m_TextLayOut, m_TextColor);
+				break;
+			}
+
+		}
 
 		m_TextBlock_Q.pop();
 	}
-
 
 	m_2D_RenderTarget->EndDraw();
 }

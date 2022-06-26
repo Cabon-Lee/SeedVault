@@ -62,6 +62,7 @@ _DLL ReflectionProbeCamera::ReflectionProbeCamera()
 	, m_SaveData(new ReflectionProbeCamera_Save())
 {
 	m_pRenderer = DLLEngine::GetEngine()->GetIRenderer();
+	m_SceneName =  DLLEngine::GetNowSceneName();
 
 	// 여기서 리플렉션 프로브를 생성한다
 	m_ProbeIndex = m_pRenderer->AddReflectionProbe();
@@ -169,7 +170,8 @@ void ReflectionProbeCamera::ObserverUpdate(std::shared_ptr<IResourceManager> pRe
 	// 기존에 구워둔 DDS가 있다면 가져온다
 	for (unsigned int i = 0; i < 3; i++)
 	{
-		m_MapNames[i] = std::to_string(m_SceneIndex) + m_MapNames[i];
+		//m_MapNames[i] = std::to_string(m_SceneIndex) + m_MapNames[i];
+		m_MapNames[i] = m_SceneName + m_MapNames[i];
 		m_Maps[i] = pReosureManager->GetIBLImageIndex(m_MapNames[i]);
 	}
 }
@@ -202,7 +204,7 @@ void ReflectionProbeCamera::BakingEnvironment()
 	// 위에 있는 프로세스는 단지 그림을 그릴 뿐, 베이킹 단계가 아님
 	CheckTargetDistance();
 
-	m_pRenderer->ReflectionProbeBaking(m_SceneIndex, m_ProbeIndex);
+	m_pRenderer->ReflectionProbeBaking(m_SceneIndex, m_SceneName, m_ProbeIndex);
 
 	m_IsBaking = false;
 }

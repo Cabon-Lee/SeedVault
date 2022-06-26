@@ -5,7 +5,7 @@
 /// 
 /// 줌 인/아웃 및 카메라 충돌(Bounding)등 종합
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// 
 /// </summary>
 
@@ -52,6 +52,8 @@ public:
 protected:
 
 private:
+	class PlayerController* m_PlayerController;	// 플레이어 컨트롤러
+
 	Camera* m_Camera;					// 메인카메라의 카메라 컴포넌트
 
 	Transform* m_ZoomInPosition;		// parent Transform

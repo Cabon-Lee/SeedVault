@@ -11,7 +11,7 @@
 /// 구성요소로 Vertex, Edge, CenterPos(꼭지점이 아니라 삼각형 면의 포지션)
 /// 등의 데이터로 이루어진다.
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// </summary>
 class Triangle
 {

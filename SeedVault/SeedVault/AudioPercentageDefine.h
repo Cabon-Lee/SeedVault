@@ -1,0 +1,22 @@
+#pragma once
+
+namespace AudioPercentage
+{
+#define PLAYER_FOOTSTEP_WALK_L				0.1f
+#define PLAYER_FOOTSTEP_WALK_R				0.6f
+#define PLAYER_FOOTSTEP_CROUCH_L			0.1f
+#define PLAYER_FOOTSTEP_CROUCH_R			0.6f
+#define PLAYER_FOOTSTEP_RUN_L				0.1f
+#define PLAYER_FOOTSTEP_RUN_R				0.6f
+#define PLAYER_RELOAD
+#define PLAYER_WEAPON_SWAP					0.2f
+
+#define PARTNER_FOOTSTEP_WALK_L				0.1f
+#define PARTNER_FOOTSTEP_WALK_R				0.6f
+#define PARTNER_FOOTSTEP_CROUCH_L			0.1f
+#define PARTNER_FOOTSTEP_CROUCH_R			0.6f
+#define PARTNER_FOOTSTEP_RUN_L				0.1f
+#define PARTNER_FOOTSTEP_RUN_R				0.6f
+
+
+}

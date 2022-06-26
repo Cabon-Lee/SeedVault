@@ -5,7 +5,7 @@
 /// physx 씬에서 시뮬레이션 하면서 오브젝트간 충돌이 일어나게되면 충돌 정보를 만들어서
 /// PhysicsActor 클래스의 OnCollisionEnter()/Stay()/Exit() 에 전달해준다.
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// </summary>
 
 class ComponentBase;

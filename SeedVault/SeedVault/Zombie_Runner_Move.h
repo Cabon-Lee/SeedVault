@@ -2,12 +2,24 @@
 
 #include "Enemy_Move.h"
 
-/// <summary>
-/// Enemy A.I 이동 클래스 테스트
+/// <summary>z
+/// 러너 좀비 이동 클래스
 /// 정찰, 감지, 추적 등의 행동 필요
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// </summary>
+
+struct ViewSight
+{
+	ViewSight()
+		: angle(0)
+		, leftSight(0)
+		, rightSight(0) {}
+
+	float angle;		// 시야 각
+	float leftSight;	// 현재 시야의 좌측에 해당하는 각
+	float rightSight;	// 현재 시야의 우측에 해당하는 각
+};
 
 class Zombie_Runner_Move : public Enemy_Move
 {
@@ -25,35 +37,34 @@ public:
 
 public:
 	// Behavior Tree Node에 대응되는 함수
-	virtual bool FindPlayer() override;							// 플레이어 찾기
-	virtual bool MoveForPlayer() override;						// 플레이어 추적
+	virtual bool AwakenSight() override;						// 시야 발견 상태 판단
+	virtual bool PostAwakenSight() override;					// AwakeSight 후 처리
+	virtual bool MoveToTarget() override;						// 타겟 추적
 
 	virtual bool AttackToPlayer() override;						// 플레이어 공격
 	virtual bool AttackToPartner() override;					// 조수 공격
 
 	virtual bool IsDead() override;								// 죽었는지 판단
-	virtual bool IsWait() override;								// 대기상태인지 판단
-	virtual bool IsPatrol() override;							// 순찰 중인가 판단
-	virtual bool IsAttack() override;							// 순찰 중인가 판단
-	virtual bool IsReturn() override;							// 귀환 중인가 판단
+	virtual bool IsAttackPartner() override;					// 조수 공격중인가 판단
+	virtual bool IsAttackPlayer() override;						// 플레이어 공격중인가 판단
 
-	virtual bool MoveForTargetWayPoint() override;				// 타겟으로 이동
-	virtual bool UpdateTargetWayPoint() override;				// 웨이 포인트 갱신
-
-	virtual bool Wait();										// 대기
-
+	virtual bool MoveToReturnPoint() override;					// 귀환 위치로 이동
 
 public:
-	virtual void AddWayPoint(GameObject* wayPoint) override;	// 웨이포인트 추가
-	virtual void SetWaitTime(const float time) override;		// 외부에서 대기시간 조절할 때 사용
+	bool FindPlayer();											// 플레이어 찾기
+	bool FindPartner();											// 플레이어 찾기
 
 	bool IsTargetInDetectionRange(const GameObject& target);	// 타겟이 탐지 범위 안에 있는가?
 	bool IsTargetInViewSight(const GameObject& target);			// 타겟이 시야각 안에 있는가?
 	
 	bool DamageToPlayer();										// 플레이어에게 데미지 적용
 
-	virtual void PostAttack() override;							// 공격(애니메이션 종료)후 처리
+	void PostAttackPlayer();									// 플레이어 공격(애니메이션 종료)후 처리
+	void PostAssassinated();									// 피암살(애니메이션 종료)후 처리
+	
 	virtual void FinshDie() override;							// Die 애니메이션 재생후 Dead로 상태전환 하는 함수
+
+	virtual bool Explore() override;							// 탐색
 
 
 public:
@@ -64,8 +75,16 @@ public:
 protected:
 	struct EnemyMove_Save* m_SaveData;
 
-private:
+public:
+	float m_DetectionRange;				// 탐지 거리
+	ViewSight m_ViewSight;				// 시야 범위
 
+private:
+	// 시야각 업데이트
+	void UpdateViewSight();										
+	
+	// 죽었을 때 조수를 공격중이었으면 조수를 해방한다.
+	void ReleasePartner() const;
 };
 
 

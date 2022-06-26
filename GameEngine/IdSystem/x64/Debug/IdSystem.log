@@ -1,31 +1,22 @@
-﻿  IdSystem.vcxproj -> D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\IdSystem.dll
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\DirectX11Engine_Debug.dll
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\GameEngine_Debug.dll
+﻿  pch.cpp
+  dllmain.cpp
+  IdDll.cpp
+  IDManager.cpp
+  코드를 생성하고 있습니다...
+     D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\IdSystem.lib 라이브러리 및 D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\IdSystem.exp 개체를 생성하고 있습니다.
+  IdSystem.vcxproj -> D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\IdSystem.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\fmod.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\fmodL.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\fmodstudio.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\fmodstudioL.dll
   D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\IdSystem.dll
   D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\libfbxsdk.dll
   D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCommon_64.dll
   D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCommon_64_Debug.dll
   D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCooking_64.dll
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCooking_64_Debug.dll
   D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXFoundation_64.dll
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXFoundation_64_Debug.dll
   D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysX_64.dll
   D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysX_64_Debug.dll
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\ResourceManager_Debug.dll
-         13개 파일이 복사되었습니다.
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\ComponentEngine_Debug.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\DirectX11Engine_Debug.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\GameEngine_Debug.lib
+         12개 파일이 복사되었습니다.
   D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\IdSystem.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCharacterKinematic_static_64_Debug.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCommon_64.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXCooking_64.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXExtensions_static_64.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXExtensions_static_64_Debug.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXFoundation_64.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXPvdSDK_static_64_Debug.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysXVehicle_static_64_Debug.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\PhysX_64.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\ResourceManager_Debug.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\SubSystem_Debug.lib
-         15개 파일이 복사되었습니다.
+          1개 파일이 복사되었습니다.

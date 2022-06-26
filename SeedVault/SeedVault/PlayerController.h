@@ -9,7 +9,7 @@
 /// 플레이어는 서기, 앉기 등의 상태와
 /// 걷기, 달리기 모드 등이 있다.
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// 
 /// </summary>
 
@@ -30,38 +30,43 @@ enum class MovingMode
 	Sprint,		// 달리기 모드
 	Max,
 };
-
+class Audio;
 class PlayerController : public ComponentBase
 {
 public:
 	/// 유저 입력 관리
 	// Axis 관련
 	// 애니메이터에서도 가져다 쓴다.(일단 씬에서 편하게 부르기위해 public으로 변경...)
-	static float s_HForAnim;			// Horizontal Axis	애니메이션 전환에 사용
-	static float s_VForAnim;			// Vertical Axis	
-	static float s_H;					// Horizontal Axis	포지션 이동에 사용(애니메이터에서 idle 상태 관련해서 사용도 함)
-	static float s_V;					// Vertical Axis
+	float m_HForAnim;			// Horizontal Axis	애니메이션 전환에 사용
+	float m_VForAnim;			// Vertical Axis	
+	float m_H;					// Horizontal Axis	포지션 이동에 사용(애니메이터에서 idle 상태 관련해서 사용도 함)
+	float m_V;					// Vertical Axis
 
-	static bool  s_bCrouch;				// 앉기
-	static bool  s_bSprint;				// 달리기
-	static bool  s_bAim;				// 에임(조준)
+	bool m_bCrouch;				// 앉기
+	bool m_bSprint;				// 달리기
+	bool m_bAim;				// 에임(조준)
 
 	// 플레이어 애니메이션 트랜지션을 위해
-	static bool  s_bIsReloading;		// 장전 중인 상태인가 판단
-	static bool  s_bIsThrowing;			// 투척 중인 상태인가 판단
-	static bool  s_bIsHealing;			// 힐(주사) 중인 상태인가 판단
+	bool m_bIsReloading;		// 장전 중인 상태인가 판단
+	bool m_bIsThrowing;			// 투척 중인 상태인가 판단
+	bool m_bIsHealing;			// 힐(주사) 중인 상태인가 판단
+	bool m_bIsAssassinate;		// 암살중인 상태인가 판단
+	bool m_bCanAssassinate;		// 암살 가능 상태인가 판단
+	bool m_bIsRoutingItem;		// 아이템 루팅중인 상태인가 판단
+	bool m_bInteraction;		// 상호작용 상태인가 판단
 
-	static bool  s_bIsSwaping;			// 장비 교체 중인 상태인가 판단
-	static uint  s_NextSlotNum;			// 교체할 장비 슬롯
+	bool  m_bIsSwaping;			// 장비 교체 중인 상태인가 판단
 
-	static float s_PitchValue;			// 플레이어 매쉬의 상체 방향을 정하기 위한 값(총구, 손을 항햐는 방향)
+	float m_PitchValue;			// 플레이어 매쉬의 상체 방향을 정하기 위한 값(총구, 손을 항햐는 방향)
 
-	static bool s_bIsDie;				// 플레이어 사망 여부(쓰러지고 있는 상태)
-	static bool s_bIsDead;				// 완전히 누워 있는 상태
+	bool m_bIsDie;				// 플레이어 사망 여부(쓰러지고 있는 상태)
+	bool m_bIsDead;				// 완전히 누워 있는 상태
 
-	// test func
-	static void FinishDie();
-	static bool IsDead();
+	// 애니메이션 이벤트 함수
+	void PostDie();
+	void PostAssassinate();
+	bool IsDead();
+
 
 public:
 	PlayerController();
@@ -72,11 +77,9 @@ public:
 	virtual void Update(float dTime) override;
 	virtual void OnRender() override;
 
-	
 	virtual void OnCollisionEnter(Collision collision) override;
 	virtual void OnCollisionStay(Collision collision) override;
 	virtual void OnCollisionExit(Collision collision) override;
-	
 
 	// 유저 입력 업데이트
 	void UpdateUserInput();
@@ -102,7 +105,21 @@ public:
 	void SwapCoolDown();
 
 	// 장전
-	void Reload() const;
+	void Reload(std::shared_ptr<class Gun> gun = nullptr) const;
+
+	// F키입력(암살, 루팅, 상호작용)
+	bool FFunction();
+	bool CanAssassinate();
+	bool Assassinate();
+	bool RoutingItem();
+	bool Interaction();
+
+	// Getter
+	float GetStandSpeed() const;
+	float GetCrouchSpeed() const;
+	float GetSprintSpeed() const;
+
+	class Enemy_Move* GetAssassinateTarget() const;
 
 private:
 	// 조준 가능한가?
@@ -110,19 +127,25 @@ private:
 
 	// 장비 스왑 가능한가?
 	bool CanSwap() const;
+	bool Swap();
 
 	// 아무 액션(동작)도 안하고 있는가?
-	bool IsNoAction() const;
+	bool DoNothing() const;
 
 	void DebugRender();			// 디버깅모드일 때 렌더할 대상들을 렌더한다.
+
 
 private:
 	class Health* m_Health;			// Health Component
 	class Inventory* m_Inventory;	// Inventory
-	class Animator* m_Animator;
 	class PhysicsActor* m_MyPhysicsActor;
 
 	class GameObject* m_PlayerMesh;
+	class Animator* m_Animator;
+	class MeshFilter* m_Meshfilter;
+
+	class EquipmentController* m_EquipmentController;
+	class Audio* m_pAudio;
 
 	// 플레이어 상태 모드
 	PoseMode m_PoseMode;
@@ -138,6 +161,13 @@ private:
 
 	Transform* m_CameraParent;		// 카메라 부모(피벗)
 
+	int m_SwapInput;				// 교체 입력 숫자 키
+	int m_NextSlotNum;				// 교체할 슬롯 반허
+
+	bool m_FInput;					// F키 입력 숫자 키
+
+	class Enemy_Move* m_AssassinateTarget;	// 암살 타겟 좀비
+
 public:
 	virtual void SaveData();
 	virtual void LoadData();
@@ -152,13 +182,13 @@ struct PlayerController_Save
 	bool			m_bEnable;
 	unsigned int	m_ComponentId;
 
-	float s_HForAnim;
-	float s_VForAnim;
-	float s_H;
-	float s_V;
-	bool  s_bCrouch;
-	bool  s_bSprint;
-	bool  s_bAim;
+	float m_HForAnim;
+	float m_VForAnim;
+	float m_H;
+	float m_V;
+	bool  m_bCrouch;
+	bool  m_bSprint;
+	bool  m_bAim;
 
 	uint  m_Animator;
 	int   m_PoseMode;
@@ -178,14 +208,14 @@ BOOST_DESCRIBE_STRUCT(PlayerController_Save, (), (
 	m_bEnable,
 	m_ComponentId,
 
-	s_HForAnim,
-	s_VForAnim,
-	s_H,
-	s_V,
+	m_HForAnim,
+	m_VForAnim,
+	m_H,
+	m_V,
 
-	s_bCrouch,
-	s_bSprint,
-	s_bAim,
+	m_bCrouch,
+	m_bSprint,
+	m_bAim,
 	
 	m_Animator,
 	m_PoseMode,

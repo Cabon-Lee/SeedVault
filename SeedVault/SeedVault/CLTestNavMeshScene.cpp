@@ -161,22 +161,22 @@ void CLTestNavMeshScene::Update(float dTime)
 
 	//if (DLLInput::InputKeyDown(static_cast<int>(CL::KeyCode::KEY_Z)))
 	//{
-	//	//m_pNavMeshAgent_01->GetComponent<NavMeshAgent>()->SetDestination(m_pTargetObject_1);
+	//	//m_pNavMeshAgent_01->GetComponent<NavMeshAgent>()->SetDestinationObj(m_pTargetObject_1);
 	//}
 	//
 	//if (DLLInput::InputKeyDown(static_cast<int>(CL::KeyCode::KEY_X)))
 	//{
-	//	//m_pNavMeshAgent_01->GetComponent<NavMeshAgent>()->SetDestination(m_pTargetObject_2);
+	//	//m_pNavMeshAgent_01->GetComponent<NavMeshAgent>()->SetDestinationObj(m_pTargetObject_2);
 	//}
 	//
 	//if (DLLInput::InputKeyDown(static_cast<int>(CL::KeyCode::KEY_SPACE)))
 	//{
-	//	m_pNavMeshAgent_01->GetComponent<NavMeshAgent>()->SetDestination(nullptr);
+	//	m_pNavMeshAgent_01->GetComponent<NavMeshAgent>()->SetDestinationObj(nullptr);
 	//}
 	//
 	//if (DLLInput::InputKeyDown(static_cast<int>(CL::KeyCode::KEY_X)))
 	//{
-	//	m_pNavMeshAgent_01->GetComponent<NavMeshAgent>()->SetDestination(m_pTargetObject_1);
+	//	m_pNavMeshAgent_01->GetComponent<NavMeshAgent>()->SetDestinationObj(m_pTargetObject_1);
 	//}
 
 }

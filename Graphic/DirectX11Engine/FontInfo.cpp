@@ -91,7 +91,8 @@ HRESULT FontInfo::Initialize(IDWriteFactory5* pWriteFactory, std::shared_ptr<Tex
 		m_PosX =  pFontDesc->posX;		
 		m_PosY =  pFontDesc->posY;	
 
-		m_textPivotType = (UIAxis)pFontDesc->pivotType;
+		m_textPivotType = (eUIAxis)pFontDesc->pivotType;
+		m_textPoint = (eTextPoint)pFontDesc->textpoint;
 	}
 	catch(COMException& e)
 	{

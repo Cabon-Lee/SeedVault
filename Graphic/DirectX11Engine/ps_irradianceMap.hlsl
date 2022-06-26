@@ -35,7 +35,6 @@ float4 main(VS_OUTPUT pin) : SV_Target0
             float3 sampleVec = tangentSample.x * right + tangentSample.y * up + tangentSample.z * normal;
             float2 uv = SampleSphericalMap(sampleVec);
             irradiance += equirectangularMap.Sample(objSamplerState, uv).rgb * cos(theta) * sin(theta);
-            //irradiance += equirectangularMap.Sample(objSamplerState, sampleVec).rgb * cos(theta) * sin(theta);
             nrSamples++;
         }
     }

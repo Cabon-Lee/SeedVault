@@ -31,6 +31,8 @@ ID3D11SamplerState* RasterizerState::m_pPointSample = nullptr;
 ID3D11SamplerState* RasterizerState::m_pAnisotropicSample = nullptr;
 ID3D11SamplerState* RasterizerState::m_pPCFSample = nullptr;
 ID3D11SamplerState* RasterizerState::m_pOutLineSample = nullptr;
+ID3D11SamplerState* RasterizerState::m_pSSAOSample = nullptr;
+ID3D11SamplerState* RasterizerState::m_pSSAO2Sample = nullptr;
 
 /// OIT 재료들
 ID3D11BlendState* RasterizerState::m_OITInitBS = nullptr;
@@ -247,14 +249,6 @@ void RasterizerState::CreateRasterizerState(ID3D11Device* pDevice)
 
 	pDevice->CreateBlendState(&blendDesc, &m_pBlenderState);
 
-	/*
-	rtbd.SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_COLOR;
-	rtbd.DestBlend = D3D11_BLEND::D3D11_BLEND_DEST_COLOR;
-	rtbd.SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ZERO;
-	rtbd.DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ZERO;
-	*/
-
-
 	rtbd.SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_COLOR;
 	rtbd.DestBlend = D3D11_BLEND::D3D11_BLEND_ONE;
 	rtbd.SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ZERO;
@@ -262,8 +256,6 @@ void RasterizerState::CreateRasterizerState(ID3D11Device* pDevice)
 	blendDesc.RenderTarget[0] = rtbd;
 
 	pDevice->CreateBlendState(&blendDesc, &m_outLineBlendingState);
-
-
 
 
 	// 블렌드 상태 설명을 지웁니다.
@@ -299,12 +291,13 @@ void RasterizerState::CreateRasterizerState(ID3D11Device* pDevice)
 	ZeroMemory(&blendStateDescription2, sizeof(D3D11_BLEND_DESC));
 
 	// 알파 지원 블렌드 상태 설명을 만듭니다.
+	blendStateDescription2.AlphaToCoverageEnable = TRUE;
 	blendStateDescription2.RenderTarget[0].BlendEnable = TRUE;
 	blendStateDescription2.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 	blendStateDescription2.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 	blendStateDescription2.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	blendStateDescription2.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_INV_DEST_ALPHA;
-	blendStateDescription2.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+	blendStateDescription2.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendStateDescription2.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 	blendStateDescription2.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
 	blendStateDescription2.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 	blendStateDescription2.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
@@ -343,7 +336,23 @@ void RasterizerState::CreateRasterizerState(ID3D11Device* pDevice)
 	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
 	pDevice->CreateSamplerState(&sampDesc, &m_pPointSample);
 
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+	sampDesc.BorderColor[0] = 0.0f;
+	sampDesc.BorderColor[1] = 0.0f;
+	sampDesc.BorderColor[2] = 0.0f;
+	sampDesc.BorderColor[3] = 1e5f;
+	pDevice->CreateSamplerState(&sampDesc, &m_pSSAOSample);
 
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.BorderColor[0] = 0.0f;
+	sampDesc.BorderColor[1] = 0.0f;
+	sampDesc.BorderColor[2] = 0.0f;
+	sampDesc.BorderColor[3] = 0.0f;
+	pDevice->CreateSamplerState(&sampDesc, &m_pSSAO2Sample);
 
 	CD3D11_SAMPLER_DESC _anisotropicSampleDesc(D3D11_DEFAULT);
 	_anisotropicSampleDesc.Filter = D3D11_FILTER_ANISOTROPIC;
@@ -399,6 +408,7 @@ void RasterizerState::CreateRasterizerState(ID3D11Device* pDevice)
 	OITBlendDesc.RenderTarget[6] = OITBlendDesc.RenderTarget[0];
 
 	OITBlendDesc.RenderTarget[7].BlendEnable = false;
+	OITBlendDesc.RenderTarget[7].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	pDevice->CreateBlendState(&OITBlendDesc, &m_OITInitBS);
 
@@ -476,6 +486,8 @@ void RasterizerState::DestroyRasterizerState()
 	ReleaseCOM(m_pPointSample);
 	ReleaseCOM(m_pAnisotropicSample);
 	ReleaseCOM(m_pPCFSample);
+	ReleaseCOM(m_pSSAOSample);
+	ReleaseCOM(m_pSSAO2Sample);
 }
 
 void RasterizerState::ChangeRasterizerState()

@@ -390,6 +390,7 @@ void BinarySerializer::OrganizeFBXModelData(FBXModel* originModel, std::vector<M
 			m_DataFile->binData.mesh_V[i].vertex_V[j].tangent.x = originModel->pMesh_V[i]->optVertex_V[j]->tangent.x;
 			m_DataFile->binData.mesh_V[i].vertex_V[j].tangent.y = originModel->pMesh_V[i]->optVertex_V[j]->tangent.y;
 			m_DataFile->binData.mesh_V[i].vertex_V[j].tangent.z = originModel->pMesh_V[i]->optVertex_V[j]->tangent.z;
+			m_DataFile->binData.mesh_V[i].vertex_V[j].tangent.w = originModel->pMesh_V[i]->optVertex_V[j]->tangent.w;
 
 			m_DataFile->binData.mesh_V[i].vertex_V[j].weights.x = originModel->pMesh_V[i]->optVertex_V[j]->boneWeight_Arr[0];
 			m_DataFile->binData.mesh_V[i].vertex_V[j].weights.y = originModel->pMesh_V[i]->optVertex_V[j]->boneWeight_Arr[1];

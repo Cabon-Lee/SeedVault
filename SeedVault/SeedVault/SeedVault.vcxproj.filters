@@ -73,6 +73,12 @@
     <Filter Include="_Assets\Scripts\Battle">
       <UniqueIdentifier>{c87f3d0e-e105-4477-82e2-c6baabed3cb7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_Assets\Scripts\UI">
+      <UniqueIdentifier>{d3cb17f4-642b-4686-9b56-397a7dc7aa7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Assets\Scripts\Character\NPC\Partner">
+      <UniqueIdentifier>{e7056088-0496-41ce-9014-a8295d423e9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -243,8 +249,38 @@
     <ClInclude Include="EquipmentController.h">
       <Filter>_Assets\Scripts\Character</Filter>
     </ClInclude>
-    <ClInclude Include="UIManager.h">
+    <ClInclude Include="Gun.h">
+      <Filter>_Assets\Scripts\Inventory\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="IngameUIManager.h">
+      <Filter>_Assets\Scripts\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogueManager.h">
+      <Filter>_Assets\Scripts\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilityFunction.h">
       <Filter>_Assets\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Partner_Move.h">
+      <Filter>_Assets\Scripts\Character\NPC\Partner</Filter>
+    </ClInclude>
+    <ClInclude Include="Partner_AI.h">
+      <Filter>_Assets\Scripts\Character\NPC\Partner</Filter>
+    </ClInclude>
+    <ClInclude Include="CLStartScene.h">
+      <Filter>_Assets\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioPercentageDefine.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie_Clicker_Move.h">
+      <Filter>_Assets\Scripts\Character\NPC\Enemy\Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseUIManager.h">
+      <Filter>_Assets\Scripts\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -386,8 +422,29 @@
     <ClCompile Include="EquipmentController.cpp">
       <Filter>_Assets\Scripts\Character</Filter>
     </ClCompile>
-    <ClCompile Include="UIManager.cpp">
-      <Filter>_Assets\Scripts</Filter>
+    <ClCompile Include="AnimationState.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="IngameUIManager.cpp">
+      <Filter>_Assets\Scripts\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogueManager.cpp">
+      <Filter>_Assets\Scripts\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Partner_Move.cpp">
+      <Filter>_Assets\Scripts\Character\NPC\Partner</Filter>
+    </ClCompile>
+    <ClCompile Include="Partner_AI.cpp">
+      <Filter>_Assets\Scripts\Character\NPC\Partner</Filter>
+    </ClCompile>
+    <ClCompile Include="CLStartScene.cpp">
+      <Filter>_Assets\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie_Clicker_Move.cpp">
+      <Filter>_Assets\Scripts\Character\NPC\Enemy\Zombie</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseUIManager.cpp">
+      <Filter>_Assets\Scripts\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@
 #include "ResourceLoader.h"
 #include "IRenderer.h"
 #include "JsonLoader_GE.h"
+#include "AudioEngineDLL.h"
 
 static Engine* g_Engine = nullptr;
 
@@ -65,6 +66,16 @@ namespace DLLEngine
 		g_Engine->Initialize(hWND, width, hight);
 	}
 
+	_DLL void LoadResource2(bool* isLoadDone)
+	{
+		g_Engine->LoadResource(*isLoadDone);
+	}
+
+	_DLL void ShowLoadingScene(bool& isLoadDone)
+	{
+		g_Engine->ShowLoadingScene(isLoadDone);
+	}
+
 	_DLL void Loop()
 	{
 		g_Engine->Loop();
@@ -80,9 +91,26 @@ namespace DLLEngine
 		g_Engine->SelectScene(std::string(name));
 	}
 
+	_DLL void PickScene(const char* name)
+	{
+		g_Engine->SetPickedScene(std::string(name));
+	}
+
+	_DLL void SceneChange()
+	{
+		if (g_Engine->GetPickedScene().size() > 0)
+		{
+			g_Engine->SelectScene(g_Engine->GetPickedScene());
+			g_Engine->GetPickedScene().erase();
+		}
+	}
+
 	_DLL void OnResize(int width, int height)
 	{
-		g_Engine->OnResize(width, height);
+		if (g_Engine != nullptr)
+		{
+			g_Engine->OnResize(width, height);
+		}
 	}
 
 	_DLL GameObject* CreateObject(SceneBase* scene, bool isContinual)
@@ -283,13 +311,23 @@ namespace DLLEngine
 
 	_DLL void QTUpdate(float dTime)
 	{
+		if (Managers::GetInstance()->GetSceneManager()->GetNowScene()->IsPhysicsScene() == true)
+		{
+			Managers::GetInstance()->GetPhysicsEngine()->PhysicsLoop();
+		}
+
 		g_Engine->PhysicsUpdateAll();
 		g_Engine->UpdateAll(dTime);
 	}
 
 	_DLL void SetTag(const char* newTag, GameObject* gameobject)
 	{
-		return Managers::GetInstance()->GetSceneManager()->GetNowScene()->m_pGameObjectManager->AddToTagManager(std::string(newTag), gameobject);
+		Managers::GetInstance()->GetSceneManager()->GetNowScene()->m_pGameObjectManager->AddToTagManager(std::string(newTag), gameobject);
+	}
+
+	_DLL const char* GetTagList(unsigned int index)
+	{
+		return Managers::GetInstance()->GetSceneManager()->GetNowScene()->m_pGameObjectManager->GetTagList(index).c_str();
 	}
 
 	_DLL unsigned int GetSceneID(SceneBase* scene)
@@ -442,6 +480,45 @@ namespace DLLEngine
 		g_Engine->DeferredPicking();
 	}
 
+	_DLL const char* GetNowSceneName()
+	{
+		return g_Managers->GetSceneManager()->GetNowScene()->GetSceneName().c_str();
+	}
+
+	_DLL void SetListener(const DirectX::SimpleMath::Matrix& veiewMatrix, const DirectX::SimpleMath::Vector3& velocity)
+	{
+		DLLAudio::SetListener(veiewMatrix, velocity);
+	}
+
+	_DLL void SetMasterVolume(float val)
+	{
+		DLLAudio::SetMasterVolume(val);
+	}
+
+	_DLL void SetAllBusVolume(float val)
+	{
+		DLLAudio::SetAllBusVolume(val);
+	}
+
+	_DLL float GetBusVolume(const char* name)
+	{
+		return DLLAudio::GetBusVolume(name);
+	}
+
+	_DLL void SetBusVolume(const char* name, float val)
+	{
+		DLLAudio::SetBusVolume(name, val);
+	}
+
+	_DLL bool GetBusPaused(const char* name)
+	{
+		return DLLAudio::GetBusPaused(name);
+	}
+
+	_DLL void SetBusPaused(const char* name, bool val)
+	{
+		DLLAudio::SetBusPaused(name, val);
+	}
 }
 
 namespace DLLInput
@@ -563,9 +640,9 @@ namespace DLLGameObject
 
 	_DLL bool AddPhysicsActor(GameObject* pObj)
 	{
-		PhysicsActor* physA = new PhysicsActor();
+		PhysicsActor* physA = new PhysicsActor({1,1,1}, RigidType::Dynamic);
 		bool is_success = pObj->AddComponent<PhysicsActor>(physA);
-		g_Managers->GetPhysicsEngine()->AddPhysicsActor(physA);
+		//g_Managers->GetPhysicsEngine()->AddPhysicsActor(physA);
 
 		return is_success;
 	}
@@ -613,6 +690,11 @@ namespace DLLGameObject
 	_DLL bool AddReflectionProbeCam(GameObject* pObj)
 	{
 		return pObj->AddComponent<ReflectionProbeCamera>(new ReflectionProbeCamera());
+	}
+
+	_DLL const char* GetTag(GameObject* pObj)
+	{
+		return pObj->GetTag().c_str();
 	}
 
 }

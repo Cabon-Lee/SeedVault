@@ -40,6 +40,8 @@ private:
 	static ID3D11SamplerState* m_pAnisotropicSample;	// 비등방성
 	static ID3D11SamplerState* m_pPCFSample;
 	static ID3D11SamplerState* m_pOutLineSample;
+	static ID3D11SamplerState* m_pSSAOSample;
+	static ID3D11SamplerState* m_pSSAO2Sample;
 
 	// DepthStencilState
 	static ID3D11DepthStencilState* m_NormalDSS;
@@ -82,7 +84,6 @@ public:
 	static ID3D11BlendState* GetDeferredBlendState() { return m_DeferredBlendState; }
 	static ID3D11BlendState* GetAlphaBlenderStateUI() { return m_alphaEnableBlendingStateUI; }
 
-
 	static ID3D11SamplerState* GetLinearSamplerState() { return m_pLinearSample; }
 	static ID3D11SamplerState* const* GetLinearSamplerStateAddressOf() { return &m_pLinearSample; }
 
@@ -100,6 +101,12 @@ public:
 
 	static ID3D11SamplerState* GetOutLineSamplerState() { return m_pOutLineSample; }
 	static ID3D11SamplerState* const* GetOutLineSamplerStateAddressOf() { return &m_pOutLineSample; }
+
+	static ID3D11SamplerState* GetSSAOSamplerState() { return m_pSSAOSample; }
+	static ID3D11SamplerState* const* GetSSAOSamplerStateAddressOf() { return &m_pSSAOSample; }
+	
+	static ID3D11SamplerState* GetSSAO2SamplerState() { return m_pSSAO2Sample; }
+	static ID3D11SamplerState* const* GetSSAO2SamplerStateAddressOf() { return &m_pSSAO2Sample; }
 
 	static ID3D11RasterizerState* GetNowRasterizerState() { return m_NowRasterizer; }
 	static void ChangeRasterizerState();

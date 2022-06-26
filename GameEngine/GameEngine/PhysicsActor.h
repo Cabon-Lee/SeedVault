@@ -81,6 +81,7 @@ public:
 	void SetPhysicalTransform(Transform* transform);
 
 	_DLL RigidType GetRigidType() const;
+	_DLL GeometryType GetGetGeometryType() const;
 	_DLL GeometryBase* GetGeometry() const;
 
 	std::shared_ptr<IRenderer> m_pIRenderer;
@@ -90,7 +91,7 @@ public:
 
 	static int s_UserIndex;
 
-	// Yoking's Test
+	// 최 요 환's Test
 	void release();
 	_DLL void SetKinematic(const bool val);
 	_DLL bool IsKinematic() const;
@@ -130,10 +131,14 @@ public:
 
 	struct PhysicsActor_Save* m_SaveData;
 
+
+
 private:
+	DirectX::SimpleMath::Matrix m_PhysicsActorWorldTM;
+
 	// 생성된 액터에 접근할 인덱스
 	unsigned int m_UserIndex;
-	unsigned int m_PhysActorIndex;
+	//unsigned int m_PhysActorIndex;
 
 	GeometryType m_GeometryType;
 	RigidType m_RigidType; // 강체 타입
@@ -144,7 +149,6 @@ private:
 
 	bool m_bKinematic;		// 키네마닉 여부(true면 물리 이동 불가)
 	bool m_bGravity;		// 중력 영향 적용 여부
-	DirectX::SimpleMath::Vector3 m_Velcity;
 
 	FreezePositionAndRotation m_FreezePositionAndRotation;	// pos, rot 고정 여부
 };
@@ -158,15 +162,26 @@ struct PhysicsActor_Save
 	int s_UserIndex;
 
 	unsigned int m_UserIndex;
-	unsigned int m_PhysActorIndex;
+	//unsigned int m_PhysActorIndex;
 
 	int m_GeometryType;
 	int m_RigidType; // 강체 타입
 
-	DirectX::SimpleMath::Vector3* m_Velcity;
+	// Save/Load용 Geometry 사이즈
+	float m_SaveBoxSizeX;
+	float m_SaveBoxSizeY;
+	float m_SaveBoxSizeZ;
+	float m_SaveRadius;
 
 	bool m_bKinematic;
 	bool m_bGravity;
+
+	bool m_FreezePositionX;
+	bool m_FreezePositionY;
+	bool m_FreezePositionZ;
+	bool m_FreezeRotationX;
+	bool m_FreezeRotationY;
+	bool m_FreezeRotationZ;
 };
 
 BOOST_DESCRIBE_STRUCT(PhysicsActor_Save, (), (
@@ -176,14 +191,24 @@ BOOST_DESCRIBE_STRUCT(PhysicsActor_Save, (), (
 	s_UserIndex,
 
 	m_UserIndex,
-	m_PhysActorIndex,
+	//m_PhysActorIndex,
 
 	m_GeometryType,
 	m_RigidType,
 
-	m_Velcity,
+	m_SaveBoxSizeX,
+	m_SaveBoxSizeY,
+	m_SaveBoxSizeZ,
+	m_SaveRadius,
 
 	m_bKinematic,
-	m_bGravity
+	m_bGravity,
+
+	m_FreezePositionX,
+	m_FreezePositionY,
+	m_FreezePositionZ,
+	m_FreezeRotationX,
+	m_FreezeRotationY,
+	m_FreezeRotationZ
 
 	))

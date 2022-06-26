@@ -1,14 +1,17 @@
 ﻿  pch.cpp
   dllmain.cpp
   IdDll.cpp
+  IDManager.cpp
      D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\IdSystem.lib 라이브러리 및 D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\IdSystem.exp 개체를 생성하고 있습니다.
   코드를 생성하고 있습니다.
   Previous IPDB not found, fall back to full compilation.
-  All 109 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 111 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   코드를 생성했습니다.
   IdSystem.vcxproj -> D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\IdSystem.dll
   D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\IdSystem.dll
-          1개 파일이 복사되었습니다.
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\IdSystem.lib
-  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\SubSystem_Release.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ResourceManager_Release.dll
           2개 파일이 복사되었습니다.
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\IdSystem.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ResourceManager_Release.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\SubSystem_Release.lib
+          3개 파일이 복사되었습니다.

@@ -5,8 +5,6 @@
 #include "IRenderer.h"
 #include "IResourceManager.h"
 
-
-
 Button::Button()
 	: ComponentBase(ComponentType::Rendering)
 	, m_SaveData(new Button_Save())
@@ -27,12 +25,58 @@ void Button::Start()
 	m_pCamera = Managers::GetInstance()->GetCameraManager()->GetNowCamera();
 	m_pRenderer = m_pEngine->GetIRenderer();
 
+	m_width = static_cast<float>(DLLWindow::GetScreenWidth());
+	m_height = static_cast<float>(DLLWindow::GetScreenHeight());
+
+	float _Xpos = 0;
+	float _Ypos = 0;
+
+	switch (m_UIAxis)
+	{
+	case eUIAxis::None:
+	case eUIAxis::LeftUp:
+		_Xpos = m_pMyObject->m_Transform->m_Position.x;
+		_Ypos = m_pMyObject->m_Transform->m_Position.y;
+		break;
+	case eUIAxis::RightUp:
+		_Xpos = m_width - m_pMyObject->m_Transform->m_Position.x;
+		_Ypos = m_pMyObject->m_Transform->m_Position.y;
+		break;
+	case eUIAxis::RightDown:
+		_Xpos = m_width - m_pMyObject->m_Transform->m_Position.x;
+		_Ypos = m_height - m_pMyObject->m_Transform->m_Position.y;
+		break;
+	case eUIAxis::LeftDown:
+		_Xpos = m_pMyObject->m_Transform->m_Position.x;
+		_Ypos = m_height - m_pMyObject->m_Transform->m_Position.y;
+		break;
+	case eUIAxis::Center:
+		_Xpos = m_width / 2 + m_pMyObject->m_Transform->m_Position.x;
+		_Ypos = m_height / 2 + m_pMyObject->m_Transform->m_Position.y;
+		break;
+	}
+
+	float _ScaleX = m_pMyObject->m_Transform->m_Scale.x;
+	float _ScaleY = m_pMyObject->m_Transform->m_Scale.y;
+
+	m_PivotX -= 0.5f;
+	m_PivotY -= 0.5f;
+
+	//m_worldTM =
+	//	XMMatrixScaling(m_pMyObject->m_Transform->m_Scale.x, m_pMyObject->m_Transform->m_Scale.y, 1.0f) *
+	//	XMMatrixRotationRollPitchYaw(m_pMyObject->m_Transform->m_Rotation.x, m_pMyObject->m_Transform->m_Rotation.y + XM_PI, m_pMyObject->m_Transform->m_Rotation.z + XM_PI) *
+	//	XMMatrixTranslation(m_pMyObject->m_Transform->m_Position.x + m_pMyObject->m_Transform->m_Scale.x / 2.0f,
+	//		m_pMyObject->m_Transform->m_Position.y + m_pMyObject->m_Transform->m_Scale.y / 2.0f,
+	//		m_pMyObject->m_Transform->m_Position.z);
+
 	m_worldTM =
 		XMMatrixScaling(m_pMyObject->m_Transform->m_Scale.x, m_pMyObject->m_Transform->m_Scale.y, 1.0f) *
 		XMMatrixRotationRollPitchYaw(m_pMyObject->m_Transform->m_Rotation.x, m_pMyObject->m_Transform->m_Rotation.y + XM_PI, m_pMyObject->m_Transform->m_Rotation.z + XM_PI) *
-		XMMatrixTranslation(m_pMyObject->m_Transform->m_Position.x + m_pMyObject->m_Transform->m_Scale.x / 2.0f,
-			m_pMyObject->m_Transform->m_Position.y + m_pMyObject->m_Transform->m_Scale.y / 2.0f,
-			m_pMyObject->m_Transform->m_Position.z);
+		XMMatrixTranslation(m_realPosX, m_realPosY, m_pMyObject->m_Transform->m_Position.z);
+
+	m_realPosY = _Ypos;
+	m_realPosX = _Xpos;
+
 }
 
 void Button::Update(float dTime)
@@ -46,12 +90,59 @@ void Button::OnRender()
 
 void Button::OnUIRender()
 {
+	bool _isResize = m_pEngine->GetIsResize();
+
+	if (_isResize == true)
+	{
+		m_width = static_cast<float>(DLLWindow::GetScreenWidth());
+		m_height = static_cast<float>(DLLWindow::GetScreenHeight());
+	}
+
+	float _Xpos = 0;
+	float _Ypos = 0;
+
+	switch (m_UIAxis)
+	{
+	case eUIAxis::None:
+	case eUIAxis::LeftUp:
+		_Xpos = m_pMyObject->m_Transform->m_Position.x;
+		_Ypos = m_pMyObject->m_Transform->m_Position.y;
+		break;
+	case eUIAxis::RightUp:
+		_Xpos = m_width - m_pMyObject->m_Transform->m_Position.x;
+		_Ypos = m_pMyObject->m_Transform->m_Position.y;
+		break;
+	case eUIAxis::RightDown:
+		_Xpos = m_width - m_pMyObject->m_Transform->m_Position.x;
+		_Ypos = m_height - m_pMyObject->m_Transform->m_Position.y;
+		break;
+	case eUIAxis::LeftDown:
+		_Xpos = m_pMyObject->m_Transform->m_Position.x;
+		_Ypos = m_height - m_pMyObject->m_Transform->m_Position.y;
+		break;
+	case eUIAxis::Center:
+		_Xpos = m_width / 2 + m_pMyObject->m_Transform->m_Position.x;
+		_Ypos = m_height / 2 + m_pMyObject->m_Transform->m_Position.y;
+		break;
+	}
+
+	float _ScaleX = m_pMyObject->m_Transform->m_Scale.x;
+	float _ScaleY = m_pMyObject->m_Transform->m_Scale.y;
+
 	m_worldTM =
 		XMMatrixScaling(m_pMyObject->m_Transform->m_Scale.x, m_pMyObject->m_Transform->m_Scale.y, 1.0f) *
 		XMMatrixRotationRollPitchYaw(m_pMyObject->m_Transform->m_Rotation.x, m_pMyObject->m_Transform->m_Rotation.y + XM_PI, m_pMyObject->m_Transform->m_Rotation.z + XM_PI) *
-		XMMatrixTranslation(m_pMyObject->m_Transform->m_Position.x + m_pMyObject->m_Transform->m_Scale.x / 2.0f,
-			m_pMyObject->m_Transform->m_Position.y + m_pMyObject->m_Transform->m_Scale.y / 2.0f,
-			m_pMyObject->m_Transform->m_Position.z);
+		XMMatrixTranslation(_Xpos + (_ScaleX * m_PivotX), _Ypos + (_ScaleY * m_PivotY), m_pMyObject->m_Transform->m_Position.z);
+
+	m_realPosX = _Xpos +(_ScaleX * m_PivotX);
+	m_realPosY = _Ypos +(_ScaleY * m_PivotY);
+	
+	//m_worldTM =
+	//	XMMatrixScaling(m_pMyObject->m_Transform->m_Scale.x, m_pMyObject->m_Transform->m_Scale.y, 1.0f) *
+	//	XMMatrixRotationRollPitchYaw(m_pMyObject->m_Transform->m_Rotation.x, m_pMyObject->m_Transform->m_Rotation.y + XM_PI, m_pMyObject->m_Transform->m_Rotation.z + XM_PI) *
+	//	XMMatrixTranslation(m_pMyObject->m_Transform->m_Position.x + m_pMyObject->m_Transform->m_Scale.x / 2.0f,
+	//		m_pMyObject->m_Transform->m_Position.y + m_pMyObject->m_Transform->m_Scale.y / 2.0f,
+	//		m_pMyObject->m_Transform->m_Position.z);
 
 	m_NowState = eButtonState::OFF;
 	m_IsPushedBefore = m_IsPushed;
@@ -140,6 +231,11 @@ void Button::SetPivot(float pivotX = 0.5f, float pivotY = 0.5f)
 	}
 }
 
+void Button::SetAxis(eUIAxis uiAxis)
+{
+	m_UIAxis = uiAxis;
+}
+
 void Button::SetOverSprite(bool ableOver)
 {
 	m_AbleOver = ableOver;
@@ -163,10 +259,10 @@ RECT Button::GetSpriteRect()
 {
 	RECT _newRect;
 
-	_newRect.left = (m_pMyObject->m_Transform->m_Position.x);
-	_newRect.top = (m_pMyObject->m_Transform->m_Position.y);
-	_newRect.right = (m_pMyObject->m_Transform->m_Position.x + m_Rect.right * m_ProportionX);
-	_newRect.bottom = (m_pMyObject->m_Transform->m_Position.y + m_Rect.bottom * m_ProportionY);
+	_newRect.left = m_realPosX - m_Rect.right * m_ProportionX / 2;
+	_newRect.top = m_realPosY - m_Rect.bottom * m_ProportionY / 2;
+	_newRect.right = m_realPosX + m_Rect.right * m_ProportionX / 2;
+	_newRect.bottom = m_realPosY + m_Rect.bottom * m_ProportionY / 2;
 
 	return _newRect;
 }
@@ -175,7 +271,7 @@ void Button::ObserverUpdate(std::shared_ptr<IResourceManager> pResourceManager)
 {
 	m_OffSpriteIndex = pResourceManager->GetSpriteDataIndex(m_OffSprite);
 	m_OnSpriteIndex = pResourceManager->GetSpriteDataIndex(m_OnSprite);
-	m_OnSpriteIndex = pResourceManager->GetSpriteDataIndex(m_OverSprite);
+	m_OverSpriteIndex = pResourceManager->GetSpriteDataIndex(m_OverSprite);
 
 	// 버튼하나에 필요한 3가지 버튼의 이미지의 크기는 같다고 가정한다
 	m_Rect = pResourceManager->GetTextureRect(m_OffSpriteIndex);

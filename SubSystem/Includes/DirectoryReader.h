@@ -20,6 +20,8 @@ public:
 	static std::vector<std::string>& GetMatNames();
 	static std::vector<std::string>& GetIBLNames();
 	static std::vector<std::string>& GetBankNames();
+	static std::vector<std::string>& GetQuestNames();
+	static std::vector<std::string>& GetDialogueNames();
 
 	static std::string GetFileName(std::string& name, bool ex);
 
@@ -39,5 +41,7 @@ private:
 	static std::vector<std::string> m_MatNames;
 	static std::vector<std::string> m_IBLNames;
 	static std::vector<std::string> m_BankNames;
+	static std::vector<std::string> m_QuestNames;
+	static std::vector<std::string> m_DialogueNames;
 
 };

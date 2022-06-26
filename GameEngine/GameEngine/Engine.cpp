@@ -1,7 +1,6 @@
 #include "pch.h"
 #include <winuser.h>
 
-//#include "DLLDefine.h"
 #include "SceneBase.h"
 
 #include "Timer.h"
@@ -19,7 +18,8 @@
 
 #include "IRenderer.h"
 #include "IResourceManager.h"
-#include "IAudioSystem.h"
+
+#include "AudioEngineDLL.h"
 #include "InterfaceManager.h"
 
 #include "Transform.h"
@@ -70,7 +70,7 @@ void Engine::Initialize()
 {
 	// 렌더러 받아서 initialize한다
 
-	m_isClicked = false; 
+	m_isClicked = false;
 	m_isResize = false;
 
 }
@@ -83,16 +83,13 @@ void Engine::Initialize(int hWND, int width, int height)
 
 	m_ClientWidth = width;
 	m_ClientHeight = height;
-	
+
 	m_isResize = false;
-	
+
 	m_isClicked = false;
-	
+
 	Timer::GetInstance()->Reset();
 	Timer::GetInstance()->Start();
-
-	//m_pPhysicsEngine = new PhysicsEngine();
-	//m_pPhysicsEngine->Initialize();
 
 	m_pInterfaces = new InterfaceManager();
 
@@ -102,43 +99,74 @@ void Engine::Initialize(int hWND, int width, int height)
 	m_pResourceManager = m_pInterfaces->CreateResourceManager();
 	m_pResourceManager->Initialize(m_pRenderer);
 
+	//m_pResourceLoader = new ResourceLoader();
+	//m_pResourceLoader->Initialize(m_pResourceManager);
+	//m_pResourceLoader->LoadResource(std::string("../Data/"));
+	//CA_TRACE("Load Resource");
+
+	bool isDataLoad = false;
+	std::thread m_t1(&Engine::ShowLoadingScene, this, std::ref(isDataLoad));
+	LoadResource(isDataLoad);
+	m_t1.join();
+
+	m_pRenderer->SetResourceManager(m_pResourceManager);
+	m_pDeferredInfo = reinterpret_cast<DeferredInfo*>(m_pRenderer->GetDeferredInfo());
+	
+	m_pComponent = ComponentSystem::GetInstance();
+	m_pComponent->SetResourceLoader(m_pResourceLoader);
+	m_pComponent->SetResourceManager(m_pResourceManager);
+	
+	// 매니저들 모아둔곳 이니셜라이즈
+	Managers::GetInstance()->Initialize();
+	Managers::GetInstance()->GetCameraManager()->SetHWND(m_hWnd);
+	
+	m_pNavMeshManager = Managers::GetInstance()->GetNavMeshManager();
+	m_pNavMeshManager->SetRenderer(m_pRenderer);
+	
+	m_pInput = new Input();
+	m_pInput->Initialize((HWND)hWND);
+	
+	m_EngineImgui = new ImguiClass();
+	m_EngineImgui->Initialize(m_hWnd, m_pRenderer.get());
+	
+	DLLAudio::Initialize("../Data/FmodBank");
+	DLLAudio::LoadAllBank(*m_pResourceLoader->GetBankNames());
+	DLLAudio::Set3DSetting(1.0f, 1.0f);
+
+}
+
+void Engine::LoadResource(bool& isLoadDone)
+{
 	m_pResourceLoader = new ResourceLoader();
 	m_pResourceLoader->Initialize(m_pResourceManager);
 	m_pResourceLoader->LoadResource(std::string("../Data/"));
 
 	CA_TRACE("Load Resource");
 
-	m_pRenderer->SetResourceManager(m_pResourceManager);
-	m_pDeferredInfo = reinterpret_cast<DeferredInfo*>(m_pRenderer->GetDeferredInfo());
+	isLoadDone = true;
+}
 
-	m_pComponent = ComponentSystem::GetInstance();
-	m_pComponent->SetResourceLoader(m_pResourceLoader);
-	m_pComponent->SetResourceManager(m_pResourceManager);
+void Engine::ShowLoadingScene(bool& isLoadDone)
+{
+	m_pRenderer->SetLoadingSceneImage("../Data/Image/LoadingScene01.png", "../Data/Shader/vs_2d.cso", "../Data/Shader/ps_2d.cso", 12);//->아님 벡터로 받쟈;
+	// 로딩씬을 그린다.
+	while(isLoadDone == false)
+	{
+		// png로드한다. wictextureFromFile
+		// 텍스쳐정보 저장할 변수
+		// Draw2D랑 비슷한 렌더링 함수
 
-	// 매니저들 모아둔곳 이니셜라이즈
-	Managers::GetInstance()->Initialize();
-	Managers::GetInstance()->GetCameraManager()->SetHWND(m_hWnd);
+		///렌더러 내부에서 해주자 로딩용 변수,함수하나 만들어서
+		m_pRenderer->DrawLoadingScene();// -> 그려주는 함수Render
+		m_pRenderer->ExecuteCommandLine();
 
-	m_pNavMeshManager = Managers::GetInstance()->GetNavMeshManager();
-	m_pNavMeshManager->SetRenderer(m_pRenderer);
-
-	m_pInput = new Input();
-	m_pInput->Initialize((HWND)hWND);
-
-	m_EngineImgui = new ImguiClass();
-	m_EngineImgui->Initialize(m_hWnd, m_pRenderer.get());
-
-	//m_pAudioSystem = m_pInterfaces->CreateAudioSystem();
-	//m_pAudioSystem->Initialize(512, "../Data/FmodBank");
-	//m_pAudioSystem->LoadAllBank(*m_pResourceLoader->GetBankNames());
-
+	}
+	return;
 }
 
 void Engine::Loop()
 {
 	Timer::GetInstance()->Tick();
-
-	//float dTime = Timer::GetInstance()->DeltaTime();	-> (기존) 이놈을 쓰니까 이상함
 
 	if (Timer::GetInstance()->FixFrame(60.0f) == true)
 	{
@@ -147,10 +175,13 @@ void Engine::Loop()
 			Managers::GetInstance()->GetPhysicsEngine()->PhysicsLoop();
 		}
 
+		float _dTime = Timer::GetInstance()->DeltaTime();
+
 		PhysicsUpdateAll();	// 물리 처리
+
 		UpdateInput(Timer::GetInstance()->DeltaTime());
 		UpdateAll(Timer::GetInstance()->DeltaTime());		// 안에서 직접 쓰니까 프레임레이트별로 달라짐)
-		//m_pAudioSystem->Update();
+		DLLAudio::Update();
 		RenderAll();
 
 		Timer::GetInstance()->ResetDeltaTime();
@@ -175,20 +206,25 @@ void Engine::UpdateInput(float dTime)
 
 void Engine::UpdateAll(float dTime)
 {
+	// F2키
+	if (m_pInput->GetKeyDown(0x71))
+	{
+		if (m_RenderOption->bDebugRenderMode == true)
+		{
+			m_pComponent->SetDebugRenderMode(false);
+			m_RenderOption->bDebugRenderMode = false;
+		}
+		else
+		{
+			m_pComponent->SetDebugRenderMode(true);
+			m_RenderOption->bDebugRenderMode = true;
+		}
+	}
 
 	m_RenderOption->dTime = dTime;
 	Managers::GetInstance()->GetSceneManager()->UpdateNowScene(dTime);
 	Camera* _nowCam = Managers::GetInstance()->GetCameraManager()->GetNowCamera();
-
-	if (_nowCam==nullptr)
-	{
-		int k = 0;
-	}
-
-	m_pRenderer->CameraUpdate(_nowCam->GetWorldTM(), _nowCam->View(), _nowCam->Proj());
-
-
-	//Managers::GetInstance()->GetCameraManager()->UpdateNowCamera(dTime);
+	m_pRenderer->CameraUpdate(_nowCam->GetWorldTM(), _nowCam->View(), _nowCam->Proj(), _nowCam->GetFovY(), _nowCam->GetFarZ());
 
 	/// 업데이트
 	m_pComponent->Update(dTime);
@@ -199,7 +235,7 @@ void Engine::UpdateAll(float dTime)
 	if (m_Frequency > 5)
 	{
 		m_Frequency = 0;
-		//m_pRenderer->DeferredPickingPass();
+		m_pRenderer->DeferredPickingPass();
 	}
 
 	// 마우스 위치를 항상 업데이트해준다
@@ -211,6 +247,7 @@ void Engine::UpdateAll(float dTime)
 	{
 		m_isClicked = true;
 		m_pRenderer->Clicked(m_isClicked, DLLInput::GetMouseClientPos());
+		DeferredPicking();
 	}
 
 	/// 선택된 오브젝트 전달 & 제어
@@ -244,10 +281,6 @@ void Engine::RenderAll()
 
 	m_pComponent->PreRender();
 
-	Camera* _nowCam = Managers::GetInstance()->GetCameraManager()->GetNowCamera();
-	if (_nowCam->GetIsSkyBox() == true)
-		m_pRenderer->CameraSkyBoxRender(_nowCam->GetSkyBoxTextrueIndex());
-
 	m_pRenderer->BeginDraw();
 
 	m_pComponent->Render();
@@ -257,18 +290,24 @@ void Engine::RenderAll()
 	m_pRenderer->UIPassBind();
 
 	m_pComponent->UIRender();
-	
-	m_pRenderer->DebugDraw(true);	// IMGUI를 그리기 위해 렌더타겟을 묶는 절차
 
-	m_pRenderer->HelperDraw();
+	if (m_RenderOption->bDebugRenderMode)
+	{
+		m_pRenderer->DebugDraw(true);	// IMGUI를 그리기 위해 렌더타겟을 묶는 절차
+
+		m_pRenderer->HelperDraw();
+	}
 
 	m_pNavMeshManager->Render();
-
-	m_pComponent->HelperRender();
-
-	if (m_bImguiActive == true)
+	
+	if (m_RenderOption->bDebugRenderMode)
 	{
-		m_EngineImgui->Render();
+		m_pComponent->HelperRender();
+
+		if (m_bImguiActive == true)
+		{
+			m_EngineImgui->Render();
+		}
 	}
 
 	m_pRenderer->EndDraw();
@@ -304,13 +343,13 @@ void Engine::SelectScene(std::string name)
 	}
 
 	Managers::GetInstance()->GetSceneManager()->SetNowScene(name);
-
 }
 
 void Engine::Finalize()
 {
 	m_pRenderer->Destroy();
 	m_pRenderer.reset();
+	DLLAudio::Release();
 }
 
 void Engine::ResetRenderer()
@@ -396,5 +435,15 @@ std::shared_ptr<IResourceManager> Engine::GetResourceManager() const
 bool Engine::GetIsResize()
 {
 	return m_isResize;
+}
+
+std::string& Engine::GetPickedScene()
+{
+	return m_pickedSceneNmae;
+}
+
+void Engine::SetPickedScene(std::string sceneName)
+{
+	m_pickedSceneNmae = sceneName;
 }
 

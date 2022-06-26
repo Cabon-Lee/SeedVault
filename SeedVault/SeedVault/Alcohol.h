@@ -8,7 +8,7 @@
 /// 
 /// 화염 플라스크의 재료로 사용된다
 /// 
-/// 작성자 : Yoking
+/// 작성자 : 최 요 환
 /// </summary>
 
 class Alcohol : public IItem

@@ -29,7 +29,7 @@ public:
 class BooleanType : public Parameter
 {
 public:
-	// Modified by YoKing
+	// Modified by 최 요 환
 	BooleanType(const bool* parameter, const bool standard = true) : m_Parameter(parameter), m_Standard(standard) {}
 	const bool* m_Parameter;	// 현재 원본의 값 
 	const bool m_Standard;		// 결과 판단 기준	 
@@ -218,7 +218,7 @@ public:
 
 	eMASKING_TYPE m_MaskingType;
 
-	// Modified by YoKing
+	// Modified by 최 요 환
 	_DLL void SetEnabled(const bool val);
 
 	bool m_bEnabled;	// 레이어 On/Off 상태 True면 적용(업데이트)
@@ -247,9 +247,9 @@ public:
 	_DLL std::shared_ptr<AnimLayer> GetAnimLayer(const std::string& name);
 	_DLL std::vector<std::shared_ptr<AnimLayer>>& GetAnimLayer();
 
-	// Added by Yoking
+	// Added by 최 요 환
 	_DLL bool SetNoneAnimLayer(std::string noneLayer);
-	_DLL bool SetOverrideAnimLayer(std::string overrideLayer);
+	_DLL bool SetOverrideAnimLayer(std::string overrideLayer, bool reset = false);
 
 	std::vector<std::shared_ptr<AnimLayer>> m_AnimLayer_V;
 	std::unordered_map<std::string, std::shared_ptr<AnimLayer>> m_AnimLayer_UM;

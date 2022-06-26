@@ -19,6 +19,12 @@
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\cs_NVidiaBlur.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_PxielPicking.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\FXAA.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\PostFX.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -55,6 +61,9 @@
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_colorN.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_normalSkinningR.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_skyDome.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -73,25 +82,25 @@
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_deferred.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_normalSkinningR.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_skinnedShadow.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_skinnedTest.cso</FullPath>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_SkinnedMesh.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_skyDome.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_stnd.cso</FullPath>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_Standard.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_test.cso</FullPath>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_StaticMesh.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\cs_adaption.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\cs_gaussianBlur.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\gs_DrawPass.cso</FullPath>
@@ -107,6 +116,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\PBRFunc.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_SSAOBlur.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_AddAccum.cso</FullPath>
@@ -139,10 +151,19 @@
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_deferredTotal.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_enviorment.cso</FullPath>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_Environment.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_normalR.cso</FullPath>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_IDpicking.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_IDpickingSkinning.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_None_IBL_Deferred.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_normalR.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_OpaquePass.cso</FullPath>
@@ -169,7 +190,7 @@
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_normal.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_outLine.cso</FullPath>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_outLine.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_particle.cso</FullPath>
@@ -196,13 +217,25 @@
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_skyBox.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_SSAO.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_test.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_texture.cso</FullPath>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_Billboard.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_TransparentPass.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_SSAOBlur.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_ColorDebug.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_ColorID.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_DrawPass.cso</FullPath>
@@ -211,13 +244,19 @@
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_combine.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_enviorment.cso</FullPath>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_Environment.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_normalR.cso</FullPath>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_IDpicking.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_outLine.cso</FullPath>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_IDpickingSkinning.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_normalR.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_outLine.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_particle.cso</FullPath>
@@ -232,13 +271,16 @@
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_skyBox.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_SSAO.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_staticLightTexture.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_StreamOut.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_texture.cso</FullPath>
+      <FullPath>D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_Billboard.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

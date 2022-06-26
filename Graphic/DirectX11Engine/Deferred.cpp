@@ -34,18 +34,25 @@ void Deferred::Initialize(ID3D11Device* pDevice, UINT width, UINT height)
 
 	for (unsigned int i = 0; i < DRAW_LAYER; i++)
 	{
-		m_pDeferredRTV_V.emplace_back(std::make_unique<RenderTargetView>());
+		m_pDeferredOpaqueRTV_V.emplace_back(std::make_unique<RenderTargetView>());
+		m_pDeferredTransparentRTV_V.emplace_back(std::make_unique<RenderTargetView>());
 	}
 
 	UINT _bindFlag = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 
-	m_pDeferredRTV_V[ALBEDO_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R8G8B8A8_UNORM);
-	m_pDeferredRTV_V[MATERIAL_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R8G8B8A8_UNORM);
-	m_pDeferredRTV_V[AMBIENT_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R8G8B8A8_UNORM);
-	m_pDeferredRTV_V[SHADOW_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R16G16B16A16_FLOAT);
-	m_pDeferredRTV_V[EMISSIVE_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R16G16B16A16_FLOAT);
-	m_pDeferredRTV_V[ID_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R32G32B32A32_UINT);
+	m_pDeferredOpaqueRTV_V[ALBEDO_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R32G32B32A32_FLOAT);
+	m_pDeferredOpaqueRTV_V[MATERIAL_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R8G8B8A8_UNORM);
+	m_pDeferredOpaqueRTV_V[NORMALDEPTH_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R16G16B16A16_FLOAT);
+	m_pDeferredOpaqueRTV_V[AMBIENT_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R16G16B16A16_FLOAT);
+	m_pDeferredOpaqueRTV_V[SHADOW_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R16G16B16A16_FLOAT);
+	m_pDeferredOpaqueRTV_V[ID_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R32G32B32A32_UINT);
 	
+	m_pDeferredTransparentRTV_V[ALBEDO_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R32G32B32A32_FLOAT);
+	m_pDeferredTransparentRTV_V[MATERIAL_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R8G8B8A8_UNORM);
+	m_pDeferredTransparentRTV_V[NORMALDEPTH_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R16G16B16A16_FLOAT);
+	m_pDeferredTransparentRTV_V[AMBIENT_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R16G16B16A16_FLOAT);
+	m_pDeferredTransparentRTV_V[SHADOW_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R16G16B16A16_FLOAT);
+	m_pDeferredTransparentRTV_V[ID_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R32G32B32A32_UINT);
 
 	m_pOpaqueFrameBuffer = std::make_unique<RenderTargetView>();
 	m_pOpaqueFrameBuffer->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R16G16B16A16_FLOAT);
@@ -59,8 +66,11 @@ void Deferred::Initialize(ID3D11Device* pDevice, UINT width, UINT height)
 	// 노말과 포지션은 추후 활용을 위해 Bind를 추가했다
 	_bindFlag |= D3D11_BIND_UNORDERED_ACCESS;
 
-	m_pDeferredRTV_V[NORMAL_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R8G8B8A8_UNORM);
-	m_pDeferredRTV_V[POSITION_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R32G32B32A32_FLOAT);
+	m_pDeferredOpaqueRTV_V[NORMAL_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R8G8B8A8_UNORM);
+	m_pDeferredOpaqueRTV_V[POSITION_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R32G32B32A32_FLOAT);
+
+	m_pDeferredTransparentRTV_V[NORMAL_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R8G8B8A8_UNORM);
+	m_pDeferredTransparentRTV_V[POSITION_MAP]->Initialize(pDevice, width, height, _bindFlag, DXGI_FORMAT_R32G32B32A32_FLOAT);
 
 	// 외부에서 만들어서 넣어줄 수도 있지만 내부에서 처리하는게 훨씬 덜 복잡하다고 생각했다
 	m_pScreenQaud = std::make_shared<Quad>();
@@ -73,11 +83,12 @@ void Deferred::Initialize(ID3D11Device* pDevice, UINT width, UINT height)
 
 void Deferred::OnResize(ID3D11Device* pDevice, UINT width, UINT height)
 {
-	m_pDeferredRTV_V.clear();
+	m_pDeferredOpaqueRTV_V.clear();
 	m_pDepthBuffer.reset();
 
 	// unique_ptr이므로 clear로 해결
-	m_pDeferredRTV_V.clear();
+	m_pDeferredOpaqueRTV_V.clear();
+	m_pDeferredTransparentRTV_V.clear();
 
 	m_pOpaqueFrameBuffer.reset();
 	m_pAccumulation.reset();
@@ -86,10 +97,10 @@ void Deferred::OnResize(ID3D11Device* pDevice, UINT width, UINT height)
 	Initialize(pDevice, width, height);
 }
 
-void Deferred::BeginRender(Microsoft::WRL::ComPtr<ID3D11DeviceContext> pDeviceContext)
+void Deferred::OpaqueBeginRender(Microsoft::WRL::ComPtr<ID3D11DeviceContext> pDeviceContext)
 {
 	pDeviceContext->RSSetState(0);
-	pDeviceContext->RSSetViewports(1, &m_pDeferredRTV_V[ALBEDO_MAP]->GetViewPort());
+	pDeviceContext->RSSetViewports(1, &m_pDeferredOpaqueRTV_V[ALBEDO_MAP]->GetViewPort());
 
 
 	/// 아직 쉐도우, 이미시브는 추가 안한 상태다
@@ -103,7 +114,27 @@ void Deferred::BeginRender(Microsoft::WRL::ComPtr<ID3D11DeviceContext> pDeviceCo
 	ID3D11RenderTargetView* rt[DRAW_LAYER];
 	for (int i = 0; i < DRAW_LAYER; i++)
 	{
-		rt[i] = m_pDeferredRTV_V[i]->GetRenderTargerViewRawptr();
+		rt[i] = m_pDeferredOpaqueRTV_V[i]->GetRenderTargerViewRawptr();
+	}
+
+	// 뎁스 스텐실 버퍼는 클리어하지 않는다
+	pDeviceContext->OMSetRenderTargets(DRAW_LAYER, rt, m_pDepthBuffer->GetDepthSetncilView());
+	pDeviceContext->OMSetDepthStencilState(RasterizerState::GetDepthStencilState(), 1);
+}
+
+void Deferred::TransparentBeginRender(Microsoft::WRL::ComPtr<ID3D11DeviceContext> pDeviceContext)
+{
+	pDeviceContext->RSSetState(0);
+	pDeviceContext->RSSetViewports(1, &m_pDeferredOpaqueRTV_V[ALBEDO_MAP]->GetViewPort());
+
+	// 바깥에 있는 디버그용 렌더 타겟을 가져와서 묶었다
+	DeferredRenderTransparentTargetClear(pDeviceContext);
+
+	// Bind all the render targets togther
+	ID3D11RenderTargetView* rt[DRAW_LAYER];
+	for (int i = 0; i < DRAW_LAYER; i++)
+	{
+		rt[i] = m_pDeferredTransparentRTV_V[i]->GetRenderTargerViewRawptr();
 	}
 
 	// 뎁스 스텐실 버퍼는 클리어하지 않는다
@@ -113,21 +144,28 @@ void Deferred::BeginRender(Microsoft::WRL::ComPtr<ID3D11DeviceContext> pDeviceCo
 
 void Deferred::DeferredRenderTargetClear(Microsoft::WRL::ComPtr<ID3D11DeviceContext> pDeviceContext)
 {
-	// 바깥에 있는 디버그용 렌더 타겟을 가져와서 묶었다
-	pDeviceContext->ClearRenderTargetView(m_pDeferredRTV_V[ALBEDO_MAP]->GetRenderTargerViewRawptr(), null);
-	pDeviceContext->ClearRenderTargetView(m_pDeferredRTV_V[NORMAL_MAP]->GetRenderTargerViewRawptr(), null);
-	pDeviceContext->ClearRenderTargetView(m_pDeferredRTV_V[POSITION_MAP]->GetRenderTargerViewRawptr(), ClearColor);
-	pDeviceContext->ClearRenderTargetView(m_pDeferredRTV_V[MATERIAL_MAP]->GetRenderTargerViewRawptr(), ClearColor);
-	pDeviceContext->ClearRenderTargetView(m_pDeferredRTV_V[AMBIENT_MAP]->GetRenderTargerViewRawptr(), nullColor);
-	pDeviceContext->ClearRenderTargetView(m_pDeferredRTV_V[SHADOW_MAP]->GetRenderTargerViewRawptr(), WhiteColor);
-	pDeviceContext->ClearRenderTargetView(m_pDeferredRTV_V[EMISSIVE_MAP]->GetRenderTargerViewRawptr(), nullColor);
-	pDeviceContext->ClearRenderTargetView(m_pDeferredRTV_V[ID_MAP]->GetRenderTargerViewRawptr(), nullColor);
+	for (unsigned int i = 0; i < DRAW_LAYER; i++)
+	{
+		pDeviceContext->ClearRenderTargetView(m_pDeferredOpaqueRTV_V[i]->GetRenderTargerViewRawptr(), null);
+	}
+
+	pDeviceContext->ClearRenderTargetView(m_pDeferredOpaqueRTV_V[NORMALDEPTH_MAP]->GetRenderTargerViewRawptr(), normalDepthColor);
+}
+
+void Deferred::DeferredRenderTransparentTargetClear(Microsoft::WRL::ComPtr<ID3D11DeviceContext> pDeviceContext)
+{
+	for (unsigned int i = 0; i < DRAW_LAYER; i++)
+	{
+		pDeviceContext->ClearRenderTargetView(m_pDeferredTransparentRTV_V[i]->GetRenderTargerViewRawptr(), null);
+	}
+
+	pDeviceContext->ClearRenderTargetView(m_pDeferredTransparentRTV_V[POSITION_MAP]->GetRenderTargerViewRawptr(), nullColor);
 }
 
 void Deferred::BeginRenderWithOutDepth(Microsoft::WRL::ComPtr<ID3D11DeviceContext> pDeviceContext)
 {
 	pDeviceContext->RSSetState(0);
-	pDeviceContext->RSSetViewports(1, &m_pDeferredRTV_V[ALBEDO_MAP]->GetViewPort());
+	pDeviceContext->RSSetViewports(1, &m_pDeferredOpaqueRTV_V[ALBEDO_MAP]->GetViewPort());
 
 
 	/// 아직 쉐도우, 이미시브는 추가 안한 상태다
@@ -135,10 +173,10 @@ void Deferred::BeginRenderWithOutDepth(Microsoft::WRL::ComPtr<ID3D11DeviceContex
 	// 어차피 안나올 것이기 때문에
 
 	// 바깥에 있는 디버그용 렌더 타겟을 가져와서 묶었다
-	pDeviceContext->ClearRenderTargetView(m_pDeferredRTV_V[ALBEDO_MAP]->GetRenderTargerViewRawptr(), null);
+	pDeviceContext->ClearRenderTargetView(m_pDeferredOpaqueRTV_V[ALBEDO_MAP]->GetRenderTargerViewRawptr(), null);
 
 	// 뎁스 스텐실 버퍼는 클리어하지 않는다
-	pDeviceContext->OMSetRenderTargets(1, m_pDeferredRTV_V[ALBEDO_MAP]->GetRenderTargetViewAddressOf(), m_pDepthBuffer->GetDepthSetncilView());
+	pDeviceContext->OMSetRenderTargets(1, m_pDeferredOpaqueRTV_V[ALBEDO_MAP]->GetRenderTargetViewAddressOf(), m_pDepthBuffer->GetDepthSetncilView());
 	pDeviceContext->OMSetDepthStencilState(RasterizerState::GetOITInitDS(), 1);
 }
 
@@ -150,7 +188,6 @@ void Deferred::BindAccumReveal(Microsoft::WRL::ComPtr<ID3D11DeviceContext> pDevi
 		m_pRevealage->GetRenderTargerViewRawptr(),
 	};
 	pDeviceContext->OMSetRenderTargets(2, _rt, m_pDepthBuffer->GetDepthSetncilView());
-	//pDeviceContext->OMSetRenderTargets(2, _rt, nullptr);
 	pDeviceContext->OMSetDepthStencilState(RasterizerState::GetOITInitDS(), 1);
 
 }
@@ -184,7 +221,8 @@ void Deferred::CombineRenderTargetOpaque(
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pDeviceContext,
 	class VertexShader* pVertexShader,
 	class PixelShader* pPixelShader,
-	ID3D11ShaderResourceView* pTextrueLightMap)
+	ID3D11ShaderResourceView* pLightTexture,
+	ID3D11ShaderResourceView* pAO)
 {
 	UINT stride = sizeof(Vertex::Vertex2D);
 	UINT offset = 0;
@@ -232,9 +270,14 @@ void Deferred::CombineRenderTargetOpaque(
 	// 디버그 포함
 	for (int i = 0; i < DRAW_LAYER - 1; i++)
 	{
-		pDeviceContext->PSSetShaderResources(i, 1, m_pDeferredRTV_V[i]->GetShaderResourceViewAddressOf());
+		pDeviceContext->PSSetShaderResources(i, 1, m_pDeferredOpaqueRTV_V[i]->GetShaderResourceViewAddressOf());
 	}
-	pDeviceContext->PSSetShaderResources(DRAW_LAYER - 1, 1, &pTextrueLightMap);
+
+	ID3D11ShaderResourceView* _srv[2] =
+	{
+		pLightTexture, pAO,
+	};
+	pDeviceContext->PSSetShaderResources(DRAW_LAYER - 1, 2, _srv);
 
 
 #ifdef DEFERRED_DEBUG
@@ -324,7 +367,7 @@ void Deferred::CombineRenderTargetTransparent(
 	// 디버그 포함
 	for (int i = 0; i < DRAW_LAYER - 1; i++)
 	{
-		pDeviceContext->PSSetShaderResources(i, 1, m_pDeferredRTV_V[i]->GetShaderResourceViewAddressOf());
+		pDeviceContext->PSSetShaderResources(i, 1, m_pDeferredTransparentRTV_V[i]->GetShaderResourceViewAddressOf());
 	}
 	pDeviceContext->PSSetShaderResources(DRAW_LAYER - 1, 1, &pTextrueLightMap);
 
@@ -431,7 +474,12 @@ std::unique_ptr<DepthStencilView>& Deferred::GetDepthBuffer()
 
 const std::vector< std::unique_ptr<RenderTargetView>>& Deferred::GetDrawLayers()
 {
-	return m_pDeferredRTV_V;
+	return m_pDeferredOpaqueRTV_V;
+}
+
+const std::vector< std::unique_ptr<RenderTargetView>>& Deferred::GetTransparentDrawLayers()
+{
+	return m_pDeferredTransparentRTV_V;
 }
 
 void Deferred::CreateDepthStencilState(ID3D11Device* pDevice)

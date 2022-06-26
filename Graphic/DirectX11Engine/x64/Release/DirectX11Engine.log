@@ -1,2 +1,350 @@
-﻿LINK : fatal error C1047: 개체 또는 라이브러리 파일 'D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\..\..\Lib\SubSystem_Release.lib'이(가) 다른 개체(예: 'x64\Release\Adaptation.obj')와 다른 버전의 컴파일러에서 만들어졌습니다. 같은 컴파일러를 사용하여 모든 개체 및 라이브러리를 다시 빌드하세요.
-LINK : fatal error LNK1257: 코드를 생성하지 못했습니다.
+﻿FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\cs_BloomFilter.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_bungieBloom.hlsl(52,12-37): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_bungieBloom.hlsl(109,9-33): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_bungieBloom.hlsl(144,9-33): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\cs_bungieBloom.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\cs_HLSLbloom.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_NVidiaBlur.hlsl(40,12-78): warning X3203: signed/unsigned mismatch, unsigned assumed
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_NVidiaBlur.hlsl(65,12-78): warning X3203: signed/unsigned mismatch, unsigned assumed
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\cs_NVidiaBlur.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_PxielPicking.hlsl(46,9-49): warning X3203: signed/unsigned mismatch, unsigned assumed
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_PxielPicking.hlsl(47,9-49): warning X3203: signed/unsigned mismatch, unsigned assumed
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_PxielPicking.hlsl(92,9-49): warning X3203: signed/unsigned mismatch, unsigned assumed
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_PxielPicking.hlsl(92,54-94): warning X3203: signed/unsigned mismatch, unsigned assumed
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_PxielPicking.hlsl(133,9-49): warning X3203: signed/unsigned mismatch, unsigned assumed
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_PxielPicking.hlsl(133,54-94): warning X3203: signed/unsigned mismatch, unsigned assumed
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_PxielPicking.hlsl(171,9-49): warning X3203: signed/unsigned mismatch, unsigned assumed
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_PxielPicking.hlsl(171,54-94): warning X3203: signed/unsigned mismatch, unsigned assumed
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\cs_PxielPicking.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\FXAA.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\PostFX.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_PostProcess.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_Instance.hlsl(102,5-51): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_Instance.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\Basic.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\BasicTex.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\color.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\LightHelper.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\SkySphere.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\wire.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_2d.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_color.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_colorN.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_normalSkinningR.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_skyDome.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_stnd.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_2d.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_color.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\Data\Shaders\hlsl\vs_colorN.hlsl(28,5-79): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_colorN.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\Data\Shaders\hlsl\vs_deferred.hlsl(66,5-77): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_deferred.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_normalSkinningR.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_skinnedShadow.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_SkinnedMesh.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_skyDome.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_Standard.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\Data\Shaders\hlsl\vs_StaticMesh.hlsl(56,5-95): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\Data\Shaders\hlsl\vs_StaticMesh.hlsl(71,5-75): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_StaticMesh.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\cs_adaption.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\gs_DrawPass.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\gs_StreamOut.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\IBLLibrary.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\light.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(205,10-58): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(206,10-57): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(213,10-27): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(218,10-27): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRFunc.hlsl(29,10-74): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRFunc.hlsl(133,10-74): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRFunc.hlsl(175,11-39): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRFunc.hlsl(284,10-74): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\PBRFunc.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_SSAOBlur.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_AddAccum.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_ColorToAccumeReveal.hlsl(20,15-42): warning X3576: semantics in type overridden by variable/function or enclosing type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_ColorToAccumeReveal.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_ColorToDeferredPass.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_Composite.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_cubeMapSphere.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_deferred.hlsl(58,19-46): warning X3576: semantics in type overridden by variable/function or enclosing type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_deferred.hlsl(58,19-46): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_deferred.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_deferredColor.hlsl(12,5-27): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_deferredColor.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_deferredDebug.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_deferredDebugInfo.hlsl(18,19-46): warning X3576: semantics in type overridden by variable/function or enclosing type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_deferredDebugInfo.hlsl(18,19-46): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_deferredDebugInfo.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_deferredTotal.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_Environment.hlsl(16,12-82): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_Environment.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_IDpicking.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_IDpickingSkinning.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(205,10-58): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(206,10-57): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(213,10-27): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(218,10-27): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_None_IBL_Deferred.hlsl(79,19-46): warning X3576: semantics in type overridden by variable/function or enclosing type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_None_IBL_Deferred.hlsl(79,19-46): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_None_IBL_Deferred.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_normalR.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(205,10-58): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(206,10-57): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(213,10-27): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(218,10-27): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_OpaquePass.hlsl(87,12-46): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_OpaquePass.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(205,10-58): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(206,10-57): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(213,10-27): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(218,10-27): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_IBL_Deferred.hlsl(70,19-46): warning X3576: semantics in type overridden by variable/function or enclosing type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_IBL_Deferred.hlsl(70,19-46): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_IBL_Deferred.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(205,10-58): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(206,10-57): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(213,10-27): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(218,10-27): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_IBL_PBR_Combine.hlsl(79,12-57): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_IBL_PBR_Combine.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_integrateBRDF.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_irradianceMap.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_irradianceMapVector3.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_lightTextureMap.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_normal.hlsl(46,19-46): warning X3576: semantics in type overridden by variable/function or enclosing type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_normal.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_outLine.hlsl(42,79-83): warning X3556: integer modulus may be much slower, try using uints if possible.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_outLine.hlsl(42,102-106): warning X3556: integer divides may be much slower, try using uints if possible.
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_outLine.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_particle.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_ParticleDraw.hlsl(25,15-39): warning X3576: semantics in type overridden by variable/function or enclosing type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_ParticleDraw.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_prefilter.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(205,10-58): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(206,10-57): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(213,10-27): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(218,10-27): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_reflectionProbe.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_shadowMap.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\Deferred.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_skinnedTest.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_skyBox.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_SSAO.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_test.hlsl(57,5): warning X4000: use of potentially uninitialized variable (CalcLight)
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_test.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ps_Billboard.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(205,10-58): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(206,10-57): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(213,10-27): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PBRLibrary.hlsli(218,10-27): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_TransparentPass.hlsl(84,12-46): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ps_TransparentPass.hlsl(45,15-42): warning X3576: semantics in type overridden by variable/function or enclosing type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\ps_TransparentPass.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_SSAOBlur.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_ColorDebug.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_ColorID.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\vs_DrawPass.hlsl(39,11-22): warning X3206: implicit truncation of vector type
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\vs_DrawPass.hlsl(50,18-34): warning X3571: pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_DrawPass.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_combine.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_Environment.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_IDpicking.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_IDpickingSkinning.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\vs_normalR.hlsl(34,5-60): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_normalR.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_outLine.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_particle.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_shadowMap.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\vs_skinnedLightTexture.hlsl(40,14-35): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_skinnedLightTexture.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_skyBox.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_SSAO.cso
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\vs_staticLightTexture.hlsl(33,14-35): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_staticLightTexture.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\Data\Shader\vs_StreamOut.cso
+  compilation object save succeeded; see D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\vs_Billboard.cso
+  Adaptation.cpp
+  AdapterManager.cpp
+  BloomFilter.cpp
+  BoundingVolume.cpp
+  BungieBloom.cpp
+  BlurFilter.cpp
+  Box.cpp
+  Face.cpp
+  FXAA.cpp
+  Line.cpp
+  LoadingScene.cpp
+  OIT.cpp
+  ParticleManager.cpp
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\ParticleManager.cpp(422,22): warning C4834: 'nodiscard' 특성이 포함된 함수의 반환 값을 버리는 중
+  PixelPicking.cpp
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.cpp(35,11): warning C4838: 'LONG'에서 'float'(으)로의 변환에는 축소 변환이 필요합니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.cpp(35,11): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.cpp(35,23): warning C4838: 'LONG'에서 'float'(으)로의 변환에는 축소 변환이 필요합니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.cpp(35,23): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.cpp(46,51): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.cpp(47,52): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  RenderQueue.cpp
+  Sampler.cpp
+  HLSLBloom.cpp
+  SSAO.cpp
+  StagingBuffer.cpp
+  UAVRenderTargetView.cpp
+  컴파일하고 있습니다...
+  ConstantBufferManager.cpp
+  CubeMapRenderTarget.cpp
+  D2D.cpp
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\FontInfo.h(11,1): warning C4099: 'FontInfo': 처음에는 'struct'을(를) 사용하여 형식 이름을 표시했는데 이제는 'class'을(를) 사용하여 표시합니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\FontInfo.h(10): message : 'FontInfo' 선언을 참조하십시오.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\D2D.cpp(38,24): warning C4244: '=': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\D2D.cpp(149,32): warning C4267: 'return': 'size_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\D2D.cpp(167,18): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\D2D.cpp(189,32): warning C4267: '인수': 'size_t'에서 'UINT32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\D2D.cpp(193,55): warning C4267: '=': 'size_t'에서 'UINT32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  DebugRender.cpp
+  Deferred.cpp
+  DepthStencilView.cpp
+  DirectionalLightShape.cpp
+  dllmain.cpp
+  DownSampler.cpp
+  FontInfo.cpp
+  Forward.cpp
+  Grid.cpp
+  Gizmo.cpp
+  HighDynamicRangeRender.cpp
+  HLSLShaderManager.cpp
+  IBL.cpp
+  InputLayout.cpp
+  LightClass.cpp
+  LightManager.cpp
+  NodeData.cpp
+  컴파일하고 있습니다...
+  OffScreenRenderTarget.cpp
+  PointLightShape.cpp
+  PostProcess.cpp
+  PostProcessBase.cpp
+  Quad.cpp
+  RasterizerState.cpp
+  AdapterReader.cpp
+  Effects.cpp
+  Renderer.cpp
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\Renderer.cpp(108,38): warning C4312: 'reinterpret_cast': 'int'에서 더 큰 'HWND'(으)로의 변환입니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.h(66,36): warning C4838: 'LONG'에서 'float'(으)로의 변환에는 축소 변환이 필요합니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\Renderer.cpp(2086): message : 컴파일되는 함수 템플릿 인스턴스화 'const T &PixelPicking::PixelPickingFromSRV<DeferredPixel>(Microsoft::WRL::ComPtr<ID3D11DeviceContext>,POINT,UINT,UINT,ID3D11ShaderResourceView *[],UINT,StagingBuffer<T> *)'에 대한 참조를 확인하세요.
+          with
+          [
+              T=DeferredPixel
+          ]
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.h(66,36): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.h(66,48): warning C4838: 'LONG'에서 'float'(으)로의 변환에는 축소 변환이 필요합니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.h(66,48): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.h(83,51): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\PixelPicking.h(84,52): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  MathHelper.cpp
+  RenderTargetBase.cpp
+  RenderTargetView.cpp
+  Shaders.cpp
+  SkyBoxCube.cpp
+  SkyBoxSphere.cpp
+  Sphere.cpp
+  SpotLightShape.cpp
+  SpriteQuad.cpp
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\SpriteQuad.cpp(32,80): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\SpriteQuad.cpp(33,69): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Graphic\DirectX11Engine\SpriteQuad.cpp(53,84): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  TextureCapture.cpp
+  UpScale.cpp
+  컴파일하고 있습니다...
+  VisualDebugger.cpp
+     D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\DirectX11Engine_Release.lib 라이브러리 및 D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\DirectX11Engine_Release.exp 개체를 생성하고 있습니다.
+  코드를 생성하고 있습니다.
+  Previous IPDB not found, fall back to full compilation.
+  All 4825 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  코드를 생성했습니다.
+DirectXTK_x64.lib(pch.obj) : warning LNK4099: 'DirectXTK_x64.pdb' PDB를 'DirectXTK_x64.lib(pch.obj)' 또는 'D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\DirectXTK_x64.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTK_x64.lib(SimpleMath.obj) : warning LNK4099: 'DirectXTK_x64.pdb' PDB를 'DirectXTK_x64.lib(SimpleMath.obj)' 또는 'D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\DirectXTK_x64.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTK_x64.lib(WICTextureLoader.obj) : warning LNK4099: 'DirectXTK_x64.pdb' PDB를 'DirectXTK_x64.lib(WICTextureLoader.obj)' 또는 'D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\DirectXTK_x64.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11_x64.lib(d3dxGlobal.obj) : warning LNK4099: '' PDB를 'Effects11_x64.lib(d3dxGlobal.obj)' 또는 ''에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11_x64.lib(EffectAPI.obj) : warning LNK4099: '' PDB를 'Effects11_x64.lib(EffectAPI.obj)' 또는 ''에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11_x64.lib(EffectLoad.obj) : warning LNK4099: 'Effects11.pdb' PDB를 'Effects11_x64.lib(EffectLoad.obj)' 또는 'D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\Effects11.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11_x64.lib(EffectNonRuntime.obj) : warning LNK4099: 'Effects11.pdb' PDB를 'Effects11_x64.lib(EffectNonRuntime.obj)' 또는 'D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\Effects11.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11_x64.lib(EffectReflection.obj) : warning LNK4099: 'Effects11.pdb' PDB를 'Effects11_x64.lib(EffectReflection.obj)' 또는 'D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\Effects11.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11_x64.lib(EffectRuntime.obj) : warning LNK4099: 'Effects11.pdb' PDB를 'Effects11_x64.lib(EffectRuntime.obj)' 또는 'D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\Effects11.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+  DirectX11Engine.vcxproj -> D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\DirectX11Engine_Release.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\DirectX11Engine_Release.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\FmodAudioEngine_Release.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\IdSystem.dll
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ResourceManager_Release.dll
+          4개 파일이 복사되었습니다.
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\DirectX11Engine_Release.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\FmodAudioEngine_Release.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\IdSystem.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\ResourceManager_Release.lib
+  D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Release\SubSystem_Release.lib
+          5개 파일이 복사되었습니다.

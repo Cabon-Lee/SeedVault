@@ -18,7 +18,7 @@ struct SKINNED_VS_INPUT
     float3 PosL : POSITION;
     float3 NormalL : NORMAL;
     float2 Tex : TEXCOORD;
-    float3 Tangent : TANGENT;
+    float4 Tangent : TANGENT;
     float4 Weights : WEIGHTS;
     uint4 BoneIndices : BONEINDICES;
 };
@@ -54,7 +54,8 @@ VS_OUTPUT main(SKINNED_VS_INPUT vin)
     for (int i = 0; i < 4; ++i)
     {
         posL += weights[i] * mul(float4(vin.PosL, 1.0f), gBoneTransforms[boneIndex[i]]).xyz;
-        normalL += weights[i] * mul(vin.NormalL, (float3x3) gBoneTransforms[boneIndex[i]]);
+        normalL += weights[i] * mul(float3(0.0f, 0.0f, 0.0f), (float3x3) gBoneTransforms[boneIndex[i]]);
+        //normalL += weights[i] * mul(vin.NormalL, (float3x3) gBoneTransforms[boneIndex[i]]);
     }
    
     vout.outPosition = mul(float4(posL, 1.0f), wvpMatrix);

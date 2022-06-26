@@ -16,3 +16,5 @@
 
 
 #include "CATrace.h"
+
+#include "SimpleMath.h"

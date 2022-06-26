@@ -21,6 +21,8 @@
 #include "SkyBoxSphere.h"
 #include "SkyBoxCube.h"
 
+#include "LoadingScene.h"
+
 #include "StringHelper.h"
 #include "SimpleMath.h"
 
@@ -34,6 +36,7 @@
 
 #include "VisualDebugger.h"
 #include "HLSLShaderManager.h"
+#include "SSAO.h"
 
 #include "LightClass.h"
 #include "LightManager.h"
@@ -53,6 +56,8 @@
 
 #include <WICTextureLoader.h>
 #include <DDSTextureLoader.h>
+#include <wrl/event.h>
+
 
 std::vector<void*> Renderer::m_ShaderIndex_V;
 
@@ -116,7 +121,7 @@ bool Renderer::Initialize(int hwnd, int width, int height)
 	try
 	{
 		// Com오브젝트를 초기화(dds 외에 다른 텍스쳐를 사용하려면 써야함)
-		HRESULT hr = CoInitialize(NULL);
+		HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 
 		COM_ERROR_IF_FAILED(hr, "COInitialize Fail");
 
@@ -144,6 +149,10 @@ bool Renderer::Initialize(int hwnd, int width, int height)
 
 		COM_ERROR_IF_FAILED(hr, "CreateDevice Fail");
 
+		hr = m_pDevice->CreateDeferredContext(0, m_pDeferredDeviceContext.GetAddressOf());
+
+		COM_ERROR_IF_FAILED(hr, "CreateDeferredContext Fail");
+
 		if (m_eFeatureLevel != D3D_FEATURE_LEVEL_11_0)
 		{
 			MessageBox(0, L"Direct3D Feature Level 11 unsupported.", 0, 0);
@@ -156,8 +165,6 @@ bool Renderer::Initialize(int hwnd, int width, int height)
 		UINT _4xMsaaQuality;
 
 		hr = m_pDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 4, &_4xMsaaQuality);
-
-
 
 
 		//---------------------------------------------------------------------------------------
@@ -270,6 +277,8 @@ bool Renderer::Initialize(int hwnd, int width, int height)
 	m_PixelPicker = std::make_unique<class PixelPicking>();
 	m_PixelPicker->Initialize(m_pDevice);
 
+	ConstantBufferManager::Initialize(m_pDevice.Get(), m_pDeviceContext.Get());
+
 
 	/// 테스트
 	//m_pOIT = std::make_shared<OIT>();
@@ -328,6 +337,8 @@ bool Renderer::Initialize(int hwnd, int width, int height)
 	m_pCombinePixelShader = std::make_shared<PixelShader>();
 	m_pCombinePixelShader->Initialize(m_pDevice, L"../Data/Shader/ps_deferredTotal.hlsl", "DebugRender", "ps_5_0");
 
+	m_LoadingScene = std::make_shared<LoadingScene>();
+	//m_LoadingScene->Initialize(m_pDevice, m_pDeviceContext);
 
 	return true;
 }
@@ -345,6 +356,7 @@ void Renderer::Destroy()
 void Renderer::ResetRenderer()
 {
 	m_pIBL->ClearReflectionProbe();
+	m_ParticleManager->ResetParticle();
 }
 
 void Renderer::OnResize(int width, int height)
@@ -460,7 +472,7 @@ void Renderer::OnResize(int width, int height)
 		DXGI_FORMAT_R24_UNORM_X8_TYPELESS,
 		DXGI_FORMAT_D24_UNORM_S8_UINT);
 
-
+	m_SSAOManager->OnSize(m_pDevice, width, height, 0.25f * DirectX::XM_PI, 1000.0f);
 
 	delete(_nowSwapDesc);
 	_nowSwapDesc = nullptr;
@@ -671,7 +683,10 @@ void Renderer::CreateDepthAndStencil()
 
 void Renderer::LoadResource()
 {
-	m_pIBL = std::make_shared<IBL>();
+	CA_TRACE("렌더러 리소스 초기화 시작");
+
+	m_pIBL = std::make_unique<IBL>();
+	m_pIBL->Initialize(m_pDevice);
 
 	m_pSkyBox = std::make_shared<SkyBoxSphere>();
 	m_pSkyBox->Initialize(m_pDevice);
@@ -720,6 +735,9 @@ void Renderer::LoadResource()
 	_storeShader(m_ShaderIndex_V, ENUM(eSHADER::VS_SKINNEDSHADOW), "vs_skinnedShadow.cso");
 	_storeShader(m_ShaderIndex_V, ENUM(eSHADER::PS_SHADOWMAP), "ps_shadowMap.cso");
 
+	_storeShader(m_ShaderIndex_V, ENUM(eSHADER::VS_SSAO), "vs_SSAO.cso");
+	_storeShader(m_ShaderIndex_V, ENUM(eSHADER::PS_SSAO), "ps_SSAO.cso");
+
 	_storeShader(m_ShaderIndex_V, ENUM(eSHADER::PS_LIGHTTEXTURE), "ps_lightTextureMap.cso");
 	_storeShader(m_ShaderIndex_V, ENUM(eSHADER::VS_STATICLIGHTTEXTURE), "vs_staticLightTexture.cso");
 
@@ -751,13 +769,10 @@ void Renderer::LoadResource()
 	_storeShader(m_ShaderIndex_V, ENUM(eSHADER::VS_STANDARD), "vs_Standard.cso");
 	_storeShader(m_ShaderIndex_V, ENUM(eSHADER::PS_CUBEMAPSPHERE), "ps_cubeMapSphere.cso");
 
-
 	m_ParticleManager = std::make_unique<class ParticleManager>();
 	m_ParticleManager->Initialize(m_pDevice, m_pDeviceContext,
 		reinterpret_cast<GeometryShader*>(m_ShaderIndex_V[ENUM(eSHADER::GS_STREAMOUT)]),
 		reinterpret_cast<VertexShader*>(m_ShaderIndex_V[ENUM(eSHADER::VS_STREAMOUT)]));
-
-	ConstantBufferManager::Initialize(m_pDevice.Get(), m_pDeviceContext.Get());
 
 	m_DeferredPixelData = std::make_unique<StagingBuffer<DeferredPixel>>();
 	m_DeferredPixelData->Initialize<DeferredPixel>(m_pDevice.Get(), 1);
@@ -769,13 +784,27 @@ void Renderer::LoadResource()
 
 	m_DeferredPixelData->m_ComputeShader = std::make_unique<class ComputeShader>();
 	m_DeferredPixelData->m_ComputeShader->Initialize(
-		m_pDevice, L"../Data/Shader/cs_PxielPicking.hlsl", "DeferredPicking", "cs_5_0");
+		m_pDevice, L"../Data/Shader/cs_PxielPicking.hlsl", "DeferredTransparentPicking", "cs_5_0");
+
+	m_SSAOManager = std::make_unique<class SSAO>();
+	m_SSAOManager->Initialize(m_pDevice, m_pDeviceContext,
+		m_pResourceManager->GetPixelShader("ps_SSAO.cso"),
+		m_pResourceManager->GetVertexShader("vs_SSAO.cso"),
+		m_pResourceManager->GetPixelShader("ps_SSAOBlur.cso"),
+		m_pResourceManager->GetVertexShader("vs_SSAOBlur.cso"),
+		m_ClientWidth, m_ClientHeight, 0.25 * DirectX::XM_PI, 1000.0f);
+
+
+	m_pIBL->GetBasicIBL()->SetIrradianceMap(m_pResourceManager->GetIBLImage("BasicIrradianceMap"));
+	m_pIBL->GetBasicIBL()->SetPreFilterMap(m_pResourceManager->GetIBLImage("BasicPreFilterMap"));
+
+	CA_TRACE("기본 IBL 생성 완료");
 }
 
 void Renderer::CameraUpdate(
 	const DirectX::XMMATRIX& worldTM,
 	const DirectX::XMMATRIX& viewTM,
-	const DirectX::XMMATRIX& projTM)
+	const DirectX::XMMATRIX& projTM, float fovy, float farZ)
 {
 	m_CameraWorldTM = worldTM;
 
@@ -789,30 +818,35 @@ void Renderer::CameraUpdate(
 	ConstantBufferManager::GetPSCamera()->data.CameraPos.x = m_CameraPos.x;
 	ConstantBufferManager::GetPSCamera()->data.CameraPos.y = m_CameraPos.y;
 	ConstantBufferManager::GetPSCamera()->data.CameraPos.z = m_CameraPos.z;
+
+	static const DirectX::XMMATRIX T(
+		0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f);
+
+	ConstantBufferManager::GetPSCamera()->data.viewProjTex = m_ViewTM * m_ProjectionTM * T;
 	ConstantBufferManager::GetPSCamera()->ApplyChanges();
+
+	if (m_CameraFovY != fovy)
+	{
+		m_CameraFovY = fovy;
+		m_SSAOManager->ReCalcCamera(m_ClientWidth, m_ClientHeight, m_CameraFovY, farZ);
+	}
 }
 
 void Renderer::CameraSkyBoxRender(const unsigned int textureIdx)
 {
-	return;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _textrue = m_pResourceManager->GetTexture(textureIdx);
-
-	m_pIBL->BakeIrradiancePreFilterMap(
-		m_pDevice,
-		m_pDeviceContext,
-		_textrue,
-		VS_SHADER(eSHADER::VS_ENVIRONMENT),
-		PS_SHADER(eSHADER::PS_ENVIRONMENT),
-		PS_SHADER(eSHADER::PS_IRRADIANCEMAP),
-		PS_SHADER(eSHADER::PS_PREFILTER),
-		0);
-
-	m_pSkyBox->m_SkyBoxTextureIndex = textureIdx;
 
 }
 
 void Renderer::BeginDraw()
 {
+	if (m_RenderOption.bDebugRenderMode = true)
+	{
+		float nullColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		m_pDeviceContext->ClearRenderTargetView(m_pDebugRenderTarget->GetRenderTargerViewRawptr(), nullColor);
+	}
 
 	// Update에서 이전 정보를 가져가기 때문에 여기서 호출
 	m_RenderDebugInfo.renderedObject = 0;
@@ -830,7 +864,7 @@ void Renderer::BeginDraw()
 	{
 	case eRENDERRING::DEFERRED:
 	{
-		m_Deferred->BeginRender(m_pDeviceContext);
+		m_Deferred->OpaqueBeginRender(m_pDeviceContext);
 		break;
 	}
 	case eRENDERRING::FORWARD:
@@ -843,15 +877,6 @@ void Renderer::BeginDraw()
 
 	m_PostProcess->RenderOption(m_RenderOption);
 
-	// 일단 여기서 해보자
-	/*
-	m_pSkyBox->DrawSkyBox(
-		m_pDeviceContext,
-		m_pIBL->GetReflectionProbe(0)->GetEnvironmentMap(),
-		m_CameraPos, m_ViewTM, m_ProjectionTM,
-		m_pResourceManager->GetVertexShader("vs_skyBox.cso"),
-		m_pResourceManager->GetPixelShader("ps_skyBox.cso"));
-		*/
 
 	m_IsSelectedAny = false;
 	m_NearestDist = 0.f;
@@ -877,6 +902,29 @@ IRendererDebugInfo Renderer::GetRenderDebugInfo()
 void* Renderer::GetDeferredInfo()
 {
 	return reinterpret_cast<void*>(m_pDeferredInfo.get());
+}
+
+void Renderer::ExecuteCommandLine()
+{
+
+	while (ContextInUse(TRUE) == TRUE)
+		Sleep(0);
+
+	if (m_pD3DCommandList != nullptr && m_FillCommandLine == true)
+	{
+		m_pDeviceContext->ExecuteCommandList(m_pD3DCommandList, FALSE);
+
+		SAFE_RELEASE(m_pD3DCommandList);
+		this->m_p1Swapchain->Present(0, NULL);
+		m_FillCommandLine = false;
+	}
+
+	ContextInUse(FALSE);
+}
+
+BOOL Renderer::ContextInUse(BOOL isUse)
+{
+	return InterlockedExchange8(&m_ContextInUse, isUse);
 }
 
 bool Renderer::LightUpdate(
@@ -1023,12 +1071,12 @@ void Renderer::RenderToReflectionProbe(
 
 	std::shared_ptr<ModelMesh> _nowModelMesh = m_pResourceManager->GetModelMesh(modelIndex);
 
-	std::shared_ptr<VertexShader> _vertex = m_pResourceManager->GetVertexShader("vs_test.cso");
-	std::shared_ptr<PixelShader> _pixel = m_pResourceManager->GetPixelShader("ps_reflectionProbe.cso");
+	//std::shared_ptr<VertexShader> _vertex = m_pResourceManager->GetVertexShader("vs_test.cso");
+	//std::shared_ptr<PixelShader> _pixel = m_pResourceManager->GetPixelShader("ps_reflectionProbe.cso");
 
-	m_pDeviceContext->IASetInputLayout(_vertex->inputLayout.Get());
-	m_pDeviceContext->VSSetShader(_vertex->GetVertexShader(), NULL, 0);
-	m_pDeviceContext->PSSetShader(_pixel->GetPixelShader(), NULL, 0);
+	m_pDeviceContext->IASetInputLayout(VS_SHADER(eSHADER::VS_STATICMESH)->inputLayout.Get());
+	m_pDeviceContext->VSSetShader(VS_SHADER(eSHADER::VS_STATICMESH)->GetVertexShader(), NULL, 0);
+	m_pDeviceContext->PSSetShader(PS_SHADER(eSHADER::PS_REFLECTIONPROBE)->GetPixelShader(), NULL, 0);
 
 	for (auto& _nowNode : *_nowModelMesh->m_pNodeData_V)
 	{
@@ -1064,14 +1112,14 @@ void Renderer::RenderToReflectionProbe(
 	m_pDeviceContext->VSSetConstantBuffers(0, 2, _bf);
 }
 
-void Renderer::ReflectionProbeBaking(const unsigned int sceneIndex, const unsigned int probeIndex)
+void Renderer::ReflectionProbeBaking(const unsigned int sceneIndex, const std::string& sceneName, const unsigned int probeIndex)
 {
 	m_pIBL->BakeReflectionProbe(
 		m_pDevice, m_pDeviceContext,
 		m_pResourceManager->GetVertexShader("vs_Environment.cso"),
 		m_pResourceManager->GetPixelShader("ps_irradianceMapVector3.cso"),
 		m_pResourceManager->GetPixelShader("ps_prefilter.cso"),
-		sceneIndex, probeIndex);
+		sceneIndex, sceneName, probeIndex);
 }
 
 void Renderer::SetReflectionBakedDDS(
@@ -1106,7 +1154,10 @@ void Renderer::MeshDraw(
 	DirectX::XMMATRIX* pBoneOffsetTM)
 {
 
-	if (renderFlag & 1) m_IsSelectedAny = true;
+	if (renderFlag & 1)
+	{
+		m_IsSelectedAny = true;
+	}
 
 	std::shared_ptr<ModelMesh> _nowModelMesh = m_pResourceManager->GetModelMesh(modelIndex);
 
@@ -1128,13 +1179,6 @@ void Renderer::MeshDraw(
 	{
 		auto _parent = _nowModelMesh->m_pNodeData_V->at(0);
 		_parent->m_BoundingVolume->Update(worldTM);
-
-		m_pVisualDebugger->DebuggerRender(
-			m_pResourceManager->GetVertexShader("vs_color.cso"),
-			m_pResourceManager->GetPixelShader("ps_color.cso"),
-			_parent->m_BoundingVolume->GetBoundingSphere().Center,
-			worldTM, m_ViewTM, m_ProjectionTM,
-			eHELPER_TYPE::SPHERE, DirectX::XMFLOAT3(_parent->m_BoundingVolume->GetBoundingSphere().Radius, 0.0f, 0.0f));
 
 		if (m_FrustumVolume->GetFrustum().Intersects(_parent->m_BoundingVolume->GetBoundingSphere()) == true)
 		{
@@ -1236,29 +1280,36 @@ void Renderer::RenderQueueProcess()
 		}
 	}
 
+	m_SSAOManager->ComputeSsao(m_pDeviceContext, m_ProjectionTM,
+		m_Deferred->GetDrawLayers()[NORMALDEPTH_MAP]->GetShaderResourceViewRawptr());
+	m_SSAOManager->BlurAmbientMap(m_pDeviceContext, 4);
+
 	// Opaque가 있긴 없건 무조건 돌아간다
 	// Deferred 버퍼들을 하나로 뭉쳐서 IBL 연산이 끝난 FrameBuffer로 만든다
 	{
-		float colorNull[4] = { 0.3f,0.3f, 0.3f, 1.0f };
+		float colorNull[4] = { 0.3f,0.3f, 0.3f, 0.0f };
 		m_pDeviceContext->ClearRenderTargetView(m_pRenderTarget->GetRenderTargerViewRawptr(), colorNull);
 		m_pDeviceContext->OMSetRenderTargets(1, m_pRenderTarget->GetRenderTargetViewAddressOf(), nullptr);	// 여기서는 뎁스 버퍼가 없는게 맞다
 																											// 실제 메쉬가 있을 때 체크를 하는 것이니
+		m_pDeviceContext->RSSetViewports(1, &m_pRenderTarget->GetViewPort());
+
 
 		m_Deferred->CombineRenderTargetOpaque(
 			true,
 			m_pDeviceContext,
 			VS_SHADER(eSHADER::VS_COMBINE),
 			PS_SHADER(eSHADER::PS_OPAQUEPASS),
-			m_LightManager->GetTextureLightShaderResourceView(0));
-
+			m_LightManager->GetTextureLightShaderResourceView(0),
+			m_SSAOManager->AmbientSRV().Get());
 
 		m_Deferred->UnbindRenderTargets(m_pDeviceContext);
+
 	}
 
 	// Transparent 처리
 	if (_transparentSize > 0)
 	{
-		m_Deferred->BeginRender(m_pDeviceContext);
+		m_Deferred->TransparentBeginRender(m_pDeviceContext);
 
 		m_RenderQueue->ProcessTransparentQueue(this);
 
@@ -1270,12 +1321,6 @@ void Renderer::RenderQueueProcess()
 			m_LightManager->GetTextureLightShaderResourceView(0));
 
 		m_Deferred->UnbindRenderTargets(m_pDeviceContext);
-	}
-
-	if (_particleSize > 0)
-	{
-		m_Deferred->BindAccumReveal(m_pDeviceContext);
-		m_RenderQueue->ProcessParticleQueue(this);
 	}
 
 	{
@@ -1299,7 +1344,6 @@ void Renderer::RenderQueueProcess()
 			VS_SHADER(eSHADER::VS_COMBINE),
 			PS_SHADER(eSHADER::PS_COMPOSITE));
 	}
-
 
 	m_RenderDebugInfo.opaqueObejct = _opaqueSize;
 	m_RenderDebugInfo.transparentObejct = _transparentSize;
@@ -1336,7 +1380,7 @@ unsigned int Renderer::SpawnParticle(struct ParticleProperty* particle)
 void Renderer::DrawSprite(eResourceType resourceType, unsigned int spriteIndex, const DirectX::XMMATRIX& worldTM)
 {
 	// 이미지 테두리
-	DrawSpriteEdge(worldTM);
+	//DrawSpriteEdge(worldTM);
 
 	float blendFactor[] = { 0, 0, 0, 0 };
 
@@ -1383,6 +1427,49 @@ void Renderer::DrawSprite(eResourceType resourceType, unsigned int spriteIndex, 
 
 }
 
+/// <summary>
+/// 로딩씬 띄울때 쓰는 함수
+/// </summary>
+/// <param name="_tempBitmap"></param>
+/// <param name="worldTM"></param>
+/// <param name="vertexShader"></param>
+/// <param name="pixelShader"></param>
+/// <param name="inputLayout"></param>
+void Renderer::DrawSprite(
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> bitmap, 
+	const DirectX::XMMATRIX& worldTM, 
+	VertexShader* vertexShader,
+	PixelShader* pixelShader)
+{
+	float blendFactor[] = { 0, 0, 0, 0 };
+	m_pDeferredDeviceContext->RSSetState(RasterizerState::GetNoCullingRS());
+	m_pDeferredDeviceContext->OMSetBlendState(RasterizerState::GetAlphaBlenderStateUI(), blendFactor, 0xffffffff);
+	
+	m_pDeferredDeviceContext->PSSetSamplers(0, 1, RasterizerState::GetLinearSamplerStateAddressOf());
+
+	m_pDeferredDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	m_pDeferredDeviceContext->IASetInputLayout(vertexShader->inputLayout.Get());
+	m_pDeferredDeviceContext->VSSetShader(vertexShader->GetVertexShader(), NULL, 0);
+	m_pDeferredDeviceContext->PSSetShader(pixelShader->GetPixelShader(), NULL, 0);
+
+	m_OrthoTM = DirectX::XMMatrixOrthographicOffCenterLH(0.0f, (float)m_ClientWidth, (float)m_ClientHeight, 0.0f, 0.0f, 1.0f);
+	XMMATRIX wvpMatrix = worldTM * m_OrthoTM;
+
+	ConstantBufferManager::GetVertexBuffer2D()->data.wvpMatrix = wvpMatrix;
+	ConstantBufferManager::GetVertexBuffer2D()->ApplyChanges(m_pDeferredDeviceContext.Get());
+
+	m_pDeferredDeviceContext->VSSetConstantBuffers(0, 1, ConstantBufferManager::GetVertexBuffer2D()->GetAddressOf());
+	m_pDeferredDeviceContext->PSSetShaderResources(0, 1, bitmap.GetAddressOf());
+
+	const UINT offsets = 0;
+
+	m_pDeferredDeviceContext->IASetVertexBuffers(0, 1, m_SpriteQuad->GetVertexAddressOf(), m_SpriteQuad->StridePtr(), &offsets);
+	m_pDeferredDeviceContext->IASetIndexBuffer(m_SpriteQuad->GetIndexBuffer(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
+	m_pDeferredDeviceContext->DrawIndexed(m_SpriteQuad->GetIndexCount(), 0, 0);
+
+}
+
 void Renderer::DrawSpriteEdge(const DirectX::XMMATRIX& worldTM)
 {
 	m_pDeviceContext->RSSetState(RasterizerState::GetWireFrameRS());
@@ -1417,12 +1504,27 @@ void Renderer::DrawSpriteEdge(const DirectX::XMMATRIX& worldTM)
 void Renderer::DrawBillboard(const unsigned int spriteIndex, const DirectX::XMMATRIX& worldTM)
 {
 	std::shared_ptr<SpriteData> _nowSprite = m_pResourceManager->GetSpriteData(spriteIndex);
-	m_RenderQueue->AddRenderQueueParticle(
+	m_RenderQueue->AddRenderQueueBillboard(
 		VS_SHADER(eSHADER::VS_BILLBOARD),
-		PS_SHADER(eSHADER::PS_COLORTOACCUMEREVEAL),
+		PS_SHADER(eSHADER::PS_BILLBOARD),
 		spriteIndex,
 		_nowSprite,
 		worldTM);
+}
+
+void Renderer::DrawBillboardUI()
+{
+	unsigned int _opaqueSize, _transparentSize, _particleSize;
+
+	m_RenderQueue->GetObjectCount(_opaqueSize, _transparentSize, _particleSize);
+
+	if (_particleSize > 0)
+	{
+		m_Deferred->BindAccumReveal(m_pDeviceContext);
+		m_RenderQueue->ProcessBillboardQueue(this);
+	}
+
+	m_RenderQueue->m_NowParticleIndex = 0;
 }
 
 void Renderer::DrawBillboardEdge(const DirectX::XMMATRIX& worldTM)
@@ -1462,6 +1564,33 @@ void Renderer::DrawD2DText(std::shared_ptr<TextBlock> pTextBlock)
 	m_pD2D->Push_DrawText(pTextBlock);
 }
 
+void Renderer::SetLoadingSceneImage(
+	const std::string& imagePath, 
+	const std::string& vertexShaderPath, 
+	const std::string& pixelShaderPath, 
+	float frame)
+{
+	m_LoadingScene->SetImageAndFps(m_pDevice, imagePath, vertexShaderPath, pixelShaderPath, frame);
+}
+
+void Renderer::DrawLoadingScene()
+{
+	while (ContextInUse(TRUE) == TRUE)
+		Sleep(0);
+
+	float _color[4] = { 0.0f, 0.0f,  0.0f, 0.0f };
+	ID3D11RenderTargetView* _rt[1] = { m_Forward->GetRenderTargetView()->GetRenderTargerViewRawptr() };
+	m_pDeferredDeviceContext->OMSetRenderTargets(1, _rt, nullptr);
+	m_pDeferredDeviceContext->ClearRenderTargetView(m_Forward->GetRenderTargetView()->GetRenderTargerViewRawptr(), _color);
+	m_pDeferredDeviceContext->RSSetViewports(1, &m_Forward->GetRenderTargetView()->GetViewPort());
+
+	m_LoadingScene->Draw(this);
+
+	m_pDeferredDeviceContext->FinishCommandList(FALSE, &m_pD3DCommandList);
+	m_FillCommandLine = true;
+
+	ContextInUse(FALSE);
+}
 
 #pragma endregion
 
@@ -1520,6 +1649,24 @@ void Renderer::SetMaterial(std::shared_ptr<NodeData>& pNodeData)
 
 	m_pDeviceContext->PSSetShaderResources(4, m_LightManager->GetShadowLightCount(), _arrShadow);
 
+}
+
+void Renderer::SetBasicIrradiance()
+{
+	float _iblFactor[1] = { m_RenderOption.adjustFactor };
+
+	ConstantBufferManager::SetGeneralCBuffer(m_pDeviceContext, CBufferType::PS, CBufferSize::SIZE_4, 4, _iblFactor);
+
+	ID3D11ShaderResourceView* _SRV[3] =
+	{
+		m_pResourceManager->GetTexture("ibl_brdf_lut.png").Get(),
+		m_pIBL->GetBasicIBL()->GetIrradianceTexture().Get(),
+		m_pIBL->GetBasicIBL()->GetPreFilterTexture().Get(),
+		//m_pIBL->GetBasicIBL()->GetIrrdaianceCubeRenderTarget()->GetShaderResourceView().Get(),
+		//m_pIBL->GetBasicIBL()->GetPreFilterCubeRenderTarget()->GetShaderResourceView().Get(),
+	};
+
+	m_pDeviceContext->PSSetShaderResources(8, 3, _SRV);
 }
 
 void Renderer::SetReflectionProbeBuffer(int probeIndex)
@@ -1607,7 +1754,7 @@ void Renderer::RenderProcess(
 
 		ConstantBufferManager::GetVSPerObjectBuffer()->data.WorldViewProjection = DirectX::SimpleMath::Matrix::Identity * m_ViewTM * m_ProjectionTM;
 		ConstantBufferManager::GetVSPerObjectBuffer()->data.World = DirectX::SimpleMath::Matrix::Identity;
-		ConstantBufferManager::GetVSPerObjectBuffer()->data.WorldInverse = DirectX::SimpleMath::Matrix::Identity.Invert();
+		ConstantBufferManager::GetVSPerObjectBuffer()->data.WorldInverse = m_ViewTM;
 
 		// 그림자를 넣을 때 모델의 world값도 같이 곱해서 넣어줘야한다
 		// 그림자 캐스팅을 하는 라이트가 없으면 안돌아야함
@@ -1621,6 +1768,9 @@ void Renderer::RenderProcess(
 	{
 		ConstantBufferManager::GetVSPerObjectBuffer()->data.WorldViewProjection = worldTM * m_ViewTM * m_ProjectionTM;
 		ConstantBufferManager::GetVSPerObjectBuffer()->data.World = worldTM;
+		ConstantBufferManager::GetVSPerObjectBuffer()->data.WorldInverse = m_ViewTM;
+
+
 
 		for (unsigned int i = 0; i < m_LightManager->GetShadowLightCount(); i++)
 		{
@@ -1748,7 +1898,7 @@ void Renderer::RenderOITProcess(
 	m_pDeviceContext->DrawIndexed(pData->m_IndexCount, 0, 0);
 }
 
-void Renderer::RenderParticleProcess(
+void Renderer::RenderBillboardProcess(
 	unsigned int spriteIndex,
 	const DirectX::XMMATRIX& worldTM)
 {
@@ -1765,7 +1915,7 @@ void Renderer::RenderParticleProcess(
 	m_pDeviceContext->IASetVertexBuffers(0, 1, m_SpriteQuad->GetVertexBuffer().GetAddressOf(), m_SpriteQuad->StridePtr(), &offset);
 	m_pDeviceContext->IASetIndexBuffer(m_SpriteQuad->GetIndexBuffer(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
 
-	m_pDeviceContext->OMSetBlendState(RasterizerState::GetTransparentSetState(), nullptr, 0xffffffff);
+	m_pDeviceContext->OMSetBlendState(RasterizerState::GetAlphaBlenderStateUI(), nullptr, 0xffffffff);
 
 	ConstantBufferManager::GetVSWVPBuffer()->data.worldMatrix = worldTM;
 	ConstantBufferManager::GetVSWVPBuffer()->data.viewMatrix = m_ViewTM;
@@ -1918,32 +2068,24 @@ void Renderer::DebugDraw(
 void Renderer::DeferredPickingPass()
 {
 	// 디퍼드 정보 중 SRV를 가져와 배열에 담는다
-	ID3D11ShaderResourceView* _srv[3] =
+	ID3D11ShaderResourceView* _srv[6] =
 	{
 		m_Deferred->GetDrawLayers()[NORMAL_MAP]->GetShaderResourceViewRawptr(),
 		m_Deferred->GetDrawLayers()[POSITION_MAP]->GetShaderResourceViewRawptr(),
 		m_Deferred->GetDrawLayers()[ID_MAP]->GetShaderResourceViewRawptr(),
+
+		m_Deferred->GetTransparentDrawLayers()[NORMAL_MAP]->GetShaderResourceViewRawptr(),
+		m_Deferred->GetTransparentDrawLayers()[POSITION_MAP]->GetShaderResourceViewRawptr(),
+		m_Deferred->GetTransparentDrawLayers()[ID_MAP]->GetShaderResourceViewRawptr(),
 	};
 
 	// 템플릿으로 만들어진 함수에 해당 픽셀에서 원하는 클래스를 넣는다
 	// 마우스의 위치, 윈도우 크기, SRV 배열과 크기, Staging Buffer를 전달한다
 	m_PixelPicker->PixelPickingFromSRV<DeferredPixel>(
 		m_pDeviceContext, m_MousePos,
-		m_ClientWidth, m_ClientHeight, _srv, 3, m_DeferredPixelData.get());
+		m_ClientWidth, m_ClientHeight, _srv, 6, m_DeferredPixelData.get());
 
 	m_ClickedObjectId = m_DeferredPixelData->m_Data.objectID;
-
-	CA_TRACE("World Position = x : %f | y : %f | z : %f | w : %f",
-		m_DeferredPixelData->m_Data.position.x,
-		m_DeferredPixelData->m_Data.position.y,
-		m_DeferredPixelData->m_Data.position.z,
-		m_DeferredPixelData->m_Data.position.w);
-	CA_TRACE("World Normal   = x : %f | y : %f | z : %f",
-		m_DeferredPixelData->m_Data.normal.x,
-		m_DeferredPixelData->m_Data.normal.y,
-		m_DeferredPixelData->m_Data.normal.z);
-	CA_TRACE("Object ID      = %d",
-		m_DeferredPixelData->m_Data.objectID);
 }
 
 void Renderer::DebugQueueProcess()
@@ -1979,7 +2121,6 @@ void Renderer::DebugQueueProcess()
 
 void Renderer::UIPassBind()
 {
-
 	float _clear[4] = { 0.0f, 0.0f, 0.0f, 0.0f, };
 	m_pDeviceContext->ClearRenderTargetView(m_pUIRenderTarget->GetRenderTargerViewRawptr(), _clear);
 	m_pDeviceContext->OMSetRenderTargets(1, m_pUIRenderTarget->GetRenderTargetViewAddressOf(), m_pDepthStencil->GetDepthSetncilView());
@@ -2035,7 +2176,6 @@ void Renderer::RenderOutLineProcess(
 		}
 		else
 		{
-
 			ConstantBufferManager::GetVSWVPBuffer()->data.worldMatrix = worldTM;
 			ConstantBufferManager::GetVSWVPBuffer()->data.viewMatrix = m_ViewTM;
 			ConstantBufferManager::GetVSWVPBuffer()->data.projectionMatrix = m_ViewTM * m_ProjectionTM;
@@ -2120,23 +2260,8 @@ void Renderer::EndDraw()
 	m_pDeviceContext->RSSetState(RasterizerState::GetNoCullingRS());
 	m_pDeviceContext->OMSetBlendState(RasterizerState::GetBlenderState(), nullptr, 0xffffff);
 
-	// m_pRenderTarget 포스트 프로세싱이 적용되지 않은 원본 렌더타겟
-	// m_Forward->GetRenderTargetView()이 적용된 렌더타겟
-	//if (m_RenderOption.isHDRRender == true)
-	//	m_PostProcess->ApplyPostProcess(m_pDeviceContext, m_pRenderTarget,
-	//		m_Forward->GetRenderTargetView(), ePOST_PROCESS::HDR);
-	//else if (m_RenderOption.isAdaptation == true)
-	//	m_PostProcess->ApplyPostProcess(m_pDeviceContext, m_pRenderTarget,
-	//		m_Forward->GetRenderTargetView(), ePOST_PROCESS::ADAPTATION);
-	if (m_RenderOption.isDownSampling == true)
-		m_PostProcess->ApplyPostProcess(m_pDeviceContext, m_pRenderTarget,
-			m_Forward->GetRenderTargetView(), ePOST_PROCESS::DOWNSAMPLE);
-	else if (m_RenderOption.isBlur == true)
-		m_PostProcess->ApplyPostProcess(m_pDeviceContext, m_pRenderTarget,
-			m_Forward->GetRenderTargetView(), ePOST_PROCESS::BLUR);
-	else if (m_RenderOption.isBloom == true)
-		m_PostProcess->ApplyPostProcess(m_pDeviceContext, m_pRenderTarget,
-			m_Forward->GetRenderTargetView(), ePOST_PROCESS::BLOOM);
+	if (m_RenderOption.isBloom == true)
+		m_PostProcess->ApplyPostProcess(m_pDeviceContext, m_pRenderTarget, m_Forward->GetRenderTargetView(), ePOST_PROCESS::BLOOM);
 	else
 	{
 		m_PostProcess->ApplyPostProcess(m_pDeviceContext, m_pRenderTarget,
@@ -2145,7 +2270,6 @@ void Renderer::EndDraw()
 
 	if (m_RenderOption.isHDRRender == true)
 	{
-		//m_PostProcess->ApplyFXAA(m_pDeviceContext, m_Forward->GetRenderTargetView(), m_ClientWidth, m_ClientHeight);
 		m_PostProcess->ApplyFXAA(m_pDeviceContext, m_pRenderTarget, m_ClientWidth, m_ClientHeight);
 	}
 
@@ -2174,15 +2298,23 @@ void Renderer::EndDraw()
 	if (m_RenderOption.isQT == false)
 	{
 	}
-		m_pDeviceContext->OMSetBlendState(RasterizerState::GetAlphaBlenderState(), nullptr, 0xffffffff);
-		m_pDeviceContext->OMSetRenderTargets(1, m_Forward->GetRenderTargetView()->GetRenderTargetViewAddressOf(), nullptr);
 
+	m_pDeviceContext->OMSetBlendState(RasterizerState::GetAlphaBlenderState(), nullptr, 0xffffffff);
+	m_pDeviceContext->OMSetRenderTargets(1, m_Forward->GetRenderTargetView()->GetRenderTargetViewAddressOf(), nullptr);
 
 	// UI를 묶는다
-	CombineRenderTarget(m_pUIRenderTarget, RasterizerState::GetDestZeroBlendState(), nullptr);
+	CombineRenderTarget(m_pUIRenderTarget, RasterizerState::GetDeferredBlendState(), nullptr);
+
 
 	// 텍스트
 	m_pD2D->Draw_AllText();
+
+
+	if (m_RenderOption.bDebugRenderMode == true)
+	{
+		// 디버그정보들(IMGUI, grid등...)을 묶는다
+		CombineRenderTarget(m_pDebugRenderTarget, RasterizerState::GetAlphaBlenderState(), nullptr);
+	}
 
 	// 디버그정보들(IMGUI, grid등...)을 묶는다
 	CombineRenderTarget(m_pDebugRenderTarget, RasterizerState::GetAlphaBlenderState(), nullptr);
@@ -2318,7 +2450,7 @@ bool Renderer::AnimationCrossFading(
 	// easeIn 애니메이션은 무조건 0부터 시작하므로
 	// fading될 Period만 알고 있으면 언제 종료할지도 알 수 있다
 	_nowModel->m_pSkeleton->CrossFadingByPrevAnimatoinTM(
-		_easeInAnimData, worldTM, 
+		_easeInAnimData, worldTM,
 		pPrevWorld, pInterpolateTM,
 		easeInKeyFrame, _blendUnit * easeInKeyFrame);
 
@@ -2457,106 +2589,87 @@ void Renderer::HelperRender()
 {
 	// 드로우 전용 렌더 타겟을 묶는다
 	// 가장 처음으로 불리는 것이므로 내부를 지워준다
-
-	std::shared_ptr<VertexShader> _nowVertexShader = m_pResourceManager->GetVertexShader("vs_color.cso");
-	std::shared_ptr<PixelShader> _nowPixelShader = m_pResourceManager->GetPixelShader("ps_deferredColor.cso");
-
-	m_pDeviceContext->RSSetState(RasterizerState::GetSolidNormal());
-	m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-
-	m_pDeviceContext->OMSetDepthStencilState(RasterizerState::GetDisabledDSS(), 1);
-
-	for (int i = 0; i < m_LightManager->GetLightCount() + 1; i++)
+	if (m_RenderOption.bDebugRenderMode = true)
 	{
-		switch (m_LightManager->GetLightPtr(i)->m_LightType)
+		std::shared_ptr<VertexShader> _nowVertexShader = m_pResourceManager->GetVertexShader("vs_color.cso");
+		std::shared_ptr<PixelShader> _nowPixelShader = m_pResourceManager->GetPixelShader("ps_deferredColor.cso");
+
+		m_pDeviceContext->RSSetState(RasterizerState::GetSolidNormal());
+		m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+		m_pDeviceContext->OMSetDepthStencilState(RasterizerState::GetDisabledDSS(), 1);
+
+		for (int i = 0; i < m_LightManager->GetLightCount() + 1; i++)
 		{
-		case DIRECTONAL_LIGHT:
-			m_pVisualDebugger->DebuggerRender(_nowVertexShader, _nowPixelShader,
-				m_CameraPos,
-				m_LightManager->GetLightPtr(i)->GetLightWorldTM(),
-				m_ViewTM, m_ProjectionTM, eHELPER_TYPE::DIRECTIONAL_LIGHT);
-			break;
-		case POINT_LIGHT:
-			m_pVisualDebugger->DebuggerRender(_nowVertexShader, _nowPixelShader,
-				m_CameraPos,
-				m_LightManager->GetLightPtr(i)->GetLightWorldTM(),
-				m_ViewTM, m_ProjectionTM, eHELPER_TYPE::POINT_LIGHT);
-			break;
-		case SPOT_LIGHT:
-			m_pVisualDebugger->DebuggerRender(_nowVertexShader, _nowPixelShader,
-				m_CameraPos,
-				m_LightManager->GetLightPtr(i)->GetLightWorldTM(),
-				m_ViewTM, m_ProjectionTM, eHELPER_TYPE::SPOT_LIGHT);
-			break;
+			switch (m_LightManager->GetLightPtr(i)->m_LightType)
+			{
+			case DIRECTONAL_LIGHT:
+				m_pVisualDebugger->DebuggerRender(_nowVertexShader, _nowPixelShader,
+					m_CameraPos,
+					m_LightManager->GetLightPtr(i)->GetLightWorldTM(),
+					m_ViewTM, m_ProjectionTM, eHELPER_TYPE::DIRECTIONAL_LIGHT);
+				break;
+			case POINT_LIGHT:
+				m_pVisualDebugger->DebuggerRender(_nowVertexShader, _nowPixelShader,
+					m_CameraPos,
+					m_LightManager->GetLightPtr(i)->GetLightWorldTM(),
+					m_ViewTM, m_ProjectionTM, eHELPER_TYPE::POINT_LIGHT);
+				break;
+			case SPOT_LIGHT:
+				m_pVisualDebugger->DebuggerRender(_nowVertexShader, _nowPixelShader,
+					m_CameraPos,
+					m_LightManager->GetLightPtr(i)->GetLightWorldTM(),
+					m_ViewTM, m_ProjectionTM, eHELPER_TYPE::SPOT_LIGHT);
+				break;
+			}
 		}
-	}
 
-	m_pVisualDebugger->DrawLine(
-		_nowVertexShader,
-		m_HLSLShader->m_DebugTestShader,
-		m_ViewTM, m_ProjectionTM);
-
-
-	/// 기즈모
-	if (m_IsSelectedAny == true)
-	{
-		m_pVisualDebugger->DebuggerRender(
+		m_pVisualDebugger->DrawLine(
 			_nowVertexShader,
-			_nowPixelShader,
-			m_CameraPos,
-			m_RenderQueue->GetSelectedObjectTM(),
-			m_ViewTM, m_ProjectionTM, eHELPER_TYPE::GIZMO);
+			m_HLSLShader->m_DebugTestShader,
+			m_ViewTM, m_ProjectionTM);
+
+
+		/// 기즈모
+		if (m_IsSelectedAny == true)
+		{
+			m_pVisualDebugger->DebuggerRender(
+				_nowVertexShader,
+				_nowPixelShader,
+				m_CameraPos,
+				m_RenderQueue->GetSelectedObjectTM(),
+				m_ViewTM, m_ProjectionTM, eHELPER_TYPE::GIZMO);
+		}
+
+		m_pDeviceContext->OMSetDepthStencilState(RasterizerState::GetDepthStencilState(), 1);
+		m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+
+		/// 기즈모
+		/*
+		if (m_IsSelectedAny == true)
+		{
+			m_pVisualDebugger->DebuggerRender(
+				_nowVertexShader,
+				_nowPixelShader,
+				m_CameraPos,
+				m_RenderQueue->GetSelectedObjectTM(),
+				m_ViewTM, m_ProjectionTM, eHELPER_TYPE::GIZMO);
+		}
+		*/
+
+		m_pDeviceContext->OMSetDepthStencilState(RasterizerState::GetDepthStencilState(), 1);
+		m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+
+		// 헬퍼에서 IBL의 프로브를 모두 그려준다
+		// 그러지 않을 필요는 없다.
+		// 들어가는 버텍스는 Pos, Normal, Tex
+		m_pIBL->RenderProbe(m_pDeviceContext,
+			VS_SHADER(eSHADER::VS_STANDARD), PS_SHADER(eSHADER::PS_CUBEMAPSPHERE),
+			m_ViewTM, m_ProjectionTM);
 	}
 
-	m_pDeviceContext->OMSetDepthStencilState(RasterizerState::GetDepthStencilState(), 1);
-	m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-
-	m_pVisualDebugger->DebuggerRender(
-		_nowVertexShader,
-		m_HLSLShader->m_DebugTestShader,
-		m_CameraPos,
-		DirectX::XMMatrixIdentity(),
-		m_ViewTM, m_ProjectionTM,
-		eHELPER_TYPE::GRID);
-
-	// 헬퍼에서 IBL의 프로브를 모두 그려준다
-	// 그러지 않을 필요는 없다.
-	// 들어가는 버텍스는 Pos, Normal, Tex
-	m_pIBL->RenderProbe(m_pDeviceContext,
-		VS_SHADER(eSHADER::VS_STANDARD), PS_SHADER(eSHADER::PS_CUBEMAPSPHERE),
-		m_ViewTM, m_ProjectionTM);
-
-	/*
-	// 이미 값이 추가된 것이기 때문에 Indentity 값으로 해준다
-
-	auto _vs = m_pResourceManager->GetVertexShader("vs_colorN.cso");
-	auto _ps = m_pResourceManager->GetPixelShader("ps_colorN.cso");
-	auto _id = DirectX::SimpleMath::Matrix::Identity;
-	auto _ori = m_FrustumVolume->GetCornerVector(0), _tar = m_FrustumVolume->GetCornerVector(1);
-	m_pVisualDebugger->GetLineRender()->DynamicRender(m_pDeviceContext, _vs, _ps, _ori, _tar, _id, m_ViewTM, m_ProjectionTM);
-	_ori = m_FrustumVolume->GetCornerVector(1), _tar = m_FrustumVolume->GetCornerVector(2);
-	m_pVisualDebugger->GetLineRender()->DynamicRender(m_pDeviceContext, _vs, _ps, _ori, _tar, _id, m_ViewTM, m_ProjectionTM);
-	_ori = m_FrustumVolume->GetCornerVector(2), _tar = m_FrustumVolume->GetCornerVector(3);
-	m_pVisualDebugger->GetLineRender()->DynamicRender(m_pDeviceContext, _vs, _ps, _ori, _tar, _id, m_ViewTM, m_ProjectionTM);
-	_ori = m_FrustumVolume->GetCornerVector(3), _tar = m_FrustumVolume->GetCornerVector(0);
-	m_pVisualDebugger->GetLineRender()->DynamicRender(m_pDeviceContext, _vs, _ps, _ori, _tar, _id, m_ViewTM, m_ProjectionTM);
-	_ori = m_FrustumVolume->GetCornerVector(4), _tar = m_FrustumVolume->GetCornerVector(5);
-	m_pVisualDebugger->GetLineRender()->DynamicRender(m_pDeviceContext, _vs, _ps, _ori, _tar, _id, m_ViewTM, m_ProjectionTM);
-	_ori = m_FrustumVolume->GetCornerVector(5), _tar = m_FrustumVolume->GetCornerVector(6);
-	m_pVisualDebugger->GetLineRender()->DynamicRender(m_pDeviceContext, _vs, _ps, _ori, _tar, _id, m_ViewTM, m_ProjectionTM);
-	_ori = m_FrustumVolume->GetCornerVector(6), _tar = m_FrustumVolume->GetCornerVector(7);
-	m_pVisualDebugger->GetLineRender()->DynamicRender(m_pDeviceContext, _vs, _ps, _ori, _tar, _id, m_ViewTM, m_ProjectionTM);
-	_ori = m_FrustumVolume->GetCornerVector(7), _tar = m_FrustumVolume->GetCornerVector(4);
-	m_pVisualDebugger->GetLineRender()->DynamicRender(m_pDeviceContext, _vs, _ps, _ori, _tar, _id, m_ViewTM, m_ProjectionTM);
-	_ori = m_FrustumVolume->GetCornerVector(0), _tar = m_FrustumVolume->GetCornerVector(4);
-	m_pVisualDebugger->GetLineRender()->DynamicRender(m_pDeviceContext, _vs, _ps, _ori, _tar, _id, m_ViewTM, m_ProjectionTM);
-	_ori = m_FrustumVolume->GetCornerVector(1), _tar = m_FrustumVolume->GetCornerVector(5);
-	m_pVisualDebugger->GetLineRender()->DynamicRender(m_pDeviceContext, _vs, _ps, _ori, _tar, _id, m_ViewTM, m_ProjectionTM);
-	_ori = m_FrustumVolume->GetCornerVector(2), _tar = m_FrustumVolume->GetCornerVector(6);
-	m_pVisualDebugger->GetLineRender()->DynamicRender(m_pDeviceContext, _vs, _ps, _ori, _tar, _id, m_ViewTM, m_ProjectionTM);
-	_ori = m_FrustumVolume->GetCornerVector(3), _tar = m_FrustumVolume->GetCornerVector(7);
-	m_pVisualDebugger->GetLineRender()->DynamicRender(m_pDeviceContext, _vs, _ps, _ori, _tar, _id, m_ViewTM, m_ProjectionTM);
-	*/
 }
 
 void Renderer::RenderSphere(float radius, const DirectX::SimpleMath::Matrix& worldTM)

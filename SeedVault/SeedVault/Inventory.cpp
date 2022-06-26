@@ -7,6 +7,7 @@
 
 Inventory::Inventory()
 	: ComponentBase(ComponentType::GameLogic)
+	, _Owner(nullptr)
 	, m_Inventory()
 	, m_Slot()
 	, m_EquiptedSlotIndex(0)
@@ -20,6 +21,8 @@ Inventory::~Inventory()
 
 void Inventory::Start()
 {
+	_Owner = m_pMyObject;
+
 	m_Inventory.reserve(static_cast<uint>(IItem::Type::eMax));
 	m_Slot.reserve(5);
 
@@ -88,7 +91,7 @@ void Inventory::Update(float dTime)
 		}
 	}
 
-	if (DLLInput::InputKeyDown(static_cast<int>(CL::KeyCode::KEY_F2)))
+	if (DLLInput::InputKeyDown(static_cast<int>(CL::KeyCode::KEY_I)))
 	{
 		PrintInfo();
 	}

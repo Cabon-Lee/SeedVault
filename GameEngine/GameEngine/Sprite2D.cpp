@@ -54,22 +54,26 @@ void Sprite2D::Start()
 
 	switch (m_UIAxis)
 	{
-	case UIAxis::None:
-	case UIAxis::LeftUp:
+	case eUIAxis::None:
+	case eUIAxis::LeftUp:
 		_Xpos = m_pMyObject->m_Transform->m_Position.x;
 		_Ypos = m_pMyObject->m_Transform->m_Position.y;
 		break;
-	case UIAxis::RightUp:
+	case eUIAxis::RightUp:
 		_Xpos = m_width - m_pMyObject->m_Transform->m_Position.x;
 		_Ypos = m_pMyObject->m_Transform->m_Position.y;
 		break;
-	case UIAxis::RightDown:
+	case eUIAxis::RightDown:
 		_Xpos = m_width - m_pMyObject->m_Transform->m_Position.x;
 		_Ypos = m_height - m_pMyObject->m_Transform->m_Position.y;
 		break;
-	case UIAxis::LeftDown:
+	case eUIAxis::LeftDown:
 		_Xpos = m_pMyObject->m_Transform->m_Position.x;
 		_Ypos = m_height - m_pMyObject->m_Transform->m_Position.y;
+		break;
+	case eUIAxis::Center:
+		_Xpos = m_width / 2 + m_pMyObject->m_Transform->m_Position.x;
+		_Ypos = m_height / 2 + m_pMyObject->m_Transform->m_Position.y;
 		break;
 	}
 
@@ -81,9 +85,9 @@ void Sprite2D::Start()
 	m_PivotY -= 0.5f;
 
 	m_worldTM =
-		XMMatrixScaling(m_pMyObject->m_Transform->m_Scale.x, m_pMyObject->m_Transform->m_Scale.y, 1.0f) *
-		XMMatrixRotationRollPitchYaw(m_pMyObject->m_Transform->m_Rotation.x, m_pMyObject->m_Transform->m_Rotation.y + XM_PI, m_pMyObject->m_Transform->m_Rotation.z + XM_PI) *
-		XMMatrixTranslation(_Xpos + (_ScaleX * m_PivotX), _Ypos + (_ScaleY * m_PivotY), m_pMyObject->m_Transform->m_Position.z);
+		DirectX::XMMatrixScaling(m_pMyObject->m_Transform->m_Scale.x, m_pMyObject->m_Transform->m_Scale.y, 1.0f) *
+		DirectX::XMMatrixRotationRollPitchYaw(m_pMyObject->m_Transform->m_Rotation.x, m_pMyObject->m_Transform->m_Rotation.y + XM_PI, m_pMyObject->m_Transform->m_Rotation.z + XM_PI) *
+		DirectX::XMMatrixTranslation(_Xpos + (_ScaleX * m_PivotX), _Ypos + (_ScaleY * m_PivotY), m_pMyObject->m_Transform->m_Position.z);
 
 }
 
@@ -109,24 +113,24 @@ void Sprite2D::OnUIRender()
 
 	switch (m_UIAxis)
 	{
-	case UIAxis::None:
-	case UIAxis::LeftUp:
+	case eUIAxis::None:
+	case eUIAxis::LeftUp:
 		_Xpos = m_pMyObject->m_Transform->m_Position.x;
 		_Ypos = m_pMyObject->m_Transform->m_Position.y;
 		break;
-	case UIAxis::RightUp:
+	case eUIAxis::RightUp:
 		_Xpos = m_width - m_pMyObject->m_Transform->m_Position.x;
 		_Ypos = m_pMyObject->m_Transform->m_Position.y;
 		break;
-	case UIAxis::RightDown:
+	case eUIAxis::RightDown:
 		_Xpos = m_width - m_pMyObject->m_Transform->m_Position.x;
 		_Ypos = m_height - m_pMyObject->m_Transform->m_Position.y;
 		break;
-	case UIAxis::LeftDown:
+	case eUIAxis::LeftDown:
 		_Xpos = m_pMyObject->m_Transform->m_Position.x;
 		_Ypos = m_height - m_pMyObject->m_Transform->m_Position.y;
 		break;
-	case UIAxis::Center:
+	case eUIAxis::Center:
 		_Xpos = m_width/2 + m_pMyObject->m_Transform->m_Position.x;
 		_Ypos = m_height/2 + m_pMyObject->m_Transform->m_Position.y;
 		break;
@@ -136,9 +140,9 @@ void Sprite2D::OnUIRender()
 	float _ScaleY = m_pMyObject->m_Transform->m_Scale.y;
 
 	m_worldTM =
-		XMMatrixScaling(m_pMyObject->m_Transform->m_Scale.x, m_pMyObject->m_Transform->m_Scale.y, 1.0f) *
-		XMMatrixRotationRollPitchYaw(m_pMyObject->m_Transform->m_Rotation.x, m_pMyObject->m_Transform->m_Rotation.y + XM_PI, m_pMyObject->m_Transform->m_Rotation.z + XM_PI) *
-		XMMatrixTranslation(_Xpos + (_ScaleX * m_PivotX), _Ypos + (_ScaleY * m_PivotY),	m_pMyObject->m_Transform->m_Position.z);
+		DirectX::XMMatrixScaling(m_pMyObject->m_Transform->m_Scale.x, m_pMyObject->m_Transform->m_Scale.y, 1.0f) *
+		DirectX::XMMatrixRotationRollPitchYaw(m_pMyObject->m_Transform->m_Rotation.x, m_pMyObject->m_Transform->m_Rotation.y + XM_PI, m_pMyObject->m_Transform->m_Rotation.z + XM_PI) *
+		DirectX::XMMatrixTranslation(_Xpos + (_ScaleX * m_PivotX), _Ypos + (_ScaleY * m_PivotY),	m_pMyObject->m_Transform->m_Position.z);
 
 	switch (m_resourceType)
 	{
@@ -214,7 +218,7 @@ void Sprite2D::SetPivot(float pivotX, float pivotY)
 /// </summary>
 /// <param name="pivotX"></param>
 /// <param name="pivotY"></param>
-void Sprite2D::SetUIAxis(UIAxis uiAxis)
+void Sprite2D::SetUIAxis(eUIAxis uiAxis)
 {
 	m_UIAxis = uiAxis;
 }
@@ -241,6 +245,7 @@ void Sprite2D::ObserverUpdate(std::shared_ptr<IResourceManager> pResourceManager
 	{
 		m_SpriteIndex_V[i] = pResourceManager->GetSpriteDataIndex(m_SpriteName_V[i]);
 	}
+
 	m_NowSpriteIndex = 0;
 
 	// 텍스트의 크기정보

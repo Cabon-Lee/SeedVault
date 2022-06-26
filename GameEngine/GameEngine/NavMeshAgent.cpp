@@ -79,8 +79,9 @@ NavMeshAgent::NavMeshAgent()
 
 	, m_MoveSpeed(1.0f)
 
+	, m_bAutoMoveMode(false)
 	, m_DestinationObj(nullptr)
-	, m_DestinationPos(nullptr)
+	, m_DestinationPos(SimpleMath::Vector3::Zero)
 	, m_DestinationPosOnNavMesh(SimpleMath::Vector3::Zero)
 	, m_DestinationFace(nullptr)
 	, m_Path()
@@ -137,7 +138,9 @@ void NavMeshAgent::Update(float dTime)
 	}
 
 	// 설정된 목적지가 있는 경우
-	if (m_DestinationObj != nullptr)
+	//if (m_DestinationObj != nullptr)
+	// 자동 이동 모드 일 경우
+	if (m_bAutoMoveMode == true)
 	{
 		// 경로 탐색에 사용할 네비 메쉬 위의 위치를 계산
 		CalcDestinationOnNavMesh();
@@ -147,7 +150,7 @@ void NavMeshAgent::Update(float dTime)
 		/// 목적지가 다른 Face로 이동했거나, Agent가 경로를 이탈한 경우에 경로 재탐색
 		// 목적지가 다른 곳으로 이동한 경우
 		std::shared_ptr<NaviMeshFace> _nowDestFace = IsOnNavMesh(m_DestinationPosOnNavMesh);
-		
+
 		if (_nowDestFace != m_DestinationFace)
 		{
 			m_Path.clear();
@@ -894,7 +897,7 @@ bool NavMeshAgent::ChangeLastOnNavMeshFaceToAdjacentNavFace()
 /// </summary>
 /// <param name="object">설정할 오브젝트</param>
 /// <returns>성공여부</returns>
-bool NavMeshAgent::SetDestination(GameObject* object)
+bool NavMeshAgent::SetDestinationObj(GameObject* object)
 {
 	// 목적지 해제하려고 nullptr 입력한 경우
 	if (object == nullptr)
@@ -902,7 +905,9 @@ bool NavMeshAgent::SetDestination(GameObject* object)
 		m_Path.clear();
 
 		m_DestinationObj = nullptr;
-		m_DestinationPos = nullptr;
+		//m_DestinationPos = nullptr;
+
+		m_bAutoMoveMode = false;
 	}
 
 	// 목적지 대상 오브젝트가 전달된 경우
@@ -916,9 +921,42 @@ bool NavMeshAgent::SetDestination(GameObject* object)
 
 			// 목표 설정
 			m_DestinationObj = object;
-			m_DestinationPos = &object->m_Transform->m_Position;
+			m_DestinationPos = object->m_Transform->m_Position;
+
+			m_bAutoMoveMode = true;
 		}
 
+	}
+
+	return true;
+}
+
+/// <summary>
+/// Vector3 pos로 목표지점 설정
+/// </summary>
+/// <param name="position">목표 위치</param>
+/// <returns></returns>
+_DLL bool NavMeshAgent::SetDestinationPos(Vector3 position)
+{
+	// Agent의 현재 위치로 세팅하면 자동 이동 중지
+	if (position == m_Transform->m_Position)
+	{
+		m_bAutoMoveMode = false;
+
+		return true;
+	}
+
+	/// 기존 DestPos와 psition가 다른 경우에 Path 갱신
+	if (m_DestinationPos != position)
+	{
+		// 기존 경로 클리어
+		m_Path.clear();
+
+		// 목표 설정
+		m_DestinationObj = nullptr;
+		m_DestinationPos = position;
+
+		m_bAutoMoveMode = true;
 	}
 
 	return true;
@@ -1072,7 +1110,7 @@ bool NavMeshAgent::AdjustAgentPositionY()
 
 	// 콜라이더 영역만큼 보정할 오프셋 값
 	// 0으로 하니까 조금 밑으로 내려가서 보정해줌..
-	float _offset = 0.23f;			
+	float _offset = 0.23f;
 
 	// 피직스 액터가 있으면 콜라이더의 볼륨 만큼 보정해서 posY를 위치시킨다.
 	if (m_MyPhysicsActor != nullptr)
@@ -1081,7 +1119,7 @@ bool NavMeshAgent::AdjustAgentPositionY()
 	}
 
 	/// 중심 y 좌표에 콜라이더 영역만큼 보정할 오프셋을 더해서 y축 이동
-	m_Transform->SetPosition({ m_Transform->m_Position.x, _CenterY + _offset, m_Transform->m_Position.z});
+	m_Transform->SetPosition({ m_Transform->m_Position.x, _CenterY + _offset, m_Transform->m_Position.z });
 
 	return true;
 }
@@ -1145,17 +1183,18 @@ std::shared_ptr<struct NaviMeshFace> NavMeshAgent::FindNearNavFace(SimpleMath::V
 /// <returns>성공 여부</returns>
 bool NavMeshAgent::CalcDestinationOnNavMesh()
 {
-	// 목적지 설정이 안되어 있으면 계산하지 않음
+	// 목적지 오브젝트 설정이 안되어  position 사용
 	if (m_DestinationObj == nullptr)
 	{
-		return false;
+		m_DestinationPosOnNavMesh = m_DestinationPos;
 	}
 
-	// 목적지가 있을 때에만 Path Find 할 위치를 NavMesh 위의 영역(지점)으로 매핑한다.
-	// 설정한 목적지 대상의 pos를 실제로 이동할 NavMesh 상의 위치로 매핑(계산)
-
-	/// 대상의 위치로 초기화
-	m_DestinationPosOnNavMesh = m_DestinationObj->m_Transform->m_Position;
+	else
+	{
+		// 목적지 Obj가 있을 때 에만 Object의 위치를 NavMesh 위의 영역(지점)으로 매핑한다.
+		// 목적지 이동해도 동기화
+		m_DestinationPosOnNavMesh = m_DestinationObj->m_Transform->m_Position;
+	}
 
 	/// 목적지가 NavMesh 위에 있는지 검사
 	std::shared_ptr<NaviMeshFace> _face = IsOnNavMesh(m_DestinationPosOnNavMesh);
@@ -1404,7 +1443,7 @@ std::list<std::shared_ptr<AStarNode>> NavMeshAgent::PathFindAStar2(std::shared_p
 {
 	std::list<std::shared_ptr<AStarNode>> _nodePath;			// 리턴할 경로(AStarNode list)
 
-	if (m_LastOnNavMeshFace == nullptr 
+	if (m_LastOnNavMeshFace == nullptr
 		|| m_DestinationFace == nullptr
 		|| startFace == nullptr
 		|| endFace == nullptr)
@@ -1574,6 +1613,12 @@ void NavMeshAgent::AddOpenList2(std::priority_queue<std::shared_ptr<AStarNode>, 
 /// </summary>
 void NavMeshAgent::MoveToDestinationVer1()
 {
+	float _dist = SimpleMath::Vector3::Distance(m_Transform->m_Position, m_DestinationPosOnNavMesh);
+	if (_dist < 0.1f)
+	{
+		return;
+	}
+
 	// 이동, 회전(바라볼 Look 방향) 벡터 초기화
 	SimpleMath::Vector3 _moveDir = SimpleMath::Vector3::Zero;
 	SimpleMath::Vector3 _lookdir = SimpleMath::Vector3::Zero;
@@ -1623,7 +1668,6 @@ void NavMeshAgent::MoveToDestinationVer1()
 
 	// 방향에 스피드를 곱하고 deltaTime 을 보정
 	_moveDir *= m_MoveSpeed * DLLTime::DeltaTime();
-
 
 	/// Agent 방향 회전
 	m_Transform->LookAtYaw(_lookdir);

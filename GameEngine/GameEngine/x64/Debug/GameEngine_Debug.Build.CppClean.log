@@ -11,6 +11,8 @@ d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\json_value.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\json_writer.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\animation.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\animationsystem.obj
+d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\audio.obj
+d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\audiolistener.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\baseeventcallback.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\ecameracontroller.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\cameramanager.obj
@@ -55,6 +57,7 @@ d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\resourceobserve
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\scene.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\scenebase.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\scenemanager.obj
+d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\csvloader.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\skinninganimation.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\sprite2d.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\text.obj
@@ -64,7 +67,6 @@ d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\triangle.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\billboard.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\button.obj
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\transform.obj
-d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\sprite2dbundle.obj
 d:\ga2ndfinal_huripyeo\5_project\seedvault\x64\debug\gameengine_debug.lib
 d:\ga2ndfinal_huripyeo\5_project\seedvault\x64\debug\gameengine_debug.exp
 d:\ga2ndfinal_huripyeo\5_project\seedvault\x64\debug\gameengine_debug.dll
@@ -74,11 +76,8 @@ d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog\cl.read.1.tlog
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog\cl.write.1.tlog
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog\gameengine.write.1u.tlog
-d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog\link.14756.delete.1.tlog
-d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog\link.23724.delete.1.tlog
-d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog\link.30116.delete.1.tlog
-d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog\link.35496.delete.1.tlog
-d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog\link.3736.delete.1.tlog
+d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog\link.22056.delete.1.tlog
+d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog\link.25372.delete.1.tlog
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog\link.command.1.tlog
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog\link.read.1.tlog
 d:\ga2ndfinal_huripyeo\5_project\gameengine\gameengine\x64\debug\gameengine.tlog\link.write.1.tlog

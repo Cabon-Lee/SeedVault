@@ -5,7 +5,7 @@
 /// <summary>
 /// A* (AStar) 길 찾기에 사용할 노드 클래스
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// </summary>
 
 class AStarNode
@@ -47,7 +47,7 @@ struct AstarNodeCmp
 /// 
 /// 오브젝트가 유효한 NavMesh 영역 위에 있는지에 대한 처리 등을 한다.
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// </summary>
 
 class NavMeshAgent : public ComponentBase
@@ -72,7 +72,8 @@ public:
 	bool IsOnNavMeshFace(std::shared_ptr<NaviMeshFace>& face, SimpleMath::Vector3 position);	// 부분 Face(Triangle) 검사
 
 	/// 목적지 설정 함수
-	_DLL bool SetDestination(GameObject* object);
+	_DLL bool SetDestinationObj(GameObject* object);
+	_DLL bool SetDestinationPos(Vector3 position);
 	std::shared_ptr<struct NaviMeshFace> GetLastOnNavMeshFace() const;
 
 	/// Debug 출력 여부
@@ -148,8 +149,9 @@ private:
 /// Path Find 관련
 public:
 	// 목적지가 있으면 경로를 설정(Path Find)하고 이동한다.
+	bool m_bAutoMoveMode;
 	GameObject* m_DestinationObj;									// 설정할 Agent의 대상 목적지
-	SimpleMath::Vector3* m_DestinationPos;							// 설정할 Agent의 대상 목적지
+	SimpleMath::Vector3 m_DestinationPos;							// 설정할 Agent의 대상 목적지
 	
 private:
 	SimpleMath::Vector3  m_DestinationPosOnNavMesh;				// Path Find 할 NavMesh 상의 위치

@@ -39,6 +39,8 @@ public:
 	std::vector<std::string>* GetMatNames();
 	std::vector<std::string>* GetIBLNames();
 	std::vector<std::string>* GetBankNames();
+	std::vector<std::string>* GetQuestNames();
+	std::vector<std::string>* GetDialogueNames();
 
 
 
@@ -54,6 +56,8 @@ public:
 	static std::vector<std::string>* m_pMatName_V;
 	static std::vector<std::string>* m_pIBLName_V;
 	static std::vector<std::string>* m_pBankName_V;
+	static std::vector<std::string>* m_pQuestName_V;
+	static std::vector<std::string>* m_pDialogueName_V;
 
 };
 

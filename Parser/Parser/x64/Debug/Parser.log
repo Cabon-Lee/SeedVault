@@ -1,9 +1,19 @@
-﻿  JMFBXParser.cpp
+﻿  BinarySerializer.cpp
+  BoneWeights.cpp
+  JMFBXParser.cpp
 D:\GA2ndFinal_HuriPyeo\5_Project\Parser\Parser\JMFBXParser.cpp(14,1): warning C4005: 'FBXSDK_SHARED': 매크로 재정의
 D:\GA2ndFinal_HuriPyeo\5_Project\Parser\Parser\JMFBXParser.cpp : message : 'FBXSDK_SHARED'의 이전 정의를 참조하십시오.
 D:\GA2ndFinal_HuriPyeo\5_Project\Parser\Parser\JMFBXParser.cpp(325,54): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\GA2ndFinal_HuriPyeo\5_Project\Parser\Parser\JMFBXParser.cpp(604,133): warning C4267: '인수': 'size_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\GA2ndFinal_HuriPyeo\5_Project\Parser\Parser\JMFBXParser.cpp(1609,6): warning C4267: '초기화 중': 'size_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\GA2ndFinal_HuriPyeo\5_Project\Parser\Parser\JMFBXParser.cpp(1855,61): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\GA2ndFinal_HuriPyeo\5_Project\Parser\Parser\JMFBXParser.cpp(1938,49): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Parser\Parser\JMFBXParser.cpp(611,133): warning C4267: '인수': 'size_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Parser\Parser\JMFBXParser.cpp(1725,6): warning C4267: '초기화 중': 'size_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Parser\Parser\JMFBXParser.cpp(1971,61): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GA2ndFinal_HuriPyeo\5_Project\Parser\Parser\JMFBXParser.cpp(2054,49): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  JMParsingDataClass.cpp
+  Parser.cpp
+  VertexHelper.cpp
+  코드를 생성하고 있습니다...
+SubSystem_Debug.lib(DirectoryReader.obj) : warning LNK4204: 'D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\SubSystem_Debug.pdb'에 참조 모듈에 대한 디버깅 정보가 없습니다. 디버깅 정보가 없는 것처럼 개체를 링크합니다.
+SubSystem_Debug.lib(pch.obj) : warning LNK4204: 'D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\SubSystem_Debug.pdb'에 참조 모듈에 대한 디버깅 정보가 없습니다. 디버깅 정보가 없는 것처럼 개체를 링크합니다.
+SubSystem_Debug.lib(StopWatch.obj) : warning LNK4204: 'D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\SubSystem_Debug.pdb'에 참조 모듈에 대한 디버깅 정보가 없습니다. 디버깅 정보가 없는 것처럼 개체를 링크합니다.
+SubSystem_Debug.lib(StringHelper.obj) : warning LNK4204: 'D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\SubSystem_Debug.pdb'에 참조 모듈에 대한 디버깅 정보가 없습니다. 디버깅 정보가 없는 것처럼 개체를 링크합니다.
   Parser.vcxproj -> D:\GA2ndFinal_HuriPyeo\5_Project\SeedVault\x64\Debug\Parser.exe

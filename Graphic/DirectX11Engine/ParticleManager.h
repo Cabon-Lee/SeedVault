@@ -69,6 +69,8 @@ public:
 		const DirectX::XMMATRIX& viewTM,
 		const DirectX::XMMATRIX& projTM);
 
+	void ResetParticle();
+
 private:
 	std::shared_ptr<class GeometryShader> m_StreamOutGeometryShader;
 	std::shared_ptr<class GeometryShader> m_StreamOutGeometryShaderTest;
@@ -79,9 +81,7 @@ private:
 	std::queue<std::shared_ptr<ParticleElement>> m_ActiveParticle_Q;
 	std::queue<std::shared_ptr<ParticleElement>> m_RenderParticle_Q;
 
-
 	std::shared_ptr<ParticleElement> m_aParticle;
-
 
 	float m_DeltaTime;
 	float m_Total;

@@ -23,6 +23,14 @@ namespace JMParserData
 		float z;
 	};
 
+	struct Float4
+	{
+		float x;
+		float y;
+		float z;
+		float w;
+	};
+
 	struct Float2Func : public Float2
 	{
 		Float2Func() {};
@@ -47,6 +55,19 @@ namespace JMParserData
 		bool operator!=(Float3& vec3);
 	};
 
+	struct Float4Func : public Float4 
+	{
+		Float4Func() {};
+		Float4Func(const Float4& origin);
+		Float4Func(float f1, float f2, float f3, float f4);
+		Float4& operator=(const Float4& vec3);
+		Float4& operator+=(const Float4& vec3);
+		Float4 operator+(Float4& vec3);
+		Float4 operator-(Float4& vec3);
+		bool operator==(Float4& vec3);
+		bool operator!=(Float4& vec3);
+	};
+
 
 	///-----------------------------------------
 	/// 버텍스
@@ -57,10 +78,9 @@ namespace JMParserData
 		~Vertex();
 
 		Float3		pos;				// 좌표상의 위치값
-		//Float2		tex;
 		Float3		normal;				// 노말값
-		Float3		tangent;			// 탄젠트
-		Float3		binomral;			// 바이 노말
+		Float4		tangent;			// 탄젠트
+		Float3		binormal;			// 바이 노말
 
 		// Skinned Mesh 에서 추가
 		float boneWeight_Arr[4];

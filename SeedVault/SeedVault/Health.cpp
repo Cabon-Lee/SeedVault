@@ -58,6 +58,16 @@ void Health::OnCollisionExit(Collision collision)
 	//CA_TRACE("[Health::OnCollisionExit] my = %s / target = %s", m_pMyObject->GetObjectName().c_str(), collision.m_GameObject->GetObjectName().c_str());
 }
 
+float Health::GetMaxHp() const
+{
+	return m_MaxHp;
+}
+
+void Health::SetMaxHp(const float hp)
+{
+	m_MaxHp = hp;
+}
+
 
 float Health::GetHp() const
 {
@@ -124,6 +134,15 @@ bool Health::IsDead() const
 bool Health::IsInvincible() const
 {
 	return m_bInvincible;
+}
+
+/// <summary>
+/// 무적상태 변수 값 설정
+/// </summary>
+/// <param name="val">설정할 값</param>
+void Health::SetInvincible(const bool val)
+{
+	m_bInvincible = val;
 }
 
 /// <summary>
@@ -213,7 +232,7 @@ void Health::OnDamage(DamageData damageData)
 			phyActor->SetVelocity(force);
 		}
 
-		if (m_Hp < m_MinHp)
+		if (m_Hp <= m_MinHp)
 		{
 			phyActor->OnDisable();
 		}

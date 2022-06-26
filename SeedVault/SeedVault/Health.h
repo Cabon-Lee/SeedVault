@@ -6,7 +6,7 @@
 /// 
 /// Hp 정보, 피격 등
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// </summary>
 
 class Health : public ComponentBase
@@ -26,6 +26,9 @@ public:
 	virtual void OnCollisionExit(Collision collision) override;
 	
 
+	float GetMaxHp() const;
+	void SetMaxHp(const float hp);
+
 	float GetHp() const;
 	void SetHp(const float hp);
 
@@ -35,6 +38,9 @@ public:
 	bool IsAlive() const;
 	bool IsDead() const;
 	bool IsInvincible() const;
+
+	void SetInvincible(const bool val);
+
 
 	// 데미지 데이터 생성
 	void Damage(float amount);

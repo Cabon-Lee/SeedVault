@@ -449,7 +449,7 @@ void ImguiClass::Imgui_RendererController()
 		ImGui::SliderInt(_TexCombo[0].c_str(), &_nowOption->bloomScale, 0.0f, 12.0f, "%1.0f");
 		ImGui::SliderFloat(_TexCombo[1].c_str(), &_nowOption->bloomThreshold, 0.0f, 20.0f, "%.1f");
 		ImGui::SliderFloat(_TexCombo[2].c_str(), &_nowOption->intensity, 0.0f, 10.0f, "%.1f");
-		ImGui::SliderFloat(_TexCombo[3].c_str(), &_nowOption->adjustFactor, 1.0f, 10.0f, "%.1f");
+		ImGui::SliderFloat(_TexCombo[3].c_str(), &_nowOption->adjustFactor, 0.0f, 1.0f, "%.05f");
 
 	}
 	ImGui::Separator();

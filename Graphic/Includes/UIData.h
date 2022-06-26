@@ -84,6 +84,7 @@ struct Text_Queue_Info
 	float fontSize;		// 텍스트 폰트 크기
 
 	unsigned int pivotType;
+	unsigned int textpoint;
 };
 
 struct TextBlock

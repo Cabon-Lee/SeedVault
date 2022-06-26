@@ -6,6 +6,7 @@
 
 OrbitCamera::OrbitCamera()
 	: ComponentBase(ComponentType::GameLogic)
+	, m_PlayerController(nullptr)
 	, m_FocusTarget(nullptr)
 	, m_Distance(0.0f)
 	, m_RotationSpeed(0.0f)
@@ -31,6 +32,14 @@ void OrbitCamera::Start()
 	m_RotationAngles = { 0.0f, 0.0f };
 	m_MaxVerticalAngle = 50.0f;
 	m_MinVerticalAngle = -40.0f;
+
+	// 플레이어 컨트롤러 연결
+	GameObject* _player = DLLEngine::FindGameObjectByName("Player");
+	if (_player != nullptr)
+	{
+		m_PlayerController = _player->GetComponent<PlayerController>();
+		assert(m_PlayerController != nullptr);
+	}
 
 	// 타겟 지정을 안해줬을 때 임시로 아무거나 넣어줌.
 	if (m_FocusTarget == nullptr)
@@ -138,15 +147,15 @@ bool OrbitCamera::ManualRotation()
 		DLLWindow::MoveCursorToCenter();
 
 
-		PlayerController::s_PitchValue = m_RotationAngles.x + m_MaxVerticalAngle;
+		m_PlayerController->m_PitchValue = m_RotationAngles.x + m_MaxVerticalAngle;
 		float _denominator = m_MaxVerticalAngle * 2;
 
-		PlayerController::s_PitchValue /= _denominator;
+		m_PlayerController->m_PitchValue /= _denominator;
 
-		if (PlayerController::s_PitchValue > 1.0f) PlayerController::s_PitchValue = 1.0f;
-		if (PlayerController::s_PitchValue < 0.0f) PlayerController::s_PitchValue = 0.0f;
+		if (m_PlayerController->m_PitchValue > 1.0f) m_PlayerController->m_PitchValue = 1.0f;
+		if (m_PlayerController->m_PitchValue < 0.0f) m_PlayerController->m_PitchValue = 0.0f;
 
-		//CA_TRACE("Now Pitch Value : %f", PlayerController::s_PitchValue);
+		//CA_TRACE("Now Pitch Value : %f", m_PlayerController->m_PitchValue);
 
 		return true;
 	}

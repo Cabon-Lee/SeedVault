@@ -56,11 +56,20 @@ GameObject* HitPoint::GetHitPoint()
 	m_MyParticleSpawner->SetDirection(m_CursorNormal);
 
 	/// 엔진(희정)이 태그 수정작업 완료하면 이후에 태그비교해서 작동하는 코드 작성
-	//unsigned int _tag = 0;
-	//unsigned int _tag = _hitObj->GetTag().size();
-	switch (0)
+	//unsigned int _tagSize = 0;
+	std::string _tag = _hitObj->GetTag();
+	unsigned int _tagSize = _tag.size();
+
+	// 파티클 발생 안시킬 오브젝트들
+	if (_tag == "PlayerMesh"
+		|| _tag == "PartnerMesh")
 	{
-	case 13:	// "CharacterMesh"
+		m_MyParticleSpawner->SetActive(false);
+	}
+
+	// 피 튀길 오브젝트
+	else if (_tag == "ZombieMesh")
+	{
 		m_Size.x = 0.3f; m_Size.y = 0.3f;
 		m_MyParticleSpawner->SetSize(m_Size);
 		m_MyParticleSpawner->SetVelocity(20.f);
@@ -73,10 +82,11 @@ GameObject* HitPoint::GetHitPoint()
 		m_MyParticleSpawner->SetStopTime(0.05f);
 		m_MyParticleSpawner->SetDeadTime(0.5f);
 		m_MyParticleSpawner->SetDeltaVelocity(0.2f);
-		break;
+	}
 
-
-	default:
+	// 그외 기타(벽)
+	else
+	{
 		m_Size.x = 0.01f; m_Size.y = 0.01f;
 		m_MyParticleSpawner->SetSize(m_Size);
 		m_MyParticleSpawner->SetRandomDirWeight(0.5f);
@@ -89,8 +99,7 @@ GameObject* HitPoint::GetHitPoint()
 		m_MyParticleSpawner->SetStopTime(0.05f);
 		m_MyParticleSpawner->SetDeadTime(1.8f);
 		m_MyParticleSpawner->SetDeltaVelocity(0.2f);
-		break;
 	}
-
+	
 	return _hitObj;
 }

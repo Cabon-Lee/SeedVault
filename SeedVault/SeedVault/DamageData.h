@@ -5,7 +5,7 @@
 /// 
 /// 데미지 값, 공격 주체 등의 값을 가진다.
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// </summary>
 
 class DamageData

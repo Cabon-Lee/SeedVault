@@ -67,6 +67,7 @@ private:
 	void CheckTargetDistance();
 
 	unsigned int m_SceneIndex;
+	std::string m_SceneName;
 	unsigned int m_ProbeIndex;
 	bool m_IsBaking;
 	bool m_IsRender;

@@ -13,7 +13,8 @@ std::vector<std::string>* ResourceLoader::m_pShader_V = nullptr;
 std::vector<std::string>* ResourceLoader::m_pMatName_V = nullptr;
 std::vector<std::string>* ResourceLoader::m_pIBLName_V = nullptr;
 std::vector<std::string>* ResourceLoader::m_pBankName_V = nullptr;
-
+std::vector<std::string>* ResourceLoader::m_pQuestName_V = nullptr;
+std::vector<std::string>* ResourceLoader::m_pDialogueName_V = nullptr;
 
 ResourceLoader::ResourceLoader()
 	: m_pResourceManager(nullptr)
@@ -37,11 +38,12 @@ void ResourceLoader::Initialize(std::shared_ptr<IResourceManager> pResource)
 	m_pMatName_V = new std::vector<std::string>;
 	m_pIBLName_V = new std::vector<std::string>;
 	m_pBankName_V = new std::vector<std::string>;
+	m_pQuestName_V = new std::vector<std::string>;
+	m_pDialogueName_V = new std::vector<std::string>;
 }
 
 void ResourceLoader::LoadResource(std::string& name)
 {
-
 	CA_TRACE("Load Resource");
 
 	DirectoryReader::InputEntryDir(name);
@@ -50,7 +52,6 @@ void ResourceLoader::LoadResource(std::string& name)
 
 	try
 	{
-
 		if ((DirectoryReader::GetBinaryNames().size() +
 			DirectoryReader::GetTextureNames().size() +
 			DirectoryReader::GetShaderNames().size() +
@@ -68,11 +69,8 @@ void ResourceLoader::LoadResource(std::string& name)
 #if _DEBUG
 			CA_TRACE("TextureName = %s", _nowTextureName.c_str());
 #endif
-
-
 			m_pResourceManager->LoadTextureFile(_nowTextureName);
 			m_pTexture_V->push_back(DirectoryReader::GetFileName(_nowTextureName, true));
-
 		}
 		CA_TRACE("ResourceManager Texture Load Complete");
 
@@ -120,6 +118,20 @@ void ResourceLoader::LoadResource(std::string& name)
 		}
 		CA_TRACE("ResourceManager Bank Load Complete");
 
+		for (std::string& _nowQuestName : DirectoryReader::GetQuestNames())
+		{
+			m_pResourceManager->LoadQuestTextFile(_nowQuestName);
+			m_pQuestName_V->push_back(_nowQuestName);
+		}
+		CA_TRACE("ResourceManager Quest Load Complete");
+
+		for (std::string& _nowDialogueName : DirectoryReader::GetDialogueNames())
+		{
+			m_pResourceManager->LoadDialogueTextFile(_nowDialogueName);
+			m_pDialogueName_V->push_back(_nowDialogueName);
+		}
+		CA_TRACE("ResourceManager Dialogue Load Complete");
+
 	}
 	catch (std::string exception)
 	{
@@ -164,4 +176,14 @@ std::vector<std::string>* ResourceLoader::GetIBLNames()
 std::vector<std::string>* ResourceLoader::GetBankNames()
 {
 	return m_pBankName_V;
+}
+
+std::vector<std::string>* ResourceLoader::GetQuestNames()
+{
+	return m_pQuestName_V;
+}
+
+std::vector<std::string>* ResourceLoader::GetDialogueNames()
+{
+	return m_pDialogueName_V;
 }

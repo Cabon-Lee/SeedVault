@@ -41,7 +41,7 @@ private:
 
 	GameObject* m_pZombie_Runner_1;
 	GameObject* m_pMonster_1_Mesh;
-	GameObject* m_pMonster_2;
+	GameObject* m_pZombie_Runner_2;
 	GameObject* m_pMonster_2_Mesh;
 
 	/// UI Object

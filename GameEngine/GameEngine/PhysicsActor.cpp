@@ -20,6 +20,8 @@ PhysicsActor::PhysicsActor()
 	, m_bGravity(true)
 	, m_FreezePositionAndRotation()
 
+	, m_PhysicsActorWorldTM()
+
 	, m_SaveData(new PhysicsActor_Save())
 {
 	m_pGeometry = new SphereGeometry(5.0f);
@@ -33,8 +35,8 @@ PhysicsActor::PhysicsActor()
 	m_RigidType = RigidType::Static;
 
 	///////////////////////////////////////////////
-	ReserveCollisionVec();
-	SetBoundingOffset();
+	//ReserveCollisionVec();
+	//SetBoundingOffset();
 }
 
 PhysicsActor::PhysicsActor(float radius, RigidType type)
@@ -43,6 +45,8 @@ PhysicsActor::PhysicsActor(float radius, RigidType type)
 	, m_bGravity(true)
 	, m_FreezePositionAndRotation()
 	, m_RigidType(type)
+
+	, m_PhysicsActorWorldTM()
 
 	, m_SaveData(new PhysicsActor_Save())
 {
@@ -54,8 +58,8 @@ PhysicsActor::PhysicsActor(float radius, RigidType type)
 	s_UserIndex++;
 
 
-	ReserveCollisionVec();
-	SetBoundingOffset();
+	//ReserveCollisionVec();
+	//SetBoundingOffset();
 }
 
 PhysicsActor::PhysicsActor(DirectX::SimpleMath::Vector3 box, RigidType type)
@@ -64,6 +68,8 @@ PhysicsActor::PhysicsActor(DirectX::SimpleMath::Vector3 box, RigidType type)
 	, m_bGravity(true)
 	, m_FreezePositionAndRotation()
 	, m_RigidType(type)
+
+	, m_PhysicsActorWorldTM()
 
 	, m_SaveData(new PhysicsActor_Save())
 {
@@ -74,8 +80,8 @@ PhysicsActor::PhysicsActor(DirectX::SimpleMath::Vector3 box, RigidType type)
 	m_PhysicsActorUserIndex = s_UserIndex;
 	s_UserIndex++;
 
-	ReserveCollisionVec();
-	SetBoundingOffset();
+	//ReserveCollisionVec();
+	//SetBoundingOffset();
 
 	//CA_TRACE("PhysicsActor()");
 }
@@ -87,6 +93,8 @@ PhysicsActor::PhysicsActor(float radius, float height, RigidType type)
 	, m_FreezePositionAndRotation()
 	, m_RigidType(type)
 
+	, m_PhysicsActorWorldTM()
+
 	, m_SaveData(new PhysicsActor_Save())
 {
 	m_pGeometry = new CapsuleGeometry(radius, height);
@@ -96,8 +104,8 @@ PhysicsActor::PhysicsActor(float radius, float height, RigidType type)
 	m_PhysicsActorUserIndex = s_UserIndex;
 	s_UserIndex++;
 
-	ReserveCollisionVec();
-	SetBoundingOffset();
+	//ReserveCollisionVec();
+	//SetBoundingOffset();
 }
 
 PhysicsActor::~PhysicsActor()
@@ -117,6 +125,11 @@ void PhysicsActor::Start()
 	// 액터들을 탐색하고 넣어주기?
 	m_pMyObject->SetHasPhysics(true);
 
+	ReserveCollisionVec();
+
+	// 바운딩 오프셋 계산
+	SetBoundingOffset();
+
 }
 
 
@@ -124,6 +137,22 @@ void PhysicsActor::Update(float dTime)
 {
 	if (GetIsEnabled() == true)
 	{
+		SimpleMath::Vector3 _scale, _translation;
+		SimpleMath::Quaternion _rotation;
+
+		SimpleMath::Matrix _PhysicsWorldTM = m_Transform->m_WorldTM;
+		_PhysicsWorldTM.Decompose(_scale, _rotation, _translation);
+
+		// Transform 의 scale에 영향을 받지 않게 하기위해 One으로 고정
+		// Geometry 의 Size에 맞게 그린다
+		_scale = { SimpleMath::Vector3::One };
+
+		m_PhysicsActorWorldTM =
+			::SimpleMath::Matrix::CreateScale(_scale) *
+			::SimpleMath::Matrix::CreateFromQuaternion(_rotation) *
+			::SimpleMath::Matrix::CreateTranslation(_translation);
+		
+
 		Managers::GetInstance()->GetPhysicsEngine()->UpdatePhysicsTransform(this);
 
 		/// 속도가 0이라도 호출(갱신)되지 않으면 OnCollisionStay 이벤트에 들어오지 않는다...
@@ -159,13 +188,13 @@ void PhysicsActor::OnHelperRender()
 		case Sphere:
 		{
 			SphereGeometry* _sphere = static_cast<SphereGeometry*>(m_pGeometry);
-			m_pIRenderer->RenderSphere(_sphere->GetSphereRadius(), m_pMyObject->m_Transform->GetWorld());
+			m_pIRenderer->RenderSphere(_sphere->GetSphereRadius(), m_PhysicsActorWorldTM);
 			break;
 		}
 		case Box:
 		{
 			BoxGeometry* _box = static_cast<BoxGeometry*>(m_pGeometry);
-			m_pIRenderer->RenderBox(_box->GetBoxSize(), m_pMyObject->m_Transform->GetWorld());
+			m_pIRenderer->RenderBox(_box->GetBoxSize(), m_PhysicsActorWorldTM);
 			break;
 		}
 		case Capsule: /// 반지름과, 높이로 캡슐 그려야함!! 수종 화이팅
@@ -175,7 +204,7 @@ void PhysicsActor::OnHelperRender()
 		}
 		default:
 		{
-			m_pIRenderer->RenderSphere(m_PhysActorIndex, m_pMyObject->m_Transform->GetWorld());
+			//m_pIRenderer->RenderSphere(m_PhysActorIndex, m_pMyObject->m_Transform->GetWorld());
 
 			break;
 		}
@@ -230,6 +259,11 @@ RigidType PhysicsActor::GetRigidType() const
 	return m_RigidType;
 }
 
+_DLL GeometryType PhysicsActor::GetGetGeometryType() const
+{
+	return m_GeometryType;
+}
+
 void PhysicsActor::release()
 {
 	// 충돌 리스트 관리 벡터 클리어
@@ -243,11 +277,22 @@ void PhysicsActor::release()
 
 _DLL void PhysicsActor::SetKinematic(const bool val)
 {
+	// 같은 값을 또 설정하려고 하면 하지 않음
+	if (m_bKinematic == val)
+	{
+		return;
+	}
+
 	m_bKinematic = val;
 
 	if (Managers::GetInstance()->GetPhysicsEngine()->FindPxRigidActor(this))
 	{
 		Managers::GetInstance()->GetPhysicsEngine()->SetKinematic(this, val);
+	}
+
+	if (m_bKinematic == false)
+	{
+		SetVelocity({ 0.0f, 0.0f, 0.0f });
 	}
 }
 
@@ -258,21 +303,33 @@ _DLL bool PhysicsActor::IsKinematic() const
 
 _DLL void PhysicsActor::SetGravity(const bool val)
 {
+	// 같은 값을 또 설정하려고 하면 하지 않음
+	if (m_bGravity == val)
+	{
+		return;
+	}
+
 	m_bGravity = val;
 
 	if (Managers::GetInstance()->GetPhysicsEngine()->FindPxRigidActor(this))
 	{
 		Managers::GetInstance()->GetPhysicsEngine()->SetGravity(this, m_bGravity);
 	}
+
+	// 속도를 초기화한다
+	SetVelocity({ 0.0f,0.0f,0.0f });	// -> 한번 해줘야 적용됨...
 }
 
 _DLL bool PhysicsActor::IsGravity() const
 {
-	return m_bGravity;
+ 	return m_bGravity;
 }
 
 _DLL void PhysicsActor::SetBoxCollider(const Vector3 box, const RigidType rigidType)
 {
+	// RigidType 설정
+	m_RigidType = rigidType;
+
 	// GeometryType 설정
 	m_GeometryType = GeometryType::Box;
 
@@ -297,6 +354,9 @@ _DLL void PhysicsActor::SetBoxCollider(const Vector3 box, const RigidType rigidT
 
 _DLL void PhysicsActor::SetSphereCollider(const float radius, const RigidType rigidType)
 {
+	// RigidType 설정
+	m_RigidType = rigidType;
+
 	// GeometryType 설정
 	m_GeometryType = GeometryType::Sphere;
 
@@ -389,6 +449,8 @@ void PhysicsActor::SetFreezePosition(bool x, bool y, bool z)
 	m_FreezePositionAndRotation.position.z = z;
 
 	Managers::GetInstance()->GetPhysicsEngine()->SetRigidDynamicLockFlags(this, m_FreezePositionAndRotation);
+
+	SetVelocity({ 0.0f, 0.0f, 0.0f });
 }
 
 
@@ -405,6 +467,8 @@ void PhysicsActor::SetFreezeRotation(bool x, bool y, bool z)
 	m_FreezePositionAndRotation.rotation.z = z;
 
 	Managers::GetInstance()->GetPhysicsEngine()->SetRigidDynamicLockFlags(this, m_FreezePositionAndRotation);
+
+	SetVelocity({ 0.0f, 0.0f, 0.0f });
 }
 
 _DLL void PhysicsActor::SetVelocity(const Vector3& dir)
@@ -419,35 +483,57 @@ void PhysicsActor::SaveData()
 
 	//save::WriteVectorValue(&(*m_Value)["m_CollidedActor_V"], m_CollidedActor_V);
 
-	m_SaveData->s_UserIndex = s_UserIndex;
-
-	m_SaveData->m_UserIndex = m_UserIndex;
-	m_SaveData->m_PhysActorIndex = m_PhysActorIndex;
+	//m_SaveData->s_UserIndex = s_UserIndex;
+	//m_SaveData->m_UserIndex = m_UserIndex;
+	//m_SaveData->m_PhysActorIndex = m_PhysActorIndex;
 
 	m_SaveData->m_GeometryType = static_cast<int>(m_GeometryType);
 	m_SaveData->m_RigidType = static_cast<int>(m_RigidType);
 
-	m_SaveData->m_Velcity = &m_Velcity;
+	// type 에 따라 사이즈 저장
+	switch (m_GeometryType)
+	{
+	case Sphere:
+	{
+		SphereGeometry* _sphereGeometry = dynamic_cast<SphereGeometry*>(m_pGeometry);
+		m_SaveData->m_SaveRadius = _sphereGeometry->GetSphereRadius();
+		break;
+	}
+
+	case Box:
+	{
+		BoxGeometry* _boxGeometry = dynamic_cast<BoxGeometry*>(m_pGeometry);
+		m_SaveData->m_SaveBoxSizeX = _boxGeometry->GetBoxSize().x;
+		m_SaveData->m_SaveBoxSizeY = _boxGeometry->GetBoxSize().y;
+		m_SaveData->m_SaveBoxSizeZ = _boxGeometry->GetBoxSize().z;
+		break;
+	}
+	}
 
 	m_SaveData->m_bKinematic = m_bKinematic;
 	m_SaveData->m_bGravity = m_bGravity;
+
+	// Freeze position and rotation
+	m_SaveData->m_FreezePositionX = m_FreezePositionAndRotation.position.x;
+	m_SaveData->m_FreezePositionY = m_FreezePositionAndRotation.position.y;
+	m_SaveData->m_FreezePositionZ = m_FreezePositionAndRotation.position.z;
+	m_SaveData->m_FreezeRotationX = m_FreezePositionAndRotation.rotation.x;
+	m_SaveData->m_FreezeRotationY = m_FreezePositionAndRotation.rotation.y;
+	m_SaveData->m_FreezeRotationZ = m_FreezePositionAndRotation.rotation.z;
 
 	save::WriteValue(m_Value, EraseClass(typeid(*this).name()), *m_SaveData);
 }
 
 void PhysicsActor::LoadData()
 {
-	m_SaveData->m_Velcity = &m_Velcity;
-
 	save::ReadValue(m_Value, EraseClass(typeid(*this).name()), *m_SaveData);
 	SetEnable(m_SaveData->m_bEnable);
 
 	//save::WriteVectorValue(&(*m_Value)["m_CollidedActor_V"], m_CollidedActor_V);
 
-	s_UserIndex = m_SaveData->s_UserIndex;
-
-	m_UserIndex = m_SaveData->m_UserIndex;
-	m_PhysActorIndex = m_SaveData->m_PhysActorIndex;
+	//s_UserIndex = m_SaveData->s_UserIndex;
+	//m_UserIndex = m_SaveData->m_UserIndex;
+	//m_PhysActorIndex = m_SaveData->m_PhysActorIndex;
 
 	m_GeometryType = static_cast<decltype(m_GeometryType)>(m_SaveData->m_GeometryType);
 	CreateGeometry(m_GeometryType);
@@ -457,11 +543,37 @@ void PhysicsActor::LoadData()
 	m_bKinematic = m_SaveData->m_bKinematic;
 	m_bGravity = m_SaveData->m_bGravity;
 
-	DLLEngine::AddPhysicsActorToPhysEngine(this);
+	// Freeze position and rotation
+	m_FreezePositionAndRotation.position.x = m_SaveData->m_FreezePositionX;
+	m_FreezePositionAndRotation.position.y = m_SaveData->m_FreezePositionY;
+	m_FreezePositionAndRotation.position.z = m_SaveData->m_FreezePositionZ;
+	m_FreezePositionAndRotation.rotation.x = m_SaveData->m_FreezeRotationX;
+	m_FreezePositionAndRotation.rotation.y = m_SaveData->m_FreezeRotationY;
+	m_FreezePositionAndRotation.rotation.z = m_SaveData->m_FreezeRotationZ;
+
+	// type 에 따라 사이즈 저장
+	switch (m_GeometryType)
+	{
+	case Sphere:
+	{
+		m_pGeometry = new SphereGeometry(m_SaveData->m_SaveRadius);
+		SetSphereCollider(m_SaveData->m_SaveRadius, static_cast<RigidType>(m_SaveData->m_RigidType));
+		break;
+	}
+
+	case Box:
+	{
+		m_pGeometry = new BoxGeometry(m_SaveData->m_SaveBoxSizeX, m_SaveData->m_SaveBoxSizeY, m_SaveData->m_SaveBoxSizeZ);
+		SetBoxCollider({ m_SaveData->m_SaveBoxSizeX, m_SaveData->m_SaveBoxSizeY, m_SaveData->m_SaveBoxSizeZ }, static_cast<RigidType>(m_SaveData->m_RigidType));
+		break;
+	}
+	}
+
 }
 
 void PhysicsActor::LoadPtrData(std::map<unsigned int, GameObject*>* gameobject, std::map<unsigned int, ComponentBase*>* component)
 {
+
 }
 
 

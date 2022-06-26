@@ -11,7 +11,6 @@
 
 inline void Trace(char const* const format, ...)
 {
-
 	va_list args;
 	int     len;
 	char* buffer;

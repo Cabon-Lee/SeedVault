@@ -126,15 +126,15 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SubSystem\Includes;$(ProjectDir)..\..\Graphic\Includes\DirectXTK;$(ProjectDir)..\..\Graphic\Includes;$(ProjectDir)..\Includes;$(ProjectDir)..\..\Parser\Includes;$(ProjectDir)..\..\GameEngine\Includes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SubSystem\Includes;$(ProjectDir)..\..\Graphic\Includes\DirectXTK;$(ProjectDir)..\..\Graphic\Includes\DirectXTex;$(ProjectDir)..\..\Graphic\Includes;$(ProjectDir)..\Includes;$(ProjectDir)..\..\Parser\Includes;$(ProjectDir)..\..\GameEngine\Includes</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\SubSystem\Lib;$(ProjectDir)..\..\Graphic\Libs\DirectXTK;$(ProjectDir)..\..\Lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SubSystem_Debug.lib;DirectXTKd_X64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\SubSystem\Lib;$(ProjectDir)..\..\Graphic\Libs\DirectXTK;$(ProjectDir)..\..\Graphic\Libs\DirectXTex;$(ProjectDir)..\..\Lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SubSystem_Debug.lib;DirectXTKd_X64.lib;DirectXTex_Debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OutputPath)*.dll" "..\..\Lib"
@@ -151,7 +151,7 @@ copy "$(OutputPath)*.lib" "..\..\Lib"</Command>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SubSystem\Includes;$(ProjectDir)..\..\Graphic\Includes\DirectXTK;$(ProjectDir)..\..\Graphic\Includes;$(ProjectDir)..\Includes;$(ProjectDir)..\..\Parser\Includes;$(ProjectDir)..\..\GameEngine\Includes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SubSystem\Includes;$(ProjectDir)..\..\Graphic\Includes\DirectXTK;$(ProjectDir)..\..\Graphic\Includes\DirectXTex;$(ProjectDir)..\..\Graphic\Includes;$(ProjectDir)..\Includes;$(ProjectDir)..\..\Parser\Includes;$(ProjectDir)..\..\GameEngine\Includes</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -160,8 +160,8 @@ copy "$(OutputPath)*.lib" "..\..\Lib"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\Lib;$(ProjectDir)..\..\Graphic\Libs\DirectXTK</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SubSystem_Release.lib;DirectXTK_X64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\Lib;$(ProjectDir)..\..\Graphic\Libs\DirectXTK;$(ProjectDir)..\..\Graphic\Libs\DirectXTex</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SubSystem_Release.lib;DirectXTK_X64.lib;DirectXTex_Release.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -179,6 +179,7 @@ copy "$(OutputPath)*.lib" "..\..\Lib"</Command>
     <ClInclude Include="DX11ResourceManager.h" />
     <ClInclude Include="ResourcerDLLDefine.h" />
     <ClInclude Include="Shaders.h" />
+    <ClInclude Include="TextLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BinaryDeserializer.cpp" />
@@ -196,6 +197,7 @@ copy "$(OutputPath)*.lib" "..\..\Lib"</Command>
     </ClCompile>
     <ClCompile Include="DX11ResourceManager.cpp" />
     <ClCompile Include="Shaders.cpp" />
+    <ClCompile Include="TextLoader.cpp" />
     <ClCompile Include="VertexHelper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

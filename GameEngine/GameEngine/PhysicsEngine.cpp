@@ -296,6 +296,7 @@ void PhysicsEngine::CreateStack(Transform* transform, uint32_t size, float halfE
 void PhysicsEngine::AddPhysicsScene(SceneBase* scene)
 {
 	physx::PxCudaContextManagerDesc cudaContextManagerDesc;
+	//문제의 시발점
 	g_CudaContextManager = PxCreateCudaContextManager(*g_pFoundation, cudaContextManagerDesc, PxGetProfilerCallback());
 
 	m_BaseEvent = new BaseEventCallBack();
@@ -477,11 +478,21 @@ void PhysicsEngine::SetVelocity(PhysicsActor* actor, const DirectX::SimpleMath::
 	{
 		// 기본 MoveSpeed는 트랜스폼 이동에 맞추어 설정되어 있음.
 		// 이를 그대로 물리이동에 적용하면 제대로 움직이지 않아서 이동량에 offset을 보정해준다.
-
-		SimpleMath::Vector3 _vel = { vel.x,	_dynamicActor->getLinearVelocity().y + vel.y, vel.z };
-
 		const float _offset = 15.0f;
-		_dynamicActor->setLinearVelocity(CreatePxVec3(_vel * _offset));
+		SimpleMath::Vector3 _vel = SimpleMath::Vector3::Zero;
+
+		if (actor->IsGravity() == false)
+		{
+			_vel = { vel.x,	vel.y, vel.z };
+		}
+
+		else
+		{
+			_vel = { vel.x,	_dynamicActor->getLinearVelocity().y + vel.y, vel.z };
+		}
+
+		_vel *= _offset;
+		_dynamicActor->setLinearVelocity(CreatePxVec3(_vel));
 	}
 }
 
@@ -787,6 +798,11 @@ void PhysicsEngine::SetRigidDynamicLockFlags(PhysicsActor* actor, FreezePosition
 
 	/// 적용할 액터(rigidDynamic)를 physx 씬에서 찾는다
 	physx::PxRigidDynamic* rigidDynamic = reinterpret_cast<PxRigidDynamic*>(FindPxRigidActor(actor));
+
+	if (rigidDynamic == nullptr)
+	{
+		return;
+	}
 
 	// 고정할 플래그값 생성
 	PxRigidDynamicLockFlags _flag;

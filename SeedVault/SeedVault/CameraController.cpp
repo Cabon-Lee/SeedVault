@@ -209,7 +209,7 @@ void CameraController::Rotate()
 
 void CameraController::SetRotationAngles(const Vector2 angles)
 {
-	SetRotationAngles(angles);
+	SetRotationAngles({ angles.x, angles.y, 0.0f });
 }
 
 void CameraController::SetRotationAngles(const Vector3 angles)

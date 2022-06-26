@@ -2,6 +2,7 @@
 
 #include "D3D11Define.h"
 #include "SimpleMath.h"
+#include <thread>
 
 class CubeMapRenderTarget;
 class DepthStencilView;
@@ -122,11 +123,14 @@ public:
 	IBL();
 	~IBL();
 
+	void Initialize(Microsoft::WRL::ComPtr <ID3D11Device> pDevice);
+
 	// 리플렉션 프로브 추가
 	unsigned int AddReflectionProbe(Microsoft::WRL::ComPtr <ID3D11Device> pDevice);	
 	// 만들어진 리플렉션을 인덱스 형태로 접근
 	bool IsProbeExist();
-	std::shared_ptr<ReflectionProbe>& GetReflectionProbe(unsigned int idx);
+	ReflectionProbe* GetReflectionProbe(unsigned int idx);
+	ReflectionProbe* GetBasicIBL();
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> GetIrradianceMapSRV(unsigned int idx);
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> GetPrefilterMapSRV(unsigned int idx);
@@ -147,9 +151,10 @@ public:
 		std::shared_ptr<PixelShader> pIrradianceShader,
 		std::shared_ptr<PixelShader> pBakePixelShader,
 		unsigned int sceneIndex,
+		const std::string& sceneName,
 		unsigned int reflectionProbeIndex);
 
-	void BakeIrradiancePreFilterMap(
+	bool BasicIrradiancePreFilterMap(
 		Microsoft::WRL::ComPtr <ID3D11Device> pDevice,
 		Microsoft::WRL::ComPtr <ID3D11DeviceContext> pDeviceContext,
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pEnviormentTexture,
@@ -169,7 +174,8 @@ public:
 	void ClearReflectionProbe();
 
 private:
-	std::vector<std::shared_ptr<ReflectionProbe>> m_ReflectionProbe_V;
+	std::vector<std::unique_ptr<ReflectionProbe>> m_ReflectionProbe_V;
+	std::unique_ptr<ReflectionProbe> m_BaseReflectionProbe;
 
 };
 

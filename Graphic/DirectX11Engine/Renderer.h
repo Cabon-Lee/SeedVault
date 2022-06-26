@@ -20,6 +20,7 @@ enum class eSHADER
 	GS_STREAMOUT, GS_DRAWPASS, VS_STREAMOUT, VS_DRAWPASS, PS_PARTICLEDRAW,		// 파티클
 	VS_COMBINE, PS_OPAQUEPASS, PS_TRANSPARENTPASS, PS_COMPOSITE, PS_COLORTOACCUMEREVEAL,		// OIT
 	VS_SHADOWMAP, VS_SKINNEDSHADOW, PS_SHADOWMAP,												// 그림자
+	VS_SSAO, PS_SSAO,
 	PS_LIGHTTEXTURE, VS_STATICLIGHTTEXTURE,
 	VS_NORMALSKINNINGR, PS_NORMALSKINNINGR, VS_NORMALR, PS_NORMALR,							// 외곽선
 	VS_OUTLINE, PS_OUTLINE,
@@ -55,11 +56,14 @@ public:
 	virtual IRenderOption GetRenderOption() override;
 	virtual IRendererDebugInfo GetRenderDebugInfo() override;
 	virtual void* GetDeferredInfo() override;
+	virtual void ExecuteCommandLine() override;
+	virtual BOOL ContextInUse(BOOL isUse) override;
 
 	virtual void CameraUpdate(
 		const DirectX::XMMATRIX& worldTM,
 		const DirectX::XMMATRIX& viewTM,
-		const DirectX::XMMATRIX& projTM) override;
+		const DirectX::XMMATRIX& projTM,
+		float fovy, float farZ) override;
 
 	virtual void CameraSkyBoxRender(const unsigned int textureIdx) override;
 
@@ -72,7 +76,6 @@ public:
 		DirectX::XMMATRIX* pBoneOffsetTM) override;
 
 	virtual void RenderQueueProcess() override;
-
 
 	virtual void DebugDraw(
 		unsigned int rasterMode,
@@ -93,22 +96,36 @@ public:
 	virtual unsigned int GetClickedObjectId() override;
 
 	virtual unsigned int  SpawnParticle(struct ParticleProperty* particle) override;
-#pragma region RenderFuncByJinmi
 
+#pragma region RenderFuncByJinmi
 
 	virtual void DrawSprite(
 		eResourceType resourceType,
 		unsigned int spriteIndex,
 		const DirectX::XMMATRIX& worldTM) override;
 
+	void DrawSprite(
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _tempBitmap,
+		const DirectX::XMMATRIX& worldTM,
+		class VertexShader* vertexShader,
+		class PixelShader* pixelShader);
+
 	virtual void DrawSpriteEdge(const DirectX::XMMATRIX& worldTM) override;
 
 	virtual void DrawBillboard(const unsigned int spriteIndex, const DirectX::XMMATRIX& worldTM) override;
+	virtual void DrawBillboardUI() override;
 	void DrawBillboardEdge(const DirectX::XMMATRIX& worldTM);
 
 	virtual unsigned int FontInfoInitialize(std::shared_ptr<struct Text_Queue_Info> pFontDesc) override;
 	virtual void OneResizeTextPos(unsigned int fontinfoIndex) override;
 	virtual void DrawD2DText(std::shared_ptr<struct TextBlock> pTextBlock) override;
+
+	virtual void SetLoadingSceneImage(
+		const std::string& imagePath, 
+		const std::string& VertexShaderPath, 
+		const std::string& PixelShaderPath, 
+		float frame) override;
+	virtual void DrawLoadingScene() override;
 
 #pragma endregion
 
@@ -162,7 +179,9 @@ public:
 		const DirectX::SimpleMath::Matrix& projTM) override;
 
 	virtual void ReflectionProbeBaking(
-		const unsigned int sceneIndex, const unsigned int probeIndex) override;
+		const unsigned int sceneIndex, 
+		const std::string& sceneName,
+		const unsigned int probeIndex) override;
 	virtual void SetReflectionBakedDDS(
 		unsigned int probeIndex,
 		unsigned int envMap, unsigned int irrMap, unsigned int filterMap)override;
@@ -273,6 +292,7 @@ private:
 public:
 	// 상수 버퍼 관련
 	// 렌더큐에게 빌려줄 렌더 프로세스
+	void SetBasicIrradiance();
 	void SetReflectionProbeBuffer(int probeIndex);
 	void SetMaterial(std::shared_ptr<struct NodeData>& pNodeData);
 	void ReflectionProbeSetMaterial(std::shared_ptr<struct NodeData> pNodeData);
@@ -299,7 +319,7 @@ public:
 		const DirectX::XMMATRIX& worldTM,
 		DirectX::XMMATRIX* pBoneOffsetTM);
 
-	void RenderParticleProcess(
+	void RenderBillboardProcess(
 		unsigned int spriteIndex,
 		const DirectX::XMMATRIX& worldTM);
 
@@ -356,6 +376,9 @@ private:
 	//파이프라인에 대한 그래픽처리를 나타낸다
 	//리소스를 제어하고 관리하기 위한 인터페이스
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_pDeviceContext;
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_pDeferredDeviceContext;
+	ID3D11CommandList* m_pD3DCommandList;
+
 	//Front Buffer( 현재 화면에 보여지는 버퍼 )와 Back Buffer( 현재 연산을 해서 기록하는 버퍼 ) 를 준비해서 이것을 Flip 시키면서 번갈아 가면서 보여주는 것
 	Microsoft::WRL::ComPtr<IDXGISwapChain1> m_p1Swapchain;
 	//렌더링 파이프라인의 출력을 받을 자원을 연결하는데 쓰인다.
@@ -382,9 +405,11 @@ private:
 	std::shared_ptr<class HLSLShaderManager> m_HLSLShader;
 	std::shared_ptr<class LightManager> m_LightManager;
 	std::unique_ptr<class ParticleManager> m_ParticleManager;
+	std::unique_ptr<class SSAO> m_SSAOManager;
 
 	DirectX::XMFLOAT3 m_CameraPos;
 	DirectX::XMFLOAT3 m_CameraLook;
+	float m_CameraFovY;
 
 	DirectX::SimpleMath::Matrix m_CameraWorldTM;
 	DirectX::XMMATRIX m_ViewTM;
@@ -396,7 +421,7 @@ private:
 	std::shared_ptr<class Particle> m_pParticle;
 	std::shared_ptr<class Oneparticle> m_pOneParticle;
 
-	std::shared_ptr<class IBL> m_pIBL;
+	std::unique_ptr<class IBL> m_pIBL;
 	std::shared_ptr<class OIT> m_pOIT;
 
 	std::shared_ptr<class SkyBoxSphere> m_pSkyBox;
@@ -410,6 +435,8 @@ private:
 
 	std::shared_ptr<class RenderQueue> m_RenderQueue;
 	std::unique_ptr<class FrustumVolume> m_FrustumVolume;
+
+	std::shared_ptr<class LoadingScene> m_LoadingScene;
 
 	POINT m_MousePos;
 	bool m_isClicked;
@@ -426,4 +453,6 @@ private:
 
 	std::unique_ptr<StagingBuffer<DeferredPixel>> m_DeferredPixelData;
 
+	bool m_FillCommandLine;
+	char m_ContextInUse;
 };

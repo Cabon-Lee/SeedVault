@@ -33,8 +33,6 @@ GameObject::GameObject(bool isContinual)
 	, m_pParent(nullptr)
 	, m_Children_V()
 {
-
-
 }
 
 GameObject::GameObject(std::string name, std::string tag, bool isContinual)
@@ -49,7 +47,7 @@ GameObject::GameObject(std::string name, std::string tag, bool isContinual)
 	, m_pParent(nullptr)
 	, m_Children_V()
 {
-
+	DLLEngine::SetTag(tag.c_str(), this);
 }
 
 GameObject::~GameObject()
@@ -176,7 +174,7 @@ const std::string& GameObject::GetTag()
 
 void GameObject::SetObjectName_char(const char* name)
 {
-	m_Name =std::string(name);
+	m_Name = std::string(name);
 }
 
 const char* GameObject::GetObjectName_char()
@@ -246,6 +244,7 @@ void GameObject::Save()
 
 	(*m_Value)[EraseClass(typeid(*this).name()).c_str()]["m_Name"] = m_Name;
 	(*m_Value)[EraseClass(typeid(*this).name()).c_str()]["m_GameObjectId"] = m_GameObjectId;
+	(*m_Value)[EraseClass(typeid(*this).name()).c_str()]["m_Tag"] = m_Tag;
 	(*m_Value)[EraseClass(typeid(*this).name()).c_str()]["m_bEnable"] = m_bEnable;
 	(*m_Value)[EraseClass(typeid(*this).name()).c_str()]["m_bContinual"] = m_bContinual;
 	(*m_Value)[EraseClass(typeid(*this).name()).c_str()]["m_pParent"] = m_pParent ? m_pParent->GetGameObjectId() : NULL;
@@ -279,38 +278,12 @@ void GameObject::Load()
 	m_Name = (*m_Value)[EraseClass(typeid(*this).name()).c_str()]["m_Name"].asString();
 	m_bEnable = (*m_Value)[EraseClass(typeid(*this).name()).c_str()]["m_bEnable"].asBool();
 
-	//std::vector<std::string> _all_keys = (*m_Value)["GameObject"].getMemberNames();
-	//for (auto _key : _all_keys)
-	//{
-	//	//std::string a = typeid((*m_Value)["GameObject"]).name();
-	//	if (_key == "m_Name")
-	//	{
-	//		m_Name = (*m_Value)["GameObject"][_key].asUInt();
-	//	}
-	//	if (_key == "m_GameObjectId")
-	//	{
-	//		//m_GameObjectId = (*m_Value)["GameObject"][_key].asUInt();
-	//	}
-	//	if (_key == "m_bEnable")
-	//	{
-	//		m_bEnable = (*m_Value)["GameObject"][_key].asBool();
-	//	}
-	//	if (_key == "m_bContinual")
-	//	{
-	//		m_bEnable = (*m_Value)["GameObject"][_key].asBool();
-	//	}
-	//	if (_key == "m_Component_V")
-	//	{
-	//		Json::ValueIterator _it = (*m_Value)["GameObject"]["m_Component_V"].begin();
-	//		for (; _it != (*m_Value)["GameObject"]["m_Component_V"].end(); _it++)
-	//		{
-	//			Json::Value* _value = &(*_it);
-	//			///여기서 컴포넌트 생성해야 하는데 어쩌지요?
-	//			///컴포넌트는 종류별로 생성자도 다른데 이것까지 수제로 짤 수는 없습니다.
-	//		}
-	//	}
-	//}
-
+	std::string _tempTag = (*m_Value)[EraseClass(typeid(*this).name()).c_str()]["m_Tag"].asString();
+	if (_tempTag =="")
+	{
+		_tempTag = "Untagged";
+	}
+	DLLEngine::SetTag(_tempTag.c_str(), this);
 }
 
 void GameObject::LoadPtrData(std::map<unsigned int, GameObject*>* gameobject, std::map<unsigned int, ComponentBase*>* component)
@@ -328,7 +301,7 @@ void GameObject::RegisterComponent(ComponentBase* component)
 	DLLEngine::RegisterComponent(component);
 	//Managers::GetInstance()->GetComponentSystem()->RegisterComponent(component->GetComponentType(), component);
 
-	// Modified by YoKing
+	// Modified by 최 요 환
 	// physicsActor 컴포넌트 추가시 physx 씬에 자동으로 등록하기 위함
 	PhysicsActor* physicsActor = dynamic_cast<PhysicsActor*>(component);
 	if (physicsActor != nullptr)

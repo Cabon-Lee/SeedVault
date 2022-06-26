@@ -1,3 +1,5 @@
+#pragma pack_matrix( row_major )
+
 #include "Deferred.hlsl"
 #include "PBRLibrary.hlsli"
 #include "Utility.hlsli"
@@ -16,6 +18,7 @@ cbuffer LightCount : register(b1)
 cbuffer objectPer : register(b2)
 {
     float4 EyePos;
+    float4x4 viewProjTex;
 }
 
 //---------------------------------------------------------------------------------------
@@ -23,12 +26,13 @@ cbuffer objectPer : register(b2)
 //---------------------------------------------------------------------------------------
 Texture2D textureAlbedo : TEXTURE : register(t0);
 Texture2D textureNormal : TEXTURE : register(t1);
-Texture2D texturePosition : TEXTURE : register(t2);
-Texture2D textureMaterial : TEXTURE : register(t3);
-Texture2D textureAmbient : TEXTURE : register(t4);
-Texture2D textureShadow : TEXTURE : register(t5);
-Texture2D textrueEmissive : TEXTURE : register(t6);
+Texture2D textrueNormalDepth : TEXTURE : register(t2);
+Texture2D texturePosition : TEXTURE : register(t3);
+Texture2D textureMaterial : TEXTURE : register(t4);
+Texture2D textureAmbient : TEXTURE : register(t5);
+Texture2D textureShadow : TEXTURE : register(t6);
 Texture2D textureLight : TEXTURE : register(t7);
+Texture2D SSAOMap : TEXTURE : register(t8);
 
 SamplerState pointSampler : SAMPLER : register(s0);
 SamplerState objSamplerState : SAMPLER : register(s1);
@@ -53,14 +57,19 @@ struct VS_OUTPUT
 // SV_Target은 왜붙이는지 모르겠넹
 float4 main(VS_OUTPUT pin) : SV_Target
 {
-    float4 color = float4(textureAlbedo.Sample(objSamplerState, pin.Tex));
+    uint4 packedColor = uint4(textureAlbedo.Sample(objSamplerState, pin.Tex));
     float4 normal = float4(textureNormal.Sample(objSamplerState, pin.Tex));
     float4 material = float4(textureMaterial.Sample(objSamplerState, pin.Tex));
     float4 ambient = float4(textureAmbient.Sample(objSamplerState, pin.Tex));
     float4 shadow = float4(textureShadow.Sample(pointSampler, pin.Tex));
     float4 lightTexture = float4(textureLight.Sample(pointSampler, pin.Tex));
-    float4 emissive = float4(textrueEmissive.Sample(pointSampler, pin.Tex));
     float4 position = float4(texturePosition.Sample(pointSampler, pin.Tex));
+   
+    uint4 _16color = 0x0000ffff & packedColor;
+    float4 emissive = f16tof32(_16color);
+    
+    _16color = packedColor >> 16;
+    float4 color = f16tof32(_16color);
     
     if (isApproximatelyEqual(normal.w, 0.0))
     {
@@ -68,7 +77,7 @@ float4 main(VS_OUTPUT pin) : SV_Target
     }
     
     // 앰비언트를 연산한다
-    float3 calcAmbient = float3(ambient.xyz * color.xyz);
+    float3 calcAmbient = float3(ambient.xyz);
     
     float metallic = material.r;
     float roughness = material.g;
@@ -77,9 +86,16 @@ float4 main(VS_OUTPUT pin) : SV_Target
     //float3 _nowNormal = normalize((normal - 0.5f) * 2.0f);
     float3 _nowNormal = (normal - 0.5f) * 2.0f;
     
-    
     // Vector from point being lit to eye. 
     float3 toEyeW = normalize(EyePos.xyz - position.xyz);
+      
+    
+    float4 ssaoPosH = mul(float4(position.xyz, 1.0), viewProjTex);
+    ssaoPosH /= ssaoPosH.w;
+    
+    float ao = SSAOMap.SampleLevel(pointSampler, ssaoPosH.xy, 0.0f).r; 
+    
+    calcAmbient *= ao;
     
     float3 result = 0.0f;
     uint _round = 0;
@@ -98,7 +114,6 @@ float4 main(VS_OUTPUT pin) : SV_Target
                 {
                     case 0:
                         {
-                            //result += CalcLight(nowType, lightInfo[_round], color, position.xyz, _nowNormal.xyz, -normalize(look.xyz), roughness, metallic, ambient.xyz).xyz;
                             result += CalcLight(nowType, lightInfo[_round], color, position.xyz, _nowNormal.xyz, 
                     toEyeW.xyz, roughness, metallic, ambient.xyz).xyz;
                             break;
@@ -142,10 +157,6 @@ float4 main(VS_OUTPUT pin) : SV_Target
        
     }
     
-    //float3 finColor = result;
-    //finColor = finColor / (finColor + float3(1.0, 1.0, 1.0));
-    //finColor = pow(finColor, float(1.0 / 2.2));
-    //float4 _finColor = float4(calcAmbient.xyz + finColor + emissive.xyz, 1.0);
-    float4 _finColor = float4(calcAmbient.xyz + result + emissive.xyz, 1.0);
+    float4 _finColor = float4(calcAmbient.xyz + (result * ao) + emissive.xyz, 1.0);
     return _finColor;
 }

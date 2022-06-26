@@ -55,20 +55,19 @@ Light L, float specExp, float specIntensity, float3 normal, float3 toEye, float3
     return finalColor += L.Strength.rgb * pow(NDotH, specExp) * specIntensity;
 }
 
-float3 NormalSampleToWorldSpace(float3 normalMapSample, float3 unitNormalW, float3 tangentW)
+float3 NormalSampleToWorldSpace(float3 normalMapSample, float3 unitNormalW, float4 tangentW)
 {
+    
 	//  각 성분을 [0, 1]에서 [-1, 1]로 사상한다.
     float3 normalT = 2.0 * normalMapSample - 1.0f;
 	
     float3 N = unitNormalW; // 버텍스가 가지고 있는 노말
-    float3 T = normalize(tangentW - dot(tangentW, N) * N);
-    float3 B = cross(N, T);
+    float3 T = normalize(tangentW.xyz - dot(tangentW.xyz, N) * N);
+    float3 B = tangentW.w * cross(N, T);
 	
     float3x3 TBN = float3x3(T, B, N);
 	
-    float3 bumpeNormalW = mul(normalT, TBN);
-	
-    return normalize(bumpeNormalW);
+    return normalize(mul(normalT, TBN));
 }
 
 float CalcAttenuation(float d, float falloffStart, float falloffEnd)

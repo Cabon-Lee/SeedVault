@@ -125,6 +125,9 @@
     <Filter Include="Component\Navimesh">
       <UniqueIdentifier>{188595bd-c9a0-4826-b281-38344333a905}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Audio">
+      <UniqueIdentifier>{2b421ed4-e58b-4780-bb8b-5d7493d46299}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -364,8 +367,14 @@
       <Filter>Component\Navimesh</Filter>
     </ClInclude>
     <ClInclude Include="ECameraController.h" />
-    <ClInclude Include="Sprite2DBundle.h">
-      <Filter>Component\UI\Sprite</Filter>
+    <ClInclude Include="Audio.h">
+      <Filter>Component\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioListener.h">
+      <Filter>Component\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVLoader.h">
+      <Filter>Component\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -562,8 +571,14 @@
       <Filter>Component\Navimesh</Filter>
     </ClCompile>
     <ClCompile Include="ECameraController.cpp" />
-    <ClCompile Include="Sprite2DBundle.cpp">
-      <Filter>Component\UI\Sprite</Filter>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Component\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioListener.cpp">
+      <Filter>Component\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVLoader.cpp">
+      <Filter>Component\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

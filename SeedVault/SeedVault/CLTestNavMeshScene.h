@@ -5,7 +5,7 @@
 /// 
 /// NavMesh 를 설정하고 Agent를 만들어서 충돌 판정, 목적지 설정, 경로탐색 등을 테스트해보자
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// </summary>
 
 #include "Scene.h"

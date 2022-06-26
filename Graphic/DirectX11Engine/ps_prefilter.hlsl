@@ -21,7 +21,7 @@ struct VS_OUTPUT
 
 float4 main(VS_OUTPUT pin) : SV_Target0
 {
-    float3 N = normalize(-pin.localPosition);
+    float3 N = normalize(pin.localPosition);
     float3 R = N;
     float3 V = R;
 

@@ -321,12 +321,11 @@ float DistributionGGX(float3 N, float3 H, float roughness)
 
 float GeometrySmith2(float3 N, float3 V, float3 L, float roughness)
 {
-    float NdotV = max(dot(N, V), 0.0);
-    float NdotL = max(dot(N, L), 0.0);
-    //float NdotL = (max(dot(N, L), 0.0) * 0.5) + 0.5;
-    float ggx2 = GeometrySchlickGGX(NdotV, roughness);
-    float ggx1 = GeometrySchlickGGX(NdotL, roughness);
-	
+    float NdotV = max(dot(N, V), 0.00001f);
+    float NdotL = max(dot(N, L), 0.00001f);
+    float ggx2 = geometrySchlickGGX(NdotV, roughness);
+    float ggx1 = geometrySchlickGGX(NdotL, roughness);
+   
     return ggx1 * ggx2;
 }
 
@@ -344,7 +343,6 @@ float4 IBL_PBR_CookTorrance(float4 baseColor, float3 normal,
     float NoV = max(dot(normal, viewDir), 0.0);
     float NoL = max(dot(normal, lightDir), 0.1);
     float LoH = max(dot(lightDir, H), 0.0);
-    //float NoL = (max(dot(normal, lightDir), 0.0) * 0.5) + 0.5;
     
     float3 F0 = lerp(float3(0.04, 0.04, 0.04), baseColor.xyz, metallic);
     float perceptualRoughness = SmoothnessToPerceptualRoughness(smoothness);
@@ -356,10 +354,8 @@ float4 IBL_PBR_CookTorrance(float4 baseColor, float3 normal,
 
         // cook-torrance brdf
         float NDF = D_GGX(roughness, NoH, normal, H);
-        //float NDF = DistributionGGX(normal, H, perceptualRoughness);
-        //float NDF = DistributionTerm(roughness, NoH);
         float G = GeometrySmith2(normal, viewDir, lightDir, perceptualRoughness);
-        float3 F = fresnelSchlick(max(dot(normal, viewDir), 0.0), F0);
+        float3 F = fresnelSchlick(max(dot(viewDir, H), 0.001f), F0);
 
         float3 kS = F;
         float3 kD = float3(1.0, 1.0, 1.0) - kS;
@@ -380,10 +376,6 @@ float4 IBL_PBR_CookTorrance(float4 baseColor, float3 normal,
     // 후자로 가야함
     // 따라서 아래부터는 Combine에 있어야함
     
-    //float3 color = ambient + Lo;
-    //color = color / (color + float3(1.0, 1.0, 1.0));
-    //color = pow(color, float(1.0 / 2.2));
-           
     return float4(Lo, 1.0f);
 }
 

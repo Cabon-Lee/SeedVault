@@ -1,5 +1,7 @@
 #pragma once
 
+#include <thread>
+
 class SceneBase;
 
 class SceneManager;
@@ -40,6 +42,9 @@ public:
 	void Initialize();
 	void Initialize(int hWND, int width, int height);
 
+	void LoadResource(bool& isLoadDone);
+	void ShowLoadingScene(bool& isLoadDone);
+
 	void Loop();
 	void PhysicsUpdateAll();
 	void UpdateInput(float dTime);
@@ -79,8 +84,12 @@ public:
 	std::shared_ptr<IResourceManager> GetResourceManager() const;
 
 	bool GetIsResize();
+	
+	std::string& GetPickedScene();
+	void SetPickedScene(std::string sceneName);
 
 private:
+	//std::thread m_t1;
 
 	InterfaceManager* m_pInterfaces;
 
@@ -120,5 +129,7 @@ private:
 	NavMeshManager* m_pNavMeshManager;
 
 	unsigned int m_Frequency;
+
+	std::string m_pickedSceneNmae;
 };
 

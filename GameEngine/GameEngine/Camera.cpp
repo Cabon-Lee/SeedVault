@@ -33,7 +33,7 @@ Camera::~Camera()
 
 void Camera::Start()
 {
-	// Modified by YoKing
+	// Modified by 최 요 환
 	// 기존에 상수값으로 특정 값을 넘겨주던 방식에서
 	// 트랜스폼 컴포넌트에 있는 값을 가져와서 세팅하는 방식으로 변경
 	Vector3 _startPosition = m_Transform->GetLocalPosition();

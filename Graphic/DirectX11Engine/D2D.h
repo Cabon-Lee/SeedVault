@@ -18,6 +18,8 @@ struct Text_Queue_Info;
 struct TextString;
 struct TextBlock;
 
+
+
 class D2D
 {
 private:

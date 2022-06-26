@@ -6,7 +6,8 @@ cbuffer cbPerObject : register(b0)
 {
     float4x4 wvpMatrix;
     float4x4 worldMatrix;
-    //float4x4 worldMatrixInverse;
+    float4x4 view;
+    float4x4 texTransform;
 };
 
 cbuffer cbLight : register(b1)
@@ -27,7 +28,7 @@ struct SKINNED_VS_INPUT
     float3 PosL : POSITION;
     float3 NormalL : NORMAL;
     float2 Tex : TEXCOORD;
-    float3 Tangent : TANGENT;
+    float4 Tangent : TANGENT;
     float4 Weights : WEIGHTS;
     uint4 BoneIndices : BONEINDICES;
 };
@@ -35,11 +36,15 @@ struct SKINNED_VS_INPUT
 struct VS_OUTPUT
 {
     float4 outPosition : SV_POSITION;
-    float3 outWorldPos : POSITION;
-    float3 outNormal : NORMAL;
-    float2 outTexCoord : TEXCOORD;
-    float3 outTangent : TANGENT;
+    float3 outWorldPos : POSITION0;
+    float3 outNormal : NORMAL0;
+    float2 outTexCoord : TEXCOORD0;
+    float4 outTangent : TANGENT;
     float4 ShadowPosH[4] : TEXCOORD1;
+    
+    float3 outPosV : POSITION1;
+    float3 outNormalDepth : NORMAL1;
+    float2 outSSAOTex : TEXCOORD5;
 };
 
 VS_OUTPUT main(SKINNED_VS_INPUT vin)
@@ -65,21 +70,27 @@ VS_OUTPUT main(SKINNED_VS_INPUT vin)
         
     float3 posL = float3(0.0f, 0.0f, 0.0f);
     float3 normalL = float3(0.0f, 0.0f, 0.0f);
-
+    float3 tangentL = float3(0.0f, 0.0f, 0.0f);
+    float3 posV = float3(0.0f, 0.0f, 0.0f);
+    float3 normalDepth = float3(0.0f, 0.0f, 0.0f);
+    
     for (int i = 0; i < 4; ++i)
     {
         posL += weights[i] * mul(float4(vin.PosL, 1.0f), gBoneTransforms[boneIndex[i]]).xyz;
         normalL += weights[i] * mul(vin.NormalL, (float3x3) gBoneTransforms[boneIndex[i]]);
+        tangentL += weights[i] * mul(vin.Tangent.xyz, (float3x3) gBoneTransforms[boneIndex[i]]);
     }
     
     vout.outWorldPos = mul(float4(posL, 1.0f), worldMatrix).xyz;
+    vout.outPosV = mul(float4(posL, 1.0f), mul(worldMatrix, view)).xyz;
     
     // 스키닝 시 정상적인 노말의 적용 방식
     //vout.outNormal = normalize(mul(float4(normalL, 0.f), worldMatrixInverse));
     //vout.outNormal = mul(normalL, (float3x3) ); <= 원래는 인버스 매트릭스를 바깥에서 가져옴
-    
     vout.outNormal = mul(normalL, (float3x3) inverse(worldMatrix));
-    vout.outTangent = mul(vin.Tangent, (float3x3)worldMatrix);
+    vout.outNormalDepth = mul(float4(normalL, 0), view).xyz;
+    
+    vout.outTangent = float4(mul(tangentL, (float3x3) worldMatrix), vin.Tangent.w);
     
     vout.outPosition = mul(float4(posL, 1.0f), wvpMatrix);
 
@@ -92,8 +103,8 @@ VS_OUTPUT main(SKINNED_VS_INPUT vin)
     {
         vout.ShadowPosH[j] = mul(float4(posL, 1.0f), lightMatrix[j]);
     }
-
     
+    vout.outSSAOTex = float2(0, 0);
     return vout;
     
 }

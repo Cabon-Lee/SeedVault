@@ -1,7 +1,19 @@
 #pragma once
-#include "AudioSystem.h"
+#include "AudioDLLDefine.h"
 
 class AudioSystem;
+
+namespace DirectX
+{
+	struct XMMATRIX;
+	struct XMFLOAT3;
+
+	namespace SimpleMath
+	{
+		struct Vector3;
+		struct Matrix;
+	}
+}
 
 namespace FMOD
 {
@@ -15,29 +27,34 @@ namespace FMOD
 class SoundEvent
 {
 public:
-	SoundEvent();
+	SoundEvent();	//±ÝÁö!
 	~SoundEvent();
-protected:
-	friend class AudioSystem;
-	SoundEvent(AudioSystem* system, unsigned int id);
+	SoundEvent(AudioSystem* system, unsigned int id, const std::string path);
 
 public:
-	bool IsValid();
-	bool Is3D() const;
-
-	void Set3DAttribute(const FMOD_VECTOR& position, const FMOD_VECTOR& forward, const FMOD_VECTOR& up, const FMOD_VECTOR& velocity = { 0.f, 0.f, 0.f });
-
-	void Stop(bool allowFadeOut = true);
-	void SetPaused(bool value);
-	void SetVolume(float value);
-	void SetPitch(float value);
-
-	bool GetPaused() const;
-	float GetVolume() const;
-	float GetPitch() const;
+	_FADLL bool IsValid();
+	_FADLL bool Is3D() const;
+	
+	//_FADLL void Set3DAttribute(const FMOD_VECTOR& position, const FMOD_VECTOR& forward, const FMOD_VECTOR& up, const FMOD_VECTOR& velocity = { 0.f, 0.f, 0.f });
+	_FADLL void Set3DAttribute(const DirectX::SimpleMath::Matrix& worldTrans, const DirectX::SimpleMath::Vector3& velocity = { 0.f, 0.f, 0.f });
+	
+	_FADLL void Start();
+	_FADLL void Stop(bool allowFadeOut = true);
+	_FADLL void SetPaused(bool value);
+	_FADLL void SetVolume(float value);
+	_FADLL void SetPitch(float value);
+	_FADLL void SetParameter(const char* name, float value);
+	
+	_FADLL bool GetPaused() const;
+	_FADLL float GetVolume() const;
+	_FADLL float GetPitch() const;
+	_FADLL float GetParameter(const char* name);
+	_FADLL float GetEventDistance();
+	
 
 private:
-	std::weak_ptr<AudioSystem> m_pAudioSystem;
-	unsigned int m_Id;
+	AudioSystem* m_pAudioSystem;
+	const unsigned int m_Id;
+	const std::string m_Path;
 };
 

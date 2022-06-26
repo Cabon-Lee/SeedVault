@@ -44,7 +44,7 @@ void HealSyringe::CoolDown()
     {
         this->Heal();
 
-        PlayerController::s_bIsThrowing = false;
+        m_MyInventory->GetMyObject()->GetComponent<PlayerController>()->m_bIsThrowing = false;
 
 
         // 힐 주사기 사용 후 인벤토리의 HealSyringe 갯수가 0이라면 바로 주무기로 교체한다
@@ -71,7 +71,7 @@ void HealSyringe::Heal()
     _Health->IncreaseHp(m_HealPower);
 
     // 플레이어 힐 애니메이션 중지
-    PlayerController::s_bIsHealing = false;
+    m_MyInventory->GetMyObject()->GetComponent<PlayerController>()->m_bIsHealing = false;
 }
 
 /// <summary>

@@ -2,7 +2,6 @@
 // Filename: texture.ps
 ////////////////////////////////////////////////////////////////////////////////
 
-
 /////////////
 // GLOBALS //
 /////////////
@@ -16,6 +15,7 @@ SamplerState SampleType;
 struct PixelInputType
 {
     float4 position : SV_POSITION;
+    float3 posH : POSITION;
     float2 tex : TEXCOORD0;
 };
 

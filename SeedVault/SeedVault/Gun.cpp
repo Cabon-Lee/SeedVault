@@ -5,6 +5,7 @@
 #include "MuzzleFlash.h"
 #include "HitPoint.h"
 #include "MuzzleFlash.h"
+#include "Zombie_Runner_Move.h"
 #include "Gun.h"
 
 Gun::Gun(EquipmentItem::Type type, Inventory* inventory)
@@ -12,6 +13,7 @@ Gun::Gun(EquipmentItem::Type type, Inventory* inventory)
 	, m_CameraTf(nullptr)
 	, m_MuzzleFlash(nullptr)
 	, m_HitPoint(nullptr)
+	, m_pAudio(nullptr)
 
 	, m_Damage(0.0f)
 	, m_ShootRange(0.0f)
@@ -23,6 +25,7 @@ Gun::Gun(EquipmentItem::Type type, Inventory* inventory)
 {
 	m_MuzzleFlash = m_MyInventory->GetMyObject()->GetComponent<MuzzleFlash>();
 	m_HitPoint = m_MyInventory->GetMyObject()->GetComponent<HitPoint>();
+	m_pAudio = m_MyInventory->GetMyObject()->GetComponent<Audio>();
 
 	m_bIsReloading = false;
 	m_ReloadCoolTimer = 0.0f;
@@ -90,7 +93,7 @@ bool Gun::Shoot()
 		assert(m_CameraTf != nullptr);
 
 		/// 카메라의 위치에서 카메라의 방향으로 레이를 쏘자.
-		// 카메라 충돌처리(바운딩 카메라)를 적용한 이후로 카메라가 벽에 충돌중인 상태에서 공격을 하면 벽이 충돌이 되어서 
+		// 카메라 충돌처리(바운딩 카메라)를 적용한 이후로 카메라가 벽에 충돌중인 상태에서 공격을 하면 벽이 충돌이 되어서
 		// 카메라의 포지션에서 조금 앞으로 땡겨서 Ray의 시작 위치를 잡는다.
 		Vector3 _attackPosition = m_CameraTf->m_WorldPosition + m_CameraTf->m_WorldTM.Forward() * 1.4f;
 		Vector3 _attackDirection = m_CameraTf->m_WorldTM.Forward();
@@ -119,7 +122,7 @@ bool Gun::Shoot()
 		if (_hitMeshObj != nullptr)
 		{
 			std::string _strTag = _hitMeshObj->GetTag();
-			if (_strTag == "CharacterMesh")
+			if (_strTag == "ZombieMesh")
 			{
 				Health* _targetHealth = _hitMeshObj->GetParent()->GetComponent<Health>();
 				_targetHealth->Damage(
@@ -142,7 +145,7 @@ bool Gun::Shoot()
 
 void Gun::StartReload()
 {
-	PlayerController::s_bIsReloading = true;
+	m_MyInventory->GetMyObject()->GetComponent<PlayerController>()->m_bIsReloading = true;
 	m_ReloadCoolTimer = m_ReloadSpeed;
 
 	CA_TRACE("[Gun] Reload Start !!");
@@ -282,6 +285,23 @@ bool Gun::IsMagazineEmpty() const
 }
 
 /// <summary>
+/// 탄창이 꽉 차있는지 검사
+/// </summary>
+/// <returns>결과</returns>
+bool Gun::IsMagazineFull() const
+{
+	if (m_CurrentAmmoCount >= m_MaxAmmoCount)
+	{
+		return true;
+	}
+
+	else
+	{
+		return false;
+	}
+}
+
+/// <summary>
 /// 인벤토리에 탄이 다 떨어졌는지 검사
 /// </summary>
 /// <returns></returns>
@@ -324,6 +344,23 @@ bool LongGun::Shoot()
 		{
 			_MuzzleFlash->Fire();
 		}
+
+		// 격발 사운드 이벤트
+		auto* _soundEvent = m_pAudio->PlayEvent("event:/Player_Rifle"); 
+
+		// Broadcast
+		auto& zombies = DLLEngine::FindGameObjectByTag("Zombie");
+		for (auto& zombie : zombies)
+		{
+			Enemy_Move* _enemyMove = nullptr;
+			_enemyMove = zombie->GetComponent<Zombie_Runner_Move>();
+
+			if (_enemyMove != nullptr)
+			{
+				_enemyMove->HearSound(m_MyInventory->GetMyObject(), _soundEvent);
+			}
+		}
+
 		return true;
 	}
 
@@ -391,7 +428,7 @@ uint LongGun::Reload()
 	}
 
 	// 장전 중인 상태 제거
-	PlayerController::s_bIsReloading = false;
+	m_MyInventory->GetMyObject()->GetComponent<PlayerController>()->m_bIsReloading = false;
 
 	// 장전 후 탄창의 탄 수 리턴
 	return m_CurrentAmmoCount;
@@ -443,6 +480,10 @@ bool HandGun::Shoot()
 	{
 		CA_TRACE("[HandGun] Shoot - 탄 보유 <%d/%d>", m_CurrentAmmoCount, m_MyInventory->GetItemCount(IItem::Type::eHandGunAmmo));
 		m_UseCoolTimeTimer = m_ShootCoolTime;	// 쿨타임 세팅
+
+		// 격발 사운드 이벤트
+		auto* _soundEvent = m_pAudio->PlayEvent("event:/Player_Pistol");
+		float dist = m_pAudio->GetEventDistance("event:/Player_Pistol");
 
 		return true;
 	}
@@ -505,7 +546,7 @@ uint HandGun::Reload()
 	}
 
 	// 장전 상태 해제
-	PlayerController::s_bIsReloading = false;
+	m_MyInventory->GetMyObject()->GetComponent<PlayerController>()->m_bIsReloading = false;
 
 	// 장전 후 탄창의 탄 수 리턴
 	return m_CurrentAmmoCount;

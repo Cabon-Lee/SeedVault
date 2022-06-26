@@ -4,38 +4,48 @@
 #include "Inventory.h"
 #include "Gun.h"
 #include "MuzzleFlash.h"
+#include "EquipmentController.h"
+#include "Enemy_Move.h"
+#include "Zombie_Runner_Move.h"
+#include "Audio.h"
+#include "SoundEvent.h"
 #include "PlayerController.h"
-
-// 변수 초기화
-float PlayerController::s_HForAnim = 0.0f;
-float PlayerController::s_H = 0.0f;
-float PlayerController::s_VForAnim = 0.0f;
-float PlayerController::s_V = 0.0f;
-
-bool  PlayerController::s_bCrouch = false;
-bool  PlayerController::s_bSprint = false;
-bool  PlayerController::s_bAim = false;
-
-bool  PlayerController::s_bIsReloading = false;
-bool  PlayerController::s_bIsThrowing = false;
-bool  PlayerController::s_bIsHealing = false;
-
-bool  PlayerController::s_bIsSwaping = false;
-uint  PlayerController::s_NextSlotNum = 0;
-
-float PlayerController::s_PitchValue = 0.0f;
-
-bool  PlayerController::s_bIsDie = false;
-bool  PlayerController::s_bIsDead = false;
 
 PlayerController::PlayerController()
 	: ComponentBase(ComponentType::GameLogic)
 	, m_Health(nullptr)
 	, m_Inventory(nullptr)
-	, m_Animator(nullptr)
 	, m_MyPhysicsActor(nullptr)
 
 	, m_PlayerMesh(nullptr)
+	, m_Animator(nullptr)
+	, m_Meshfilter(nullptr)
+
+	, m_EquipmentController(nullptr)
+
+	, m_HForAnim(0.0f)
+	, m_H(0.0f)
+	, m_VForAnim(0.0f)
+	, m_V(0.0f)
+
+	, m_bCrouch(false)
+	, m_bSprint(false)
+	, m_bAim(false)
+
+	, m_bIsReloading(false)
+	, m_bIsThrowing(false)
+	, m_bIsHealing(false)
+	, m_bIsAssassinate(false)
+	, m_bCanAssassinate(false)
+	, m_bIsRoutingItem(false)
+	, m_bInteraction(false)
+
+	, m_bIsSwaping(false)
+
+	, m_PitchValue(0.0f)
+
+	, m_bIsDie(false)
+	, m_bIsDead(false)
 
 	, m_PoseMode(PoseMode::Stand)
 	, m_MovingMode(MovingMode::Idle)
@@ -48,6 +58,12 @@ PlayerController::PlayerController()
 	, m_SwapCoolTimer(0.0f)
 	, m_CameraParent(nullptr)
 
+	, m_SwapInput(-1)
+	, m_NextSlotNum(-1)
+
+	, m_FInput(false)
+	, m_AssassinateTarget(nullptr)
+	, m_pAudio(nullptr)
 	// save/load 용 변수
 	, m_SaveData(new PlayerController_Save())
 
@@ -67,25 +83,29 @@ void PlayerController::Start()
 	/// </summary>
 	{
 		// 이동 애니메이션 관련 설정
-		s_HForAnim = 0.0f;
-		s_H = 0.0f;
-		s_VForAnim = 0.0f;
-		s_V = 0.0f;
+		m_HForAnim = 0.0f;
+		m_H = 0.0f;
+		m_VForAnim = 0.0f;
+		m_V = 0.0f;
 
-		s_bAim = false;
+		m_bAim = false;
 
-		s_bIsReloading = false;
-		s_bIsThrowing = false;
-		s_bIsHealing = false;
-		s_bIsSwaping = false;
+		m_bIsReloading = false;
+		m_bIsThrowing = false;
+		m_bIsHealing = false;
+		m_bIsAssassinate = false;
+		m_bCanAssassinate = false;
+		m_bIsRoutingItem = false;
+		m_bInteraction = false;
+		m_bIsSwaping = false;
 
-		s_PitchValue = 0.0f;
+		m_PitchValue = 0.0f;
 
-		s_bIsDie = false;
-		s_bIsDead = false;
+		m_bIsDie = false;
+		m_bIsDead = false;
 
-		s_bCrouch = false;
-		s_bSprint = false;
+		m_bCrouch = false;
+		m_bSprint = false;
 		m_PoseMode = PoseMode::Stand;
 		m_MovingMode = MovingMode::Idle;
 
@@ -97,12 +117,19 @@ void PlayerController::Start()
 		m_SwapCoolTimer = 0.0f;
 
 		// 전투관련 값 설정
-		s_bAim = false;
+		m_bAim = false;
 
 
 		// 스타트될 때(재시작 포함) 살아 움직이게 Die 관련은 false로 초기화
-		s_bIsDie = false;
-		s_bIsDead = false;
+		m_bIsDie = false;
+		m_bIsDead = false;
+
+		// 장비 교체 입력 초기화
+		m_SwapInput = -1;
+		m_NextSlotNum = -1;
+
+		// F 입력 초기화
+		m_FInput = false;
 	}
 
 	// 커서 화면 중앙으로 이동
@@ -113,19 +140,22 @@ void PlayerController::Start()
 		// Health 연결
 		m_Health = m_pMyObject->GetComponent<Health>();
 		assert(m_Health != nullptr);
-		m_Health->SetHp(6.0f);
+		m_Health->SetMaxHp(60.0f);
+		m_Health->SetHp(m_Health->GetMaxHp());
 
 		// Inventory 연결
 		m_Inventory = m_pMyObject->GetComponent<Inventory>();
 		assert(m_Inventory != nullptr);
 
-		// Animator 연결
+		// Animator/MeshFilter 연결
 		if (DLLEngine::FindGameObjectByName("Player_Mesh") != nullptr)
 		{
 			m_PlayerMesh = DLLEngine::FindGameObjectByName("Player_Mesh");
 			m_Animator = m_PlayerMesh->GetComponent<Animator>();
+			m_Meshfilter = m_PlayerMesh->GetComponent<MeshFilter>();
 		}
 		assert(m_Animator != nullptr);
+		assert(m_Meshfilter != nullptr);
 	}
 
 	// CameraParent 연결
@@ -135,6 +165,15 @@ void PlayerController::Start()
 	m_MyPhysicsActor = m_pMyObject->GetComponent<PhysicsActor>();
 
 	m_CameraParent = cameraParent->m_Transform;
+
+	// RightHand (EquipmentController) 연결
+	GameObject* rightHand = DLLEngine::FindGameObjectByName("RightHand");
+	m_EquipmentController = rightHand->GetComponent<EquipmentController>();
+	assert(m_EquipmentController != nullptr);
+
+	m_pAudio = m_pMyObject->GetComponent<Audio>();
+	assert(m_pAudio != nullptr);
+
 }
 
 void PlayerController::Update(float dTime)
@@ -170,25 +209,50 @@ void PlayerController::Update(float dTime)
 		return;
 	}
 
+	// 암살 가능 여부 업데이트
+	m_bCanAssassinate = CanAssassinate();
+
 	/// 장비 교체 쿨타이머
-	if (s_bIsSwaping == true)
+	if (m_bIsSwaping == true)
 	{
 		SwapCoolDown();
+	}
+
+	/// 장비 교체
+	else if (m_SwapInput != -1)
+	{
+		Swap();
+
+		m_SwapInput = -1;
 	}
 
 	/// 장전
 	if (DLLInput::InputKeyDown(CL::KeyMap::RELOAD))
 	{
-		Reload();
+		// 현재 Gun을 장비중인지 확인
+		std::shared_ptr<Gun> _gun = std::dynamic_pointer_cast<Gun>(m_Inventory->GetCurrentEquipment());
+		if (_gun->IsMagazineFull() == false)
+		{
+			Reload(_gun);
+		}
 	}
 
 	/// 장비중인 아이템 사용
 	{
 		UseEquipedItem();
-
 	}
 
+	/// 특수 기술(암살, 루팅, 상호작용) 사용
+	if (m_FInput == true)
+	{
+		FFunction();
+		m_FInput = false;
+	}
+
+
 	/// 이동
+	// 암살중이 아닐 때에만 이동
+	if (m_bIsAssassinate == false)
 	{
 		// WASD 전후좌우 이동
 		Move();
@@ -226,21 +290,21 @@ void PlayerController::OnCollisionExit(Collision collision)
 void PlayerController::UpdateUserInput()
 {
 	/// 이동관련 Axis 입력 업데이트
-	s_H = CL::Input::GetAxisRaw("Horizontal");
-	s_V = CL::Input::GetAxisRaw("Vertical");
+	m_H = CL::Input::GetAxisRaw("Horizontal");
+	m_V = CL::Input::GetAxisRaw("Vertical");
 
 	/// 애니메이션 전환용 Axis 업데이트
 	/// 역방향 전환을 위해..(앞 <-> 뒤 , 좌 <-> 우)
-	s_HForAnim = CL::Input::GetAxis("Horizontal");
-	s_VForAnim = CL::Input::GetAxis("Vertical");
+	m_HForAnim = CL::Input::GetAxis("Horizontal");
+	m_VForAnim = CL::Input::GetAxis("Vertical");
 
 	// 앉기 키 누름
 	if (DLLInput::InputKeyDown(CL::KeyMap::CROUCH))
 	{
 		// 서기 <-> 앉기 자세 변경
-		s_bCrouch = !s_bCrouch;
+		m_bCrouch = !m_bCrouch;
 
-		if (s_bCrouch == true)
+		if (m_bCrouch == true)
 		{
 			SetPoseMode(PoseMode::Crouch);
 		}
@@ -255,8 +319,8 @@ void PlayerController::UpdateUserInput()
 	// 달리기 키랑 전진 키를 누르고 있으면
 	if (DLLInput::InputKey(CL::KeyMap::SPRINT) && DLLInput::InputKey(CL::KeyMap::FORWARD))
 	{
-		s_bSprint = true;
-		s_bCrouch = false;	// 달릴 때는 무조건 서있게 만든다
+		m_bSprint = true;
+		m_bCrouch = false;	// 달릴 때는 무조건 서있게 만든다
 
 		// 이동속도 변경
 		if (m_pMyObject->GetComponent<PhysicsActor>())
@@ -274,7 +338,8 @@ void PlayerController::UpdateUserInput()
 	else if (DLLInput::InputKeyUp(CL::KeyMap::SPRINT) || DLLInput::InputKeyUp(CL::KeyMap::FORWARD))
 	{
 		// 달리기 상태 해제
-		s_bSprint = false;
+		m_bSprint = false;
+		m_MoveSpeed = m_StandSpeed;
 	}
 
 	/// 조준 
@@ -282,10 +347,10 @@ void PlayerController::UpdateUserInput()
 		&& DLLInput::InputKey(CL::KeyMap::AIM) == true)
 	{
 		// 조준 상태 설정
-		s_bAim = true;
+		m_bAim = true;
 
 		// 달리기 항상 off
-		s_bSprint = false;
+		m_bSprint = false;
 
 		//m_Animator->SetOverrideAnimLayer("");
 
@@ -295,20 +360,62 @@ void PlayerController::UpdateUserInput()
 			m_MoveSpeed = m_StandSpeed;
 
 			// 활성화 하고 싶은 레이어 이름만 가지고 함수 호출
-			m_Animator->SetOverrideAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_AIM);
-			//m_Animator->SetNoneAnimLayer("");
-
-			if (s_H == 0.0f)
+			switch (m_Inventory->m_EquiptedSlotIndex)
 			{
-				// Idle이나 앞뒤로 움직일 때 살짝 오른쪽으로 회전
-				m_PlayerMesh->m_Transform->SetRotationFromVec({ 0.0f, 240.0f, 0.0f });
+			case 0:
+			{
+				m_Animator->SetOverrideAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_AIM);
+				break;
 			}
 
-			else
-			{
-				// 좌우로 움직일 때는 기본 방향 그대로
-				m_PlayerMesh->m_Transform->SetRotationFromVec({ 0.0f, 190.0f, 0.0f });
+			case 1:
+				m_Animator->SetOverrideAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_PISTOL_AIM);
+				break;
+
+			case 2:
+				break;
+
 			}
+
+			if (m_Inventory->m_EquipedItem->GetType() == IItem::Type::eLongGun)
+			{
+				if (m_H == 0.0f)
+				{
+					// Idle이나 앞뒤로 움직일 때 살짝 오른쪽으로 회전
+					m_PlayerMesh->m_Transform->SetRotationFromVec({ 0.0f, 240.0f, 0.0f });
+				}
+
+				else
+				{
+					if (m_V == 0.0f)
+					{
+						// 좌우로 움직일 때는 기본 방향 그대로
+						m_PlayerMesh->m_Transform->SetRotationFromVec({ 0.0f, 190.0f, 0.0f });
+					}
+				}
+			}
+
+			if (m_Inventory->m_EquipedItem->GetType() == IItem::Type::eHandGun)
+			{
+				if (m_H == 0.0f && m_V == 0.0f)
+				{
+					m_PlayerMesh->m_Transform->SetRotationFromVec({ 0.0f, 220.0f, 0.0f });
+				}
+
+				else if (m_H != 0.0f)
+				{
+					m_PlayerMesh->m_Transform->SetRotationFromVec({ 0.0f, 220.0f, 0.0f });
+				}
+
+				else
+				{
+					if (m_V != 0.0f)
+					{
+						m_PlayerMesh->m_Transform->SetRotationFromVec({ 0.0f, 240.0f, 0.0f });
+					}
+				}
+			}
+
 		}
 
 		else if (m_PoseMode == PoseMode::Crouch)
@@ -323,9 +430,9 @@ void PlayerController::UpdateUserInput()
 	/// 비조준
 	else
 	{
-		s_bAim = false;
+		m_bAim = false;
 
-		if (IsNoAction() == true)
+		if (DoNothing() == true)
 		{
 			m_Animator->SetOverrideAnimLayer("");
 
@@ -334,130 +441,50 @@ void PlayerController::UpdateUserInput()
 		}
 	}
 
-	/// 장비 교체 (로직)
+	/// 장비 교체 입력
 	if (CanSwap() == true)
 	{
-		/// 교체할 슬롯 키를 눌렀을 경우
-		// 장총(1번) 교체 시도 
 		if (DLLInput::InputKeyDown(static_cast<int>(CL::KeyMap::SLOT_1)))
 		{
-			// 현재 장비중인 슬롯인지 확인
-			uint _currentSlotNum = m_Inventory->m_EquiptedSlotIndex;
-			if (_currentSlotNum != static_cast<uint>(Inventory::Slot::eLongGun))
-			{
-				// 장비 교체 중인 상태로 변경
-				s_bIsSwaping = true;
-				m_SwapCoolTimer = m_SwapSpeed;
-
-				// 교체후 장비할 슬롯 번호 변경
-				s_NextSlotNum = static_cast<uint>(Inventory::Slot::eLongGun);
-
-				// 애니메이터 변수 변경
-				s_bIsSwaping = true;
-
-				// 애니메이션 변경
-				m_Animator->SetOverrideAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_SWAP_WEAPON);
-
-				CA_TRACE("[PlayerController] 장비교체 시작");
-			}
-
-			else
-			{
-				CA_TRACE("[PlayerController] 장비교체 실패 - > 현재 장비한 아이템이다..");
-			}
+			m_SwapInput = static_cast<int>(Inventory::Slot::eLongGun);
 		}
 
-		// 권총(2번) 교체 시도 
 		if (DLLInput::InputKeyDown(static_cast<int>(CL::KeyMap::SLOT_2)))
 		{
-			// 현재 장비중인 슬롯인지 확인
-			uint _currentSlotNum = m_Inventory->m_EquiptedSlotIndex;
-			if (_currentSlotNum != static_cast<uint>(Inventory::Slot::eHandGun))
-			{
-				// 장비 교체 중인 상태로 변경
-				s_bIsSwaping = true;
-				m_SwapCoolTimer = m_SwapSpeed;
-
-				// 교체후 장비할 슬롯 번호 변경
-				s_NextSlotNum = static_cast<uint>(Inventory::Slot::eHandGun);
-
-				// 애니메이션 변경
-				m_Animator->SetOverrideAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_SWAP_WEAPON);
-
-				CA_TRACE("[PlayerController] 장비교체 시작");
-			}
-
-			else
-			{
-				CA_TRACE("[PlayerController] 장비교체 실패 - > 현재 장비한 아이템이다..");
-			}
+			m_SwapInput = static_cast<int>(Inventory::Slot::eHandGun);
 		}
 
-		// 플라스크(3번) 교체 시도 
 		if (DLLInput::InputKeyDown(static_cast<int>(CL::KeyMap::SLOT_3)))
 		{
-			// 현재 장비중인 슬롯인지 확인
-			uint _currentSlotNum = m_Inventory->m_EquiptedSlotIndex;
-			if (_currentSlotNum != static_cast<uint>(Inventory::Slot::eFlask))
-			{
-				// 장비 교체 중인 상태로 변경
-				s_bIsSwaping = true;
-				m_SwapCoolTimer = m_SwapSpeed;
-
-				// 교체후 장비할 슬롯 번호 변경
-				s_NextSlotNum = static_cast<uint>(Inventory::Slot::eFlask);
-
-				// 애니메이션 변경
-				m_Animator->SetOverrideAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_SWAP_WEAPON);
-
-				CA_TRACE("[PlayerController] 장비교체 시작");
-			}
-
-			else
-			{
-				CA_TRACE("[PlayerController] 장비교체 실패 - > 현재 장비한 아이템이다..");
-			}
+			m_SwapInput = static_cast<int>(Inventory::Slot::eFlask);
 		}
 
-		// 화염 플라스크(4번) 교체 시도 
 		if (DLLInput::InputKeyDown(static_cast<int>(CL::KeyMap::SLOT_4)))
 		{
-			// 현재 장비중인 슬롯인지 확인
-			uint _currentSlotNum = m_Inventory->m_EquiptedSlotIndex;
-			if (_currentSlotNum != static_cast<uint>(Inventory::Slot::eFireFlask))
-			{
-				// 장비 교체 중인 상태로 변경
-				s_bIsSwaping = true;
-				m_SwapCoolTimer = m_SwapSpeed;
-
-				// 교체후 장비할 슬롯 번호 변경
-				s_NextSlotNum = static_cast<uint>(Inventory::Slot::eFireFlask);
-
-				// 애니메이션 변경
-				m_Animator->SetOverrideAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_SWAP_WEAPON);
-
-				CA_TRACE("[PlayerController] 장비교체 시작");
-			}
-
-			else
-			{
-				CA_TRACE("[PlayerController] 장비교체 실패 - > 현재 장비한 아이템이다..");
-			}
+			m_SwapInput = static_cast<int>(Inventory::Slot::eFireFlask);
 		}
 	}
 
+	/// F키 입력
+	if (DoNothing() == true)
+	{
+		if (DLLInput::InputKeyDown(CL::KeyMap::INTERATION))
+		{
+			m_FInput = true;
+		}
+	}
 }
 
 void PlayerController::UpdateAlive()
 {
 	if (m_Health->IsAlive())
 	{
-		s_bIsDie = false;
+		m_bIsDie = false;
 	}
 
 	else
 	{
-		s_bIsDie = true;
+		m_bIsDie = true;
 	}
 }
 
@@ -486,7 +513,7 @@ void PlayerController::MoveByTransform()
 	///  전후좌우 이동
 	/// </summary>
 
-	if (s_V > 0.0f)
+	if (m_V > 0.0f)
 	{
 		// 전방 이동
 		m_Transform->SetRotationFromVec({ 0.0f, m_CameraParent->m_Transform->m_EulerAngles.y, 0.0f });
@@ -494,21 +521,21 @@ void PlayerController::MoveByTransform()
 
 	}
 
-	if (s_V < 0.0f)
+	if (m_V < 0.0f)
 	{
 		// 후방 이동
 		m_Transform->SetRotationFromVec({ 0.0f, m_CameraParent->m_Transform->m_EulerAngles.y, 0.0f });
 		m_Transform->MoveForwardOnXZ(-m_MoveSpeed * CL::Input::s_DeltaTime);
 	}
 
-	if (s_H < 0.0f)
+	if (m_H < 0.0f)
 	{
 		// 좌로 이동
 		m_Transform->SetRotationFromVec({ 0.0f, m_CameraParent->m_Transform->m_EulerAngles.y, 0.0f });
 		m_Transform->MoveSide(-m_MoveSpeed * CL::Input::s_DeltaTime);
 	}
 
-	if (s_H > 0.0f)
+	if (m_H > 0.0f)
 	{
 		// 우로 이동
 		m_Transform->SetRotationFromVec({ 0.0f, m_CameraParent->m_Transform->m_EulerAngles.y, 0.0f });
@@ -544,44 +571,57 @@ void PlayerController::MoveByPhysX()
 	/// <summary>
 	///  전후좌우 이동
 	/// </summary>
-	if (s_V > 0.0f)
+	if (m_V > 0.0f)
 	{
 		// 전방 이동
 		_moveDir += { _cameraForwardDir.x, 0.0f, _cameraForwardDir.z};
 	}
 
-	if (s_V < 0.0f)
+	if (m_V < 0.0f)
 	{
 		// 후방 이동
-		_moveDir -= { _cameraForwardDir.x, 0.0f, _cameraForwardDir.z};;
+		_moveDir -= { _cameraForwardDir.x, 0.0f, _cameraForwardDir.z};
 	}
 
-	if (s_H < 0.0f)
+	if (m_H < 0.0f)
 	{
 		// 좌로 이동
 		_moveDir -= { _cameraRightDir.x, 0.0f, _cameraRightDir.z};
 	}
 
-	if (s_H > 0.0f)
+	if (m_H > 0.0f)
 	{
 		// 우로 이동
 		_moveDir += { _cameraRightDir.x, 0.0f, _cameraRightDir.z};
 	}
 
+	// 밀림 방지
+	if (m_V == 0.0f && m_H == 0.0f)
+	{
+		m_MyPhysicsActor->SetFreezePosition(true, true, true);
+	}
+	else
+	{
+		m_MyPhysicsActor->SetFreezePosition(false, true, false);
+	}
+
 	// 이동방향 정규화
 	_moveDir.Normalize();
 
-	// 이동량 계산
+	// 이동량 계산w
 	_moveDir *= m_MoveSpeed * CL::Input::s_DeltaTime;
 
 	// 이동
-	DLLEngine::SetVelocity(m_MyPhysicsActor, _moveDir);
+	//DLLEngine::SetVelocity(m_MyPhysicsActor, _moveDir);
+	m_MyPhysicsActor->SetVelocity(_moveDir);
 
 	//float _nowMoveScale = abs(_moveDir.x) + abs(_moveDir.y) + abs(_moveDir.z);
 	//CA_TRACE("Move Scale = %f", _nowMoveScale);
 
 	// Look 방향 전환
 	m_Transform->SetRotationFromVec({ 0.0f, m_CameraParent->m_Transform->m_EulerAngles.y, 0.0f });
+
+
 }
 
 
@@ -623,8 +663,16 @@ bool PlayerController::UseEquipedItem() const
 	// 비조준 시 사용(공격, 투척)키 눌렀을 때
 	if (DLLInput::InputKeyDown(CL::KeyMap::ATTACK))
 	{
-		// 장전
-		Reload();
+		// 현재 Gun을 장비중인지 확인
+		std::shared_ptr<Gun> _gun = std::dynamic_pointer_cast<Gun>(m_Inventory->GetCurrentEquipment());
+		if (_gun != nullptr &&
+			_gun->IsMagazineEmpty() == true)
+		{
+			// 탄창이 비어있으면 장전
+			Reload(_gun);
+		}
+
+		_gun = nullptr;
 
 		if (DLLInput::InputKey(CL::KeyMap::AIM))
 		{
@@ -645,11 +693,11 @@ bool PlayerController::EquipMainSlot()
 	if (_currentSlotNum != static_cast<uint>(Inventory::Slot::eLongGun))
 	{
 		// 장비 교체 중인 상태로 변경
-		s_bIsSwaping = true;
+		m_bIsSwaping = true;
 		m_SwapCoolTimer = m_SwapSpeed;
 
 		// 교체후 장비할 슬롯 번호 변경
-		s_NextSlotNum = static_cast<uint>(Inventory::Slot::eLongGun);
+		m_NextSlotNum = static_cast<uint>(Inventory::Slot::eLongGun);
 	}
 
 	else
@@ -665,7 +713,7 @@ void PlayerController::SwapCoolDown()
 
 	if (m_SwapCoolTimer <= 0.0f)
 	{
-		s_bIsSwaping = false;
+		m_bIsSwaping = false;
 		CA_TRACE("[PlayerController] 장비교체 타이머 끝");
 
 		// 무기교체 애니메이션 해제
@@ -673,22 +721,52 @@ void PlayerController::SwapCoolDown()
 
 		// 인벤토리의 장비 슬롯 교체
 		// 나중에 애니메이션 이벤트에서 애니메이션이 중간쯤 진행됐을 때 변경하도록 해야함
-		m_Inventory->ChangeWeapon(s_NextSlotNum);
+		m_Inventory->ChangeWeapon(m_NextSlotNum);
+
+		IItem::Type _type = m_Inventory->GetCurrentEquipment()->GetType();
+
+		// 장비한 무기에 따라서 메쉬 변경
+		switch (_type)
+		{
+			case IItem::Type::eLongGun:
+			{
+				m_Meshfilter->SetMesh(CL::ResourcePath::MESH_PLAYER_RIFLE);
+				m_Animator->SetNoneAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE);
+				m_EquipmentController->ChangeWeaponMesh(IItem::Type::eLongGun);
+				break;
+			}
+
+			case IItem::Type::eHandGun:
+			{
+				m_Meshfilter->SetMesh(CL::ResourcePath::MESH_PLAYER_PISTOL);
+				m_Animator->SetNoneAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_PISTOL);
+				m_EquipmentController->ChangeWeaponMesh(IItem::Type::eHandGun);
+				break;
+			}
+
+			case IItem::Type::eFlask:
+			{
+				break;
+			}
+		}
 	}
 }
 
 /// <summary>
-/// 현재 총 장비중이고 탄창이 비어있으면 장전한다.
+/// 현재 총 장비중이고 탄창여분 공간이 있으면 장전한다.
 /// </summary>
-void PlayerController::Reload() const
+void PlayerController::Reload(std::shared_ptr<Gun> gun) const
 {
-	std::shared_ptr<Gun> _gun = std::dynamic_pointer_cast<Gun>(m_Inventory->GetCurrentEquipment());
-	if (_gun != nullptr)
+	if (gun == nullptr)
 	{
-		if (_gun->IsMagazineEmpty() == true
-			&& s_bIsReloading == false)
+		gun = std::dynamic_pointer_cast<Gun>(m_Inventory->GetCurrentEquipment());
+	}
+
+	if (gun != nullptr)
+	{
+		if (m_bIsReloading == false)
 		{
-			_gun->StartReload();
+			gun->StartReload();
 
 			switch (m_PoseMode)
 			{
@@ -700,15 +778,276 @@ void PlayerController::Reload() const
 				m_Animator->SetOverrideAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_CROUCH_RELOAD);
 				break;
 			}
-			
 		}
 	}
 }
 
-void PlayerController::FinishDie()
+bool PlayerController::FFunction()
 {
-	s_bIsDie = false;	// 쓰러지고 있는 상태 해제
-	s_bIsDead = true;	// 죽어서 누워있는상태 true
+	// 암살
+	if (m_bCanAssassinate == true)
+	{
+		Assassinate();
+		return true;
+	}
+
+	return false;
+}
+
+/// <summary>
+/// 암살 액션 가능한지 판단
+/// </summary>
+/// <returns>암살 실행 가능 여부</returns>
+bool PlayerController::CanAssassinate()
+{
+	// 암살 사정 거리
+	const float _assassinateRange = 1.0f;
+
+	// 암살 범위 각
+	const float _assassinateAngle = 50.0f;
+	float _leftAssassinateAngle = m_Transform->m_EulerAngles.y + (_assassinateAngle / 2.0f);
+	float _rightAssassinateAngle = m_Transform->m_EulerAngles.y - (_assassinateAngle / 2.0f);
+
+	/// 최종적으로 선택할 타겟
+	m_AssassinateTarget = nullptr;
+
+	// 좀비의 뒤에 있으면서 어그로가 끌리지 않았고
+	// 좀비를 바라보고...
+	/// 암살 가능한 좀비들을 찾는다
+	auto& zombies = DLLEngine::FindGameObjectByTag("Zombie");
+
+	for (auto& zombie : zombies)
+	{
+		Enemy_Move* _enemyMove = nullptr;
+		_enemyMove = zombie->GetComponent<Zombie_Runner_Move>();
+		assert(_enemyMove != nullptr);
+
+		/// 좀비 암살 가능 여부 초기화 
+		_enemyMove->m_bCanBeAssassinated = false;
+
+		/// 생존여부 체크
+		if (_enemyMove->IsDead() == true)
+		{
+			continue;
+		}
+
+		/// 어그로 인식 체크
+		if (_enemyMove->m_Target.object == nullptr)
+		{
+			/// 암살 범위 각 체크(각도는 카메라를 기준으로 해야 불편하지 않다)
+			float _angleToTarget = UtilityFunction::CalcAngleToTarget(*m_CameraParent->GetMyObject(), *zombie);
+			UtilityFunction::NormalizeAngle(_angleToTarget);
+
+			bool _TargetInSight = false;
+			// 시야각 사이가 연결 되는 경우(좌측과 우측 사이에 0(360)이 안 걸리는 경우)
+			if (_leftAssassinateAngle > _rightAssassinateAngle)
+			{
+				if (_angleToTarget <= _leftAssassinateAngle &&
+					_angleToTarget >= _rightAssassinateAngle)
+				{
+					_TargetInSight = true;
+				}
+
+			}
+			// 시야각 사이에 0(360)도가 끼어서 범위가 분리되는 경우
+			else
+			{
+				if ((0.0f <= _angleToTarget) && (_angleToTarget <= _leftAssassinateAngle) ||		// 좌쪽 범위 체크
+					((_rightAssassinateAngle <= _angleToTarget) && (_angleToTarget <= 360.0f)))	// 우측 범위 체크
+
+				{
+					_TargetInSight = true;
+				}
+			}
+
+			// 암살 범위(각) 밖에 있는 경우
+			if (_TargetInSight == false)
+			{
+				continue;
+			}
+
+			/// 거리 체크
+			if (UtilityFunction::IsTargetInDetectionRange(*m_pMyObject, *zombie, _assassinateRange) == true)
+			{
+				// 암살 가능 조건을 만족하는 좀비 발견
+				// 기존 타겟과 비교해서 더 가까운 좀비를 최종 타겟으로 선정
+				if (m_AssassinateTarget == nullptr)
+				{
+					m_AssassinateTarget = _enemyMove;
+
+					continue;
+				}
+
+				else
+				{
+					float _distToCurrentTarget = SimpleMath::Vector3::Distance(m_Transform->m_Position, m_AssassinateTarget->m_Transform->m_Position);
+					float _distToNextZombie = SimpleMath::Vector3::Distance(m_Transform->m_Position, _enemyMove->m_Transform->m_Position);
+
+					if (_distToCurrentTarget > _distToNextZombie)
+					{
+						m_AssassinateTarget = _enemyMove;
+					}
+				}
+			}
+
+		}
+	}
+
+	// 암살 가능 타겟이 없는경우
+	if (m_AssassinateTarget == nullptr)
+	{
+		//CA_TRACE("[PlayerController] CanAssassinate 가능한 좀비 없음..");
+		return false;
+	}
+
+	// 암살 가능 타겟이 있는 경우
+	// (타겟은 암살당하는 FSM으로 변경해야함)
+	m_AssassinateTarget->m_bCanBeAssassinated = true;	// 이 변수를 기준으로 UI 띄워주면 될 것이다.
+
+	//CA_TRACE("[PlayerController] CanAssassinate 가능!!");
+	return true;
+}
+
+bool PlayerController::Assassinate()
+{
+	CA_TRACE("[PlayerController] Assassinate()");
+
+	// 암살상태 설정
+	m_bIsAssassinate = true;
+
+	// 플레이어 무적상태로 변경
+	m_Health->SetInvincible(true);
+
+	// 플레이어 위치 보정
+	SimpleMath::Vector3 _assassinatePos = m_AssassinateTarget->m_Transform->m_WorldPosition;
+	_assassinatePos -= m_AssassinateTarget->m_Transform->m_RotationTM.Forward() * 0.7f;
+	m_Transform->m_Position = _assassinatePos;
+
+	// 좀비를 바라보도록
+	m_Transform->LookAtYaw(m_AssassinateTarget->m_Transform->m_WorldPosition);
+
+	// 밀림 방지
+	m_MyPhysicsActor->SetFreezePosition(true, true, true);
+	m_MyPhysicsActor->SetFreezeRotation(true, true, true);
+
+	// 타겟 좀비 피암살 상태 설정
+	m_AssassinateTarget->m_State |= Enemy_Move::State::eAssassinated;
+
+	// 애니메이션 FSM, 레이어 세팅
+	IItem::Type _type = m_Inventory->GetCurrentEquipment()->GetType();
+	switch (_type)
+	{
+	case IItem::Type::eLongGun:
+		m_Animator->SetNoneAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_ASSASSINATE_BEGIN);
+		break;
+
+	case IItem::Type::eHandGun:
+		m_Animator->SetNoneAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_PISTOL_ASSASSINATE_BEGIN);
+		break;
+
+	case IItem::Type::eFlask:
+		break;
+	case IItem::Type::eFireFlask:
+		break;
+	case IItem::Type::eAlcohol:
+		break;
+	case IItem::Type::eHerb:
+		break;
+	case IItem::Type::eHealSyringe:
+		break;
+	case IItem::Type::eLongGunAmmo:
+		break;
+	case IItem::Type::eHandGunAmmo:
+		break;
+	case IItem::Type::eMax:
+		break;
+	default:
+		break;
+	}
+
+
+	return true;
+}
+
+bool PlayerController::RoutingItem()
+{
+	return false;
+}
+
+bool PlayerController::Interaction()
+{
+	return false;
+}
+
+float PlayerController::GetStandSpeed() const
+{
+	return m_StandSpeed;
+}
+
+float PlayerController::GetCrouchSpeed() const
+{
+	return m_CrouchSpeed;
+}
+
+float PlayerController::GetSprintSpeed() const
+{
+	return m_SprintSpeed;
+}
+
+Enemy_Move* PlayerController::GetAssassinateTarget() const
+{
+	return m_AssassinateTarget;
+}
+
+void PlayerController::PostDie()
+{
+	m_bIsDie = false;	// 쓰러지고 있는 상태 해제
+	m_bIsDead = true;	// 죽어서 누워있는상태 true
+}
+
+void PlayerController::PostAssassinate()
+{
+	// 애니메이션, 상태 세팅
+	IItem::Type _type = m_Inventory->GetCurrentEquipment()->GetType();
+	switch (_type)
+	{
+	case IItem::Type::eLongGun:
+		m_Animator->SetNoneAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE);
+		break;
+
+	case IItem::Type::eHandGun:
+		m_Animator->SetNoneAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_PISTOL);
+		break;
+
+	case IItem::Type::eFlask:
+		break;
+	case IItem::Type::eFireFlask:
+		break;
+	case IItem::Type::eAlcohol:
+		break;
+	case IItem::Type::eHerb:
+		break;
+	case IItem::Type::eHealSyringe:
+		break;
+	case IItem::Type::eLongGunAmmo:
+		break;
+	case IItem::Type::eHandGunAmmo:
+		break;
+	case IItem::Type::eMax:
+		break;
+	default:
+		break;
+	}
+
+	// 무적상태 해제
+	m_Health->SetInvincible(false);
+
+	// 암살상태 해제
+	m_bIsAssassinate = false;
+
+	// 고정 해제
+	m_MyPhysicsActor->SetFreezePosition(false, true, false);
+	m_MyPhysicsActor->SetFreezeRotation(false, false, true);
 }
 
 /// <summary>
@@ -718,7 +1057,7 @@ void PlayerController::FinishDie()
 bool PlayerController::IsDead()
 {
 	// 쓰러지고 있거나, 이미 죽어서 누워있는 경우
-	if (s_bIsDie == true || s_bIsDead == true)
+	if (m_bIsDie == true || m_bIsDead == true)
 	{
 		return true;
 	}
@@ -733,9 +1072,10 @@ bool PlayerController::IsDead()
 /// <returns>판단 여부</returns>
 bool PlayerController::CanAim() const
 {
-	if (s_bIsReloading == false
-		&& s_bIsThrowing == false
-		&& s_bIsHealing == false)
+	if (m_bIsReloading == false
+		&& m_bIsThrowing == false
+		&& m_bIsSwaping == false
+		&& m_bIsHealing == false)
 	{
 		return true;
 	}
@@ -752,7 +1092,7 @@ bool PlayerController::CanAim() const
 /// <returns>스왑 가능 여부</returns>
 bool PlayerController::CanSwap() const
 {
-	if (s_bIsSwaping == false && s_bSprint == false)
+	if (m_bIsSwaping == false && m_bSprint == false)
 	{
 		//CA_TRACE("[PlayerController] Now, Can Swap ~");
 		return true;
@@ -765,11 +1105,81 @@ bool PlayerController::CanSwap() const
 	}
 }
 
-bool PlayerController::IsNoAction() const
+/// <summary>
+/// 장비교체 함수
+/// 플레이어가 슬롯 번호를 입력하면
+/// 해당 슬롯의 장비로 교체한다
+/// </summary>
+/// <returns></returns>
+bool PlayerController::Swap()
 {
-	if (m_Animator->GetAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_STAND_RELOAD)->m_bEnabled == false
+	// 교체할 장비 슬롯 번호 변경
+	m_NextSlotNum = m_SwapInput;
+
+	// 현재 장비중인 슬롯인지 확인
+	uint _currentSlotNum = m_Inventory->m_EquiptedSlotIndex;
+	if (_currentSlotNum == m_NextSlotNum)
+	{
+		CA_TRACE("[PlayerController] 장비교체 실패 - > 현재 장비한 아이템이다..");
+
+		return false;
+	}
+
+	// 장비 교체 중인 상태로 변경
+	m_bIsSwaping = true;
+	m_SwapCoolTimer = m_SwapSpeed;
+
+	// 애니메이션 변경
+	switch (_currentSlotNum)
+	{
+	case 0:
+	{
+		m_Animator->SetOverrideAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_SWAP_WEAPON, true);
+		break;
+	}
+
+	case 1:
+	{
+		m_Animator->SetOverrideAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_PISTOL_SWAP_WEAPON, true);
+		break;
+	}
+
+	case 2:
+	{
+		m_Animator->SetOverrideAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_SWAP_WEAPON, true);
+		break;
+	}
+
+	case 3:
+	{
+		m_Animator->SetOverrideAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_SWAP_WEAPON, true);
+		break;
+	}
+
+	default:
+		break;
+	}
+
+	CA_TRACE("[PlayerController] 장비교체 시작");
+
+	return true;
+}
+
+bool PlayerController::DoNothing() const
+{
+	if (
+		// Rifle
+		m_Animator->GetAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_STAND_RELOAD)->m_bEnabled == false
 		&& m_Animator->GetAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_CROUCH_RELOAD)->m_bEnabled == false
-		&& m_Animator->GetAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_SWAP_WEAPON)->m_bEnabled == false)
+		&& m_Animator->GetAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_SWAP_WEAPON)->m_bEnabled == false
+		&& m_Animator->GetAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_ASSASSINATE_BEGIN)->m_bEnabled == false
+		&& m_Animator->GetAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_ASSASSINATE_END)->m_bEnabled == false
+		&& m_Animator->GetAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_ROUTING_ITEM)->m_bEnabled == false
+		//&& m_Animator->GetAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_RIFLE_INTERACTION)->m_bEnabled == false
+
+		// Pistol
+		&& m_Animator->GetAnimLayer(CL::ResourcePath::ANIM_LAYER_PLAYER_PISTOL_SWAP_WEAPON)->m_bEnabled == false
+		)
 	{
 		return true;
 	}
@@ -816,14 +1226,14 @@ void PlayerController::SaveData()
 	m_SaveData->m_bEnable = GetIsEnabled();
 	m_SaveData->m_ComponentId = m_ComponentId;
 
-	m_SaveData->s_HForAnim = s_HForAnim;
-	m_SaveData->s_VForAnim = s_VForAnim;
-	m_SaveData->s_H = s_H;
-	m_SaveData->s_V = s_V;
+	m_SaveData->m_HForAnim = m_HForAnim;
+	m_SaveData->m_VForAnim = m_VForAnim;
+	m_SaveData->m_H = m_H;
+	m_SaveData->m_V = m_V;
 
-	m_SaveData->s_bCrouch = s_bCrouch;
-	m_SaveData->s_bSprint = s_bSprint;
-	m_SaveData->s_bAim = s_bAim;
+	m_SaveData->m_bCrouch = m_bCrouch;
+	m_SaveData->m_bSprint = m_bSprint;
+	m_SaveData->m_bAim = m_bAim;
 
 	//m_SaveData->m_Animator = m_Animator->GetComponetId();
 
@@ -845,13 +1255,13 @@ void PlayerController::LoadData()
 	save::ReadValue(m_Value, EraseClass(typeid(*this).name()), *m_SaveData);
 	SetEnable(m_SaveData->m_bEnable);
 
-	s_HForAnim = m_SaveData->s_HForAnim;
-	s_VForAnim = m_SaveData->s_VForAnim;
-	s_H = m_SaveData->s_H;
-	s_V = m_SaveData->s_V;
-	s_bCrouch = m_SaveData->s_bCrouch;
-	s_bSprint = m_SaveData->s_bSprint;
-	s_bAim = m_SaveData->s_bAim;
+	m_HForAnim = m_SaveData->m_HForAnim;
+	m_VForAnim = m_SaveData->m_VForAnim;
+	m_H = m_SaveData->m_H;
+	m_V = m_SaveData->m_V;
+	m_bCrouch = m_SaveData->m_bCrouch;
+	m_bSprint = m_SaveData->m_bSprint;
+	m_bAim = m_SaveData->m_bAim;
 
 	//m_Animator = m_SaveData->m_Animator;	// 컴포넌트 불러오는건 Start 에서 연결해준다
 	m_PoseMode = static_cast<PoseMode>(m_SaveData->m_PoseMode);

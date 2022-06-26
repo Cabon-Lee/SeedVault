@@ -37,7 +37,6 @@ Billboard::~Billboard()
 /// </summary>
 void Billboard::Start()
 {
-
 	ResourceObserver* _test = static_cast<ResourceObserver*>(this);
 
 	m_pRenderer = DLLEngine::GetEngine()->GetIRenderer();
@@ -55,6 +54,8 @@ void Billboard::Start()
 /// </summary>
 void Billboard::OnRender()
 {	
+	m_pCamera = Managers::GetInstance()->GetCameraManager()->GetNowCamera();
+
 	switch (m_RotationType)
 	{
 	case eRotationType::YAxis:
@@ -64,7 +65,7 @@ void Billboard::OnRender()
 		LookAtdRender();
 		break;
 	}
-
+	
 	switch (m_resourceType)
 	{
 	case eResourceType::eSingleImage:
@@ -76,8 +77,14 @@ void Billboard::OnRender()
 	case eResourceType::eSingleAni:
 		break;
 	default:
+		m_pRenderer->DrawBillboard(m_SpriteIndex_V[0], m_worldTM);
 		break;
 	}
+}
+
+void Billboard::OnUIRender()
+{
+	m_pRenderer->DrawBillboardUI();
 }
 
 /// <summary>

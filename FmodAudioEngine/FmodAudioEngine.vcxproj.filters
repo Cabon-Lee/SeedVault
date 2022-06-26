@@ -36,6 +36,15 @@
     <ClInclude Include="AudioDLLDefine.h">
       <Filter>DLL</Filter>
     </ClInclude>
+    <ClInclude Include="ISoundEvent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="FmodHelper.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioEngineDLL.h">
+      <Filter>DLL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioSystem.cpp">
@@ -48,6 +57,12 @@
       <Filter>PCH</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
+      <Filter>DLL</Filter>
+    </ClCompile>
+    <ClCompile Include="FmodHelper.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioEngineDLL.cpp">
       <Filter>DLL</Filter>
     </ClCompile>
   </ItemGroup>

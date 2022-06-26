@@ -4,7 +4,7 @@
 class StringHelper
 {
 public:
-	static wchar_t* StringToWchar(std::string str);		// Added by YoKing
+	static wchar_t* StringToWchar(std::string str);		// Added by √÷ ø‰ »Ø
 
 	static std::wstring StringToWide(std::string str);
 	static std::string WideToString(std::wstring str);

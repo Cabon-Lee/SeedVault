@@ -76,29 +76,29 @@ std::shared_ptr<IResourceManager> InterfaceManager::CreateResourceManager()
 	return _newPtr;
 }
 
-std::shared_ptr<IAudioSystem> InterfaceManager::CreateAudioSystem()
-{
-	IAudioSystem* pExecutive;
-	HRESULT hr;
-
-#ifdef _DEBUG
-	g_hExecutiveHandle = ::LoadLibrary(L"../../SeedVault/x64/Debug/FmodAudioEngine.dll");
-#else
-	g_hExecutiveHandle = ::LoadLibrary(L"../../SeedVault/x64/Release/FmodAudioEngine.dll");
-#endif
-
-	CREATE_INSTANCE_FUNC        pFunc;
-	pFunc = (CREATE_INSTANCE_FUNC)::GetProcAddress(g_hExecutiveHandle, "DllCreateInstance");
-
-	hr = pFunc((void**)&pExecutive);
-	if (hr != S_OK)
-	{
-		MessageBox(NULL, L"CreateExecutive() - Executive 积己 角菩", L"Error", MB_OK);
-		return FALSE;
-	}
-
-	std::shared_ptr<IAudioSystem> _newPtr(pExecutive);
-
-
-	return _newPtr;
-}
+//std::shared_ptr<IAudioSystem> InterfaceManager::CreateAudioSystem()
+//{
+//	IAudioSystem* pExecutive;
+//	HRESULT hr;
+//
+//#ifdef _DEBUG
+//	g_hExecutiveHandle = ::LoadLibrary(L"../../SeedVault/x64/Debug/FmodAudioEngine.dll");
+//#else
+//	g_hExecutiveHandle = ::LoadLibrary(L"../../SeedVault/x64/Release/FmodAudioEngine.dll");
+//#endif
+//
+//	CREATE_INSTANCE_FUNC        pFunc;
+//	pFunc = (CREATE_INSTANCE_FUNC)::GetProcAddress(g_hExecutiveHandle, "DllCreateInstance");
+//
+//	hr = pFunc((void**)&pExecutive);
+//	if (hr != S_OK)
+//	{
+//		MessageBox(NULL, L"CreateExecutive() - Executive 积己 角菩", L"Error", MB_OK);
+//		return FALSE;
+//	}
+//
+//	std::shared_ptr<IAudioSystem> _newPtr(pExecutive);
+//
+//
+//	return _newPtr;
+//}

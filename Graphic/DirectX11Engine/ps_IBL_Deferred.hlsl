@@ -1,4 +1,5 @@
 #include "PBRLibrary.hlsli"
+#include "Utility.hlsli"
 
 cbuffer cbMaterial : register(b0)
 {
@@ -35,7 +36,7 @@ struct VS_OUTPUT
     float3 outWorldPos : POSITION;
     float3 outNormal : NORMAL;
     float2 outTexCoord : TEXCOORD;
-    float3 outTangent : TANGENT;
+    float4 outTangent : TANGENT;
     float4 ShadowPosH[4] : TEXCOORD1;
 };
 
@@ -43,11 +44,11 @@ struct PS_GBUFFER_OUT
 {
     float4 Albedo : SV_TARGET0;
     float4 NormalMap : SV_TARGET1;
-    float4 Position : SV_TARGET2; // xyz 포지션 + depth
-    float4 Material : SV_TARGET3; // FresnelR0 + roughness 
-    float4 Ambient : SV_TARGET4; // Ambient + metallic + prefilter + irradiance
-    float4 Shadow : SV_TARGET5;
-    float4 Emissive : SV_TARGET6;
+    float4 NormalMapDepth : SV_TARGET2;
+    float4 Position : SV_TARGET3; // xyz 포지션 + depth
+    float4 Material : SV_TARGET4; // FresnelR0 + roughness 
+    float4 Ambient : SV_TARGET5; // Ambient + metallic + prefilter + irradiance
+    float4 Shadow : SV_TARGET6;
     uint4 ObjectID : SV_TARGET7;
 };
 
@@ -70,9 +71,26 @@ PS_GBUFFER_OUT main(VS_OUTPUT pin) : SV_Target
 {
     PS_GBUFFER_OUT deferredOut;
      
-    // 알베도 맵이 없으면 Material의 알베도 맵을 가져와서 그려준다
-    deferredOut.Albedo = objTexture.Sample(objSamplerState, pin.outTexCoord) * DiffuseAlbedo;
     
+    float4 _albedo = objTexture.Sample(objSamplerState, pin.outTexCoord) * DiffuseAlbedo;
+    float4 _emissive = objEmissvie.Sample(objSamplerState, pin.outTexCoord);
+    
+    if (isApproximatelyEqual(_emissive, 0.0))
+    {
+        _emissive = float4(0.0, 0.0, 0.0, 1.0);
+    }
+    else
+    {
+        // 이미시브맵
+        _emissive = (_emissive * _emissive) * (emissiveFactor * 100);
+    }
+    
+    uint4 _16albedo = f32tof16(_albedo);
+    uint4 _16emissive = f32tof16(_emissive);
+    _16albedo <<= 16;
+    deferredOut.Albedo = _16albedo | _16emissive;
+    
+   
     // metal-rough니까 메탈이 먼저
     float4 metalRoughMap = objMetalRough.Sample(objSamplerState, pin.outTexCoord);
     
@@ -108,7 +126,7 @@ PS_GBUFFER_OUT main(VS_OUTPUT pin) : SV_Target
     
         // 메탈릭으로부터 프레넬항을 구한다
         float3 viewDir = -normalize(EyePos.xyz - deferredOut.Position.xyz);
-        float3 F0 = lerp(float3(0.04, 0.04, 0.04), deferredOut.Albedo.xyz, nowMetalFactor);
+        float3 F0 = lerp(float3(0.04, 0.04, 0.04), _albedo.xyz, nowMetalFactor);
     
         // 러프니스를 통해 F항을 구한다
         float perceptualRoughness = SmoothnessToPerceptualRoughness(nowRoughnessFactor);
@@ -122,7 +140,7 @@ PS_GBUFFER_OUT main(VS_OUTPUT pin) : SV_Target
         // 프리필터 맵에서 반사된 스페큘러를 가져온다
         float3 R = reflect(viewDir, _posNormal);
     
-        float3 indirectDiffuse = irradianceColor * deferredOut.Albedo.xyz;
+        float3 indirectDiffuse = irradianceColor * _albedo.xyz;
         const float MAX_REFLECTION_LOD = 4.0;
         float3 prefilteredColor = preFilterMap.SampleLevel(objSamplerState, R, roughness * MAX_REFLECTION_LOD).rgb;
         float2 envBRDF = brdfLUT.Sample(objSamplerState, float2(max(dot(_posNormal, viewDir), 0.0), roughness)).rg;
@@ -131,24 +149,10 @@ PS_GBUFFER_OUT main(VS_OUTPUT pin) : SV_Target
     
         float3 ambient = (kD * indirectDiffuse + indirectSpecular);
     
-        deferredOut.Ambient.xyz = ambient;
+        deferredOut.Ambient.xyz = ambient * 0.1;
         deferredOut.Ambient.w = 1.0;
     }
     
-    
-    deferredOut.Emissive = objEmissvie.Sample(objSamplerState, pin.outTexCoord);
-    
-    if (length(deferredOut.Emissive.rgb) == 0.0)
-    {
-        deferredOut.Emissive = float4(0.0, 0.0, 0.0, 1.0);
-    }
-    else
-    {
-        // 이미시브맵
-        deferredOut.Emissive.x = (deferredOut.Emissive.x * deferredOut.Emissive.x) * (emissiveFactor * 100);
-        deferredOut.Emissive.y = (deferredOut.Emissive.y * deferredOut.Emissive.y) * (emissiveFactor * 100);
-        deferredOut.Emissive.z = (deferredOut.Emissive.z * deferredOut.Emissive.z) * (emissiveFactor * 100);
-    }
     
     float shadow = 0.0f;
     float4 shadowValue = 1.0f;

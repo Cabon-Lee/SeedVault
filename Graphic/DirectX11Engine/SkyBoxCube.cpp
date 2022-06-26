@@ -92,101 +92,6 @@ void SkyBoxCube::Initialize(Microsoft::WRL::ComPtr<ID3D11Device> pDevice)
 		_indices[index++] = i * 4 + 3;
 	}
 
-
-	/*
-	std::vector<Vertex::Vertex2D> _vertices =
-	{
-		{-1.0f, -1.0f, -1.0f, 0.375f, 1.0f},
-		{-1.0f, +1.0f, -1.0f, 0.625f, 1.0f},
-		{-1.0f, -1.0f, +1.0f, 0.375f, 0.75f},
-
-		{-1.0f, +1.0f, +1.0f, 0.625f, 0.75f},
-		{+1.0f, -1.0f, -1.0f, 0.375f, 0.25f},
-		{+1.0f, +1.0f, -1.0f, 0.625f, 0.25f},	// 5
-
-		{+1.0f, -1.0f, +1.0f, 0.375f, 0.5f},
-		{+1.0f, +1.0f, +1.0f, 0.625f, 0.6f},
-		{-1.0f, -1.0f, +1.0f, 0.375f, 0.75f},	// 8
-
-		{-1.0f, +1.0f, +1.0f, 0.625f, 0.75f},
-		{+1.0f, -1.0f, +1.0f, 0.375f, 0.5f},
-		{+1.0f, +1.0f, +1.0f, 0.625f, 0.5f},	// 11
-
-		{+1.0f, -1.0f, -1.0f, 0.375f, 0.25f},
-		{+1.0f, +1.0f, -1.0f, 0.625f, 0.25f},
-		{-1.0f, +1.0f, -1.0f, 0.625f, 0.0f},	// 14
-
-		{-1.0f, -1.0f, -1.0f, 0.375f, 0.0f},
-		{-1.0f, -1.0f, +1.0f, 0.125f, 0.5f},
-		{+1.0f, -1.0f, +1.0f, 0.375f, 0.5f},	// 17
-
-		{+1.0f, -1.0f, -1.0f, 0.375f, 0.25f},
-		{-1.0f, -1.0f, -1.0f, 0.125f, 0.25f},
-		{+1.0f, +1.0f, +1.0f, 0.625f, 0.5f},	// 20
-
-
-		{-1.0f, +1.0f, +1.0f, 0.875f, 0.5f},
-		{-1.0f, +1.0f, -1.0f, 0.875f, 0.25f},
-		{+1.0f, +1.0f, -1.0f, 0.625f, 0.25f},	// 23
-	};
-	*/
-
-	/*
-	std::vector<Vertex::Vertex2D> _vertices =
-	{
-
-	{-1.0f, -1.0f, -1.0f, 0.0f, 1.0f},
-	{-1.0f, +1.0f, -1.0f, 0.0f, 0.0f},
-	{+1.0f, +1.0f, -1.0f, 1.0f, 0.0f},
-	{+1.0f, -1.0f, -1.0f, 1.0f, 1.0f},
-
-	 {-1.0f, -1.0f, +1.0f, 1.0f, 1.0f},
-	 {+1.0f, -1.0f, +1.0f, 0.0f, 1.0f},
-	 {+1.0f, +1.0f, +1.0f, 0.0f, 0.0f},
-	 {-1.0f, +1.0f, +1.0f, 1.0f, 0.0f},
-
-
-	 {-1.0f, +1.0f, -1.0f, 0.0f, 1.0f},
-	 {-1.0f, +1.0f, +1.0f, 0.0f, 0.0f},
-	 {+1.0f, +1.0f, +1.0f, 1.0f, 0.0f},
-	 {+1.0f, +1.0f, -1.0f, 1.0f, 1.0f},
-
-
-	{-1.0f, -1.0f, -1.0f, 1.0f, 1.0f},
-	{+1.0f, -1.0f, -1.0f, 0.0f, 1.0f},
-	{+1.0f, -1.0f, +1.0f, 0.0f, 0.0f},
-	{-1.0f, -1.0f, +1.0f, 1.0f, 0.0f},
-
-	{-1.0f, -1.0f, +1.0f, 0.0f, 1.0f},
-	{-1.0f, +1.0f, +1.0f, 0.0f, 0.0f},
-	{-1.0f, +1.0f, -1.0f, 1.0f, 0.0f},
-	{-1.0f, -1.0f, -1.0f, 1.0f, 1.0f},
-
-	{+1.0f, -1.0f, -1.0f, 0.0f, 1.0f},
-	{+1.0f, +1.0f, -1.0f, 0.0f, 0.0f},
-	{+1.0f, +1.0f, +1.0f, 1.0f, 0.0f},
-	{+1.0f, -1.0f, +1.0f, 1.0f, 1.0f},
-	};
-	*/
-
-	/*
-	std::vector<UINT> _indices =
-	{
-		 0,  1,  3,
-		 3,  2,  0,
-		 8,  9,  7,
-		 7,  6,  8,
-		10, 11,  5,
-		 5,  4, 10,
-		12, 13, 14,
-		14, 15, 12,
-		16, 17, 18,
-		18, 19, 16,
-		20, 21, 22,
-		22, 23, 20,
-	};
-	*/
-
 	ID3D11Buffer* _vb;
 	ID3D11Buffer* _ib;
 
@@ -222,8 +127,6 @@ void SkyBoxCube::Initialize(Microsoft::WRL::ComPtr<ID3D11Device> pDevice)
 void SkyBoxCube::DrawSkyBox(Microsoft::WRL::ComPtr <ID3D11DeviceContext> pDeviceContext, Microsoft::WRL::ComPtr <ID3D11ShaderResourceView> pSkyImage, const DirectX::XMFLOAT3& eyePos, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj, std::shared_ptr<VertexShader> pVertexShader, std::shared_ptr<PixelShader> pPixelShader)
 {
 	pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//pDeviceContext->RSSetState(RasterizerState::GetNoCullingRS());							// 이 두개는 문제의 소지가 있음, HLSL에서 설정해야 할 수도
-	//pDeviceContext->OMSetDepthStencilState(RasterizerState::GetComparisonLessEqual(), 1);	// 이 두개는 문제의 소지가 있음, HLSL에서 설정해야 할 수도
 
 	ConstantBufferManager::GetWVPMatrix()->data.wvpMatrix =
 		DirectX::SimpleMath::Matrix::Identity * view * proj;

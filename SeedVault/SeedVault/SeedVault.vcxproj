@@ -123,7 +123,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\GameEngine\;$(SolutionDir)..\GameEngine\JsonSerializer;$(SolutionDir)..\GameEngine\GameEngine;$(SolutionDir)..\GameEngine\ComponentEngine;$(SolutionDir)..\GameEngine\IdSystem;$(SolutionDir)..\SubSystem\Includes;$(SolutionDir)..\GameEngine\Includes;$(SolutionDir)..\GameEngine\PhysX\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\GameEngine\;$(SolutionDir)..\GameEngine\JsonSerializer;$(SolutionDir)..\GameEngine\GameEngine;$(SolutionDir)..\GameEngine\ComponentEngine;$(SolutionDir)..\GameEngine\IdSystem;$(SolutionDir)..\SubSystem\Includes;$(SolutionDir)..\GameEngine\Includes;$(SolutionDir)..\FmodAudioEngine;$(SolutionDir)..\GameEngine\PhysX\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DisableSpecificWarnings>4005</DisableSpecificWarnings>
@@ -148,7 +148,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\GameEngine\;$(SolutionDir)..\GameEngine\JsonSerializer;$(SolutionDir)..\GameEngine\GameEngine;$(SolutionDir)..\GameEngine\ComponentEngine;$(SolutionDir)..\GameEngine\IdSystem;$(SolutionDir)..\SubSystem\Includes;$(SolutionDir)..\GameEngine\Includes;$(SolutionDir)..\GameEngine\PhysX\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\GameEngine\;$(SolutionDir)..\GameEngine\JsonSerializer;$(SolutionDir)..\GameEngine\GameEngine;$(SolutionDir)..\GameEngine\ComponentEngine;$(SolutionDir)..\GameEngine\IdSystem;$(SolutionDir)..\SubSystem\Includes;$(SolutionDir)..\GameEngine\Includes;$(SolutionDir)..\FmodAudioEngine;$(SolutionDir)..\GameEngine\PhysX\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4005</DisableSpecificWarnings>
     </ClCompile>
@@ -175,10 +175,17 @@
     <ClInclude Include="..\..\GameEngine\JsonSerializer\json\writer.h" />
     <ClInclude Include="Alcohol.h" />
     <ClInclude Include="Ammo.h" />
+    <ClInclude Include="AnimationState.h" />
+    <ClInclude Include="AudioPercentageDefine.h" />
     <ClInclude Include="BehaviorTree_Base.h" />
     <ClInclude Include="CameraBehavior.h" />
     <ClInclude Include="CameraController.h" />
+    <ClInclude Include="CLStartScene.h" />
+    <ClInclude Include="DialogueManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="EquipmentController.h" />
+    <ClInclude Include="Gun.h" />
     <ClInclude Include="ObjectBuilder.h" />
     <ClInclude Include="CLAnimation.h" />
     <ClInclude Include="CLInput.h" />
@@ -204,6 +211,9 @@
     <ClInclude Include="ItemBuilder.h" />
     <ClInclude Include="JsonLoader_CL.h" />
     <ClInclude Include="OrbitCamera.h" />
+    <ClInclude Include="Partner_AI.h" />
+    <ClInclude Include="Partner_Move.h" />
+    <ClInclude Include="PauseUIManager.h" />
     <ClInclude Include="ResourcesPathDef.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ModelController.h" />
@@ -217,7 +227,9 @@
     <ClInclude Include="CLTestSceneYH.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="IngameUIManager.h" />
+    <ClInclude Include="UtilityFunction.h" />
+    <ClInclude Include="Zombie_Clicker_Move.h" />
     <ClInclude Include="Zombie_Runner_AI.h" />
     <ClInclude Include="Zombie_Runner_Move.h" />
   </ItemGroup>
@@ -229,9 +241,14 @@
     <ClCompile Include="..\..\GameEngine\JsonSerializer\json\json_writer.cpp" />
     <ClCompile Include="Alcohol.cpp" />
     <ClCompile Include="Ammo.cpp" />
+    <ClCompile Include="AnimationState.cpp" />
     <ClCompile Include="BehaviorTree_Base.cpp" />
     <ClCompile Include="CameraBehavior.cpp" />
     <ClCompile Include="CameraController.cpp" />
+    <ClCompile Include="CLStartScene.cpp" />
+    <ClCompile Include="DialogueManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="EquipmentController.cpp" />
     <ClCompile Include="ObjectBuilder.cpp" />
     <ClCompile Include="CLAnimation.cpp" />
@@ -262,6 +279,9 @@
     <ClCompile Include="JsonLoader_CL.cpp" />
     <ClCompile Include="ModelController.cpp" />
     <ClCompile Include="OrbitCamera.cpp" />
+    <ClCompile Include="Partner_AI.cpp" />
+    <ClCompile Include="Partner_Move.cpp" />
+    <ClCompile Include="PauseUIManager.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -274,7 +294,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Flask.cpp" />
-    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="IngameUIManager.cpp" />
+    <ClCompile Include="Zombie_Clicker_Move.cpp" />
     <ClCompile Include="Zombie_Runner_AI.cpp" />
     <ClCompile Include="Zombie_Runner_Move.cpp" />
   </ItemGroup>

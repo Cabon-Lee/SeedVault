@@ -31,6 +31,8 @@ Texture2D textureAmbient : TEXTURE : register(t4);
 Texture2D textureShadow : TEXTURE : register(t5);
 Texture2D textrueEmissive : TEXTURE : register(t6);
 Texture2D textureLight : TEXTURE : register(t7);
+Texture2D SSAOMap : TEXTURE : register(t8);
+
 
 SamplerState pointSampler : SAMPLER : register(s0);
 SamplerState objSamplerState : SAMPLER : register(s1);
@@ -137,6 +139,6 @@ float4 main(VS_OUTPUT pin) : SV_Target
     }
     
     float4 _finColor = float4(calcAmbient.xyz + result + emissive.xyz, 1.0);
-    
+        
     return _finColor;
 }

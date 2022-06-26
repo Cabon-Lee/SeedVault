@@ -51,7 +51,7 @@ void Transform::SetRotation(const DirectX::SimpleMath::Quaternion& rot)
 {
 	m_Rotation = rot;
 
-	// Modified by YoKing
+	// Modified by 최 요 환
 	// SetRotation() 좀 써보자!!
 	// 파라미터로 받은 쿼터니언(rot)로 m_RotationTM 을 수정
 	m_RotationTM = DirectX::SimpleMath::Matrix::CreateFromQuaternion(m_Rotation);
@@ -59,24 +59,24 @@ void Transform::SetRotation(const DirectX::SimpleMath::Quaternion& rot)
 	m_EulerAngles = QuaternionToEuler(m_Rotation);   // 쿼터니언 값을 오일러로 변환해서 저장(버그 있음..)
 }
 
-// Added by YoKing
+// Added by 최 요 환
 _DLL void Transform::SetRotationFromVec(const DirectX::SimpleMath::Vector2& rot)
 {
 	// 각 축기준(World 기준)으로 세팅한다
 
-	// Added By YoKing
+	// Added By 최 요 환
 	m_EulerAngles.x = rot.x;
 	m_EulerAngles.y = rot.y;
 
 	SetRotationFromVec(m_EulerAngles);
 }
 
-// Added by YoKing
+// Added by 최 요 환
 _DLL void Transform::SetRotationFromVec(const DirectX::SimpleMath::Vector3& rot)
 {
 	// 각 축기준(World 기준)으로 세팅한다
 
-	// Added By YoKing
+	// Added By 최 요 환
 	m_EulerAngles = rot;
 	m_EulerAngles = NormalizeAngles(m_EulerAngles);	// 0 ~ 360 사이로 제한
 
@@ -158,7 +158,7 @@ _DLL void Transform::MoveSide(float val)
 }
 
 // 회전하기 위한 함수들
-// Modified by YoKing
+// Modified by 최 요 환
 _DLL void Transform::RotateY(float val)
 {
 	//(구)
@@ -166,7 +166,7 @@ _DLL void Transform::RotateY(float val)
 	//m_RotationTM *= _rotTM;                                     // 회전 시켜줌
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// Modified by YoKing
+	// Modified by 최 요 환
 	m_EulerAngles.y += val;
 
 	// Degree -> Radian
@@ -189,7 +189,7 @@ _DLL void Transform::Pitch(float val)
 	//m_RotationTM *= _rotTM;                                        // 회전 시켜줌
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// Modified By YoKing
+	// Modified By 최 요 환
 	m_EulerAngles.x += val;
 
 	// Degree -> Radian
@@ -241,7 +241,7 @@ void Transform::Update(float dTime)
 
 	m_Rotation = DirectX::SimpleMath::Quaternion::CreateFromRotationMatrix(m_RotationTM); // 회전행렬로 현재 회전값 구함
 
-	// Added By YoKing
+	// Added By 최 요 환
 	//m_EulerAngles = QuaternionToEuler(m_Rotation);   // 쿼터니언 값을 오일러로 변환해서 저장
 
 	m_LocalTM =
@@ -284,7 +284,7 @@ void Transform::SetParentTM(Transform* val)
 
 void Transform::SetParentTM(GameObject* val)
 {
-	// Modified by YoKing
+	// Modified by 최 요 환
 	Transform* _parentTF = val->GetComponent<Transform>();
 
 	/// 자식이 자신의 부모를 설정할 때 부모도 해당 자식을 자신의 자식으로 추가해야 함. 

@@ -8,7 +8,7 @@
 #include "StopWatch.h"
 #include <DirectXMath.h>
 #include "CATrace.h"
- 
+
 #include "BinarySerializer.h"
 
 #define FBXSDK_SHARED
@@ -316,11 +316,11 @@ void JMFBXParser::ProcessMesh(fbxsdk::FbxNode* node)
 {
 	// 새로운 매쉬(m_pMesh) 생성
 	m_pMesh = std::make_shared<JMParserData::Mesh>();
-	
+
 	++indexDebug;
 
 	m_pFBXModel->pMesh_V.push_back(m_pMesh);
-	
+
 	// 몇번째 인덱스인지 
 	m_pMesh->meshIndex = m_pFBXModel->pMesh_V.size() - 1;
 
@@ -360,7 +360,7 @@ void JMFBXParser::ProcessMesh(fbxsdk::FbxNode* node)
 	// Node TRS 설정, Mesh만 있기 때문에 두번째 인자는 null만 넘겨준다
 	SetTransform(node, nullptr);
 
-	
+
 
 	std::vector<BoneWeights> boneWeights;
 	if (m_HasSkeleton == true)
@@ -397,13 +397,20 @@ void JMFBXParser::ProcessMesh(fbxsdk::FbxNode* node)
 		MakeTangentSpace(m_pFBXmesh, i);
 	}
 
+	for (int i = 0; i < m_pMesh->meshFace_V.size(); i++)
+	{
+		MakeBinormal(i);
+	}
+
+	
+
 	/// 버텍스 스플릿후 인덱스 정보 저장
 	//?? 인덱스는 동일하게 주니까 안줘도 되나??
 	unsigned int _optVertexCount = 0;
 
 	// 버텍스 스플릿 후 인덱스 설정
 	m_pMesh->pOptIndex = new JMParserData::IndexList[m_pMesh->meshFace_V.size() * 3];
-	
+
 	for (unsigned int i = 0; i < m_pMesh->meshFace_V.size(); i++)
 	{
 		JMParserData::Face* _nowFace = m_pMesh->meshFace_V[i];
@@ -526,7 +533,7 @@ DirectX::SimpleMath::Matrix JMFBXParser::GetLocalTransformFromCurrentTake(FbxNod
 			_result *= XMMatrixRotationQuaternion(q);
 		}
 	}
-	
+
 
 
 #else
@@ -1418,6 +1425,7 @@ JMParserData::Float3 JMFBXParser::RadeBinormal(const FbxMesh* mesh, int controlP
 }
 
 
+
 DirectX::SimpleMath::Vector3 Float3ToVector3(JMParserData::Float3& val)
 {
 	DirectX::SimpleMath::Vector3 _result;
@@ -1453,6 +1461,7 @@ void JMFBXParser::MakeTangentSpace(const FbxMesh* mesh, int polygonIndex)
 		_nowVertexIndex[i] = m_pMesh->meshFace_V[polygonIndex]->vertexIndex_A[i];
 	}
 
+	/*
 	// split하기 전 모든 메쉬들의 버텍스가 채워져있다는 전제 하에
 	auto _nowVertexPos0 = Float3ToVector3(m_pMesh->optVertex_V[_nowVertexIndex[0]]->pos);
 	auto _nowVertexPos1 = Float3ToVector3(m_pMesh->optVertex_V[_nowVertexIndex[1]]->pos);
@@ -1475,18 +1484,125 @@ void JMFBXParser::MakeTangentSpace(const FbxMesh* mesh, int polygonIndex)
 	// 역함수를 구해서 TBN을 구한다. 정확히는 T만 있으면 됨
 	float _inverseScalar = 1.0f / (_X1 * _Y2 - _X2 * _Y1);
 	DirectX::SimpleMath::Vector3 _tangent = (_edge1 * _Y2 - _edge2 * _Y1) * _inverseScalar;
-	DirectX::SimpleMath::Vector3 _result;
-	_tangent.Normalize(_result);
+	DirectX::SimpleMath::Vector3 _bitangent = (_edge1 * _X2 - _edge2 * _X1) * _inverseScalar;
+	DirectX::SimpleMath::Vector3 _tagnetResult;
+	DirectX::SimpleMath::Vector3 _bitagentResult;
+	_tangent.Normalize(_tagnetResult);
+	_bitangent.Normalize(_bitagentResult);
 
-	auto _prevTanget0 =	Float3ToVector3(m_pMesh->optVertex_V[_nowVertexIndex[0]]->tangent);
-	auto _prevTanget1 =	Float3ToVector3(m_pMesh->optVertex_V[_nowVertexIndex[1]]->tangent);
-	auto _prevTanget2 =	Float3ToVector3(m_pMesh->optVertex_V[_nowVertexIndex[2]]->tangent);
+		auto _normalCrossTargent = [this, _tagnetResult, _bitagentResult, _nowVertexIndex](unsigned int idx)
+	{
+		DirectX::SimpleMath::Vector3 _normal = Float3ToVector3(m_pMesh->optVertex_V[_nowVertexIndex[idx]]->normal);
+		DirectX::SimpleMath::Vector3 _biTan;
+		_biTan = _normal.Cross(_tagnetResult);
+		return (_biTan.Dot(_bitagentResult) < 0.0f ? -1.0f : 1.0f);
+	};
 
-	_prevTanget0 += _result;	_prevTanget1 += _result;	_prevTanget2 += _result;
+	float _wFactor[3];
+	auto _combineTangetData = [this, _tagnetResult, _nowVertexIndex, &_wFactor](unsigned int idx)
+	{
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.x = m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.x + _tagnetResult.x;
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.y = m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.y + _tagnetResult.y;
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.z = m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.z + _tagnetResult.z;
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.w = _wFactor[idx];
+	};
 
-	m_pMesh->optVertex_V[_nowVertexIndex[0]]->tangent = Vector3ToFloat3(_prevTanget0);
-	m_pMesh->optVertex_V[_nowVertexIndex[1]]->tangent = Vector3ToFloat3(_prevTanget1);
-	m_pMesh->optVertex_V[_nowVertexIndex[2]]->tangent = Vector3ToFloat3(_prevTanget2);
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		_wFactor[i] = _normalCrossTargent(i);
+		_combineTangetData(i);
+	}
+
+	*/
+
+	// split하기 전 모든 메쉬들의 버텍스가 채워져있다는 전제 하에
+	auto v1 = Float3ToVector3(m_pMesh->optVertex_V[_nowVertexIndex[0]]->pos);
+	auto v2 = Float3ToVector3(m_pMesh->optVertex_V[_nowVertexIndex[1]]->pos);
+	auto v3 = Float3ToVector3(m_pMesh->optVertex_V[_nowVertexIndex[2]]->pos);
+
+	// Vertex와 메쉬 데이터가 분리되어있고, meshFace에 대한 정보가 모두 차있다는 전제 하에
+	auto w1 = Vector2(m_pMesh->optVertex_V[_nowVertexIndex[0]]->u, m_pMesh->optVertex_V[_nowVertexIndex[0]]->v);
+	auto w2 = Vector2(m_pMesh->optVertex_V[_nowVertexIndex[1]]->u, m_pMesh->optVertex_V[_nowVertexIndex[1]]->v);
+	auto w3 = Vector2(m_pMesh->optVertex_V[_nowVertexIndex[2]]->u, m_pMesh->optVertex_V[_nowVertexIndex[2]]->v);
+
+
+	float x1 = v2.x - v1.x;
+	float x2 = v3.x - v1.x;
+	float y1 = v2.y - v1.y;
+	float y2 = v3.y - v1.y;
+	float z1 = v2.z - v1.z;
+	float z2 = v3.z - v1.z;
+
+	float s1 = w2.x - w1.x;
+	float s2 = w3.x - w1.x;
+	float t1 = w2.y - w1.y;
+	float t2 = w3.y - w1.y;
+
+	float r = 1.0F / (s1 * t2 - s2 * t1);
+	Vector3 sdir((t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r, (t2 * z1 - t1 * z2) * r);
+	Vector3 tdir((s1 * x2 - s2 * x1) * r, (s1 * y2 - s2 * y1) * r, (s1 * z2 - s2 * z1) * r);
+
+
+	auto _tangentBitangent = [this, sdir, tdir, _nowVertexIndex](unsigned int idx)
+	{
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.x += sdir.x;
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.y += sdir.y;
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.z += sdir.z;
+
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->binormal.x += tdir.x;
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->binormal.y += tdir.y;
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->binormal.z += tdir.z;
+	};
+
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		_tangentBitangent(i);
+	}
+
+}
+
+void JMFBXParser::MakeBinormal(int polygonIndex)
+{
+
+	unsigned int _nowVertexIndex[3];
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		_nowVertexIndex[i] = m_pMesh->meshFace_V[polygonIndex]->vertexIndex_A[i];
+	}
+
+	auto _normalCrossTargent = [this, _nowVertexIndex](unsigned int idx)
+	{
+		DirectX::SimpleMath::Vector3 _tangent;
+		_tangent.x = m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.x;
+		_tangent.y = m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.y;
+		_tangent.z = m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.z;
+
+		DirectX::SimpleMath::Vector3 _normal = Float3ToVector3(m_pMesh->optVertex_V[_nowVertexIndex[idx]]->normal);
+		_tangent = _tangent - _normal * _normal.Dot(_tangent);
+		_tangent.Normalize();
+
+		DirectX::SimpleMath::Vector3 _bitangent = Float3ToVector3(m_pMesh->optVertex_V[_nowVertexIndex[idx]]->binormal);
+		DirectX::SimpleMath::Vector3 _tempBi;
+		_tempBi = _normal.Cross(_tangent);
+
+		float _wFactor = 0.0f;
+		if (_tempBi.Dot(_bitangent) < 0.0f)
+			_wFactor = -1.0f;
+		else
+			_wFactor = 1.0f;
+
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.x = _tangent.x;
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.y = _tangent.y;
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.z = _tangent.z;
+		m_pMesh->optVertex_V[_nowVertexIndex[idx]]->tangent.w = _wFactor;
+	};
+
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		_normalCrossTargent(i);
+	}
+
+
 }
 
 #pragma endregion
@@ -1750,7 +1866,7 @@ void JMFBXParser::SplitMesh2()
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
-	
+
 	bool _createNew = false;
 	size_t _vSplitCount = 0;							// 나눠진 버텍스의 개수
 	//size_t _nowVCount = (int)m_pMesh->meshVertex_V.size();	// <- //size_t _nowVertexCount = m_pMesh->meshVertex_V.size();
@@ -1807,15 +1923,15 @@ void JMFBXParser::SplitMesh2()
 
 						// 새로 추가한 Vertex와 동일한 데이터를 갖고있는 Face 내의 Vertex Index 수정..
 						if (_checkVertex->index != _nowIndex)
-						{ 
-							continue; 
+						{
+							continue;
 						}
 
-						if (JMParserData::Float3Func(_checkVertex->normal) != _nowNormal) 
-						{ 
-							continue; 
+						if (JMParserData::Float3Func(_checkVertex->normal) != _nowNormal)
+						{
+							continue;
 						}
-						
+
 						if (JMParserData::Float2Func(_checkVertex->u, _checkVertex->v) == _nowUV)
 						{
 							_nowFace->vertexIndex_A[j] = (int)k;
@@ -1854,7 +1970,7 @@ void JMFBXParser::SplitMesh2()
 				m_pMesh->optVertex_V.push_back(_newVertex);
 				_nowFace->vertexIndex_A[j] = (int)_vCount + _vSplitCount;
 				_vSplitCount++;
-				_createNew = false;				
+				_createNew = false;
 			}
 		}
 	}
@@ -2030,14 +2146,14 @@ void JMFBXParser::SetTransform(fbxsdk::FbxNode* node, JMParserData::Bone* bone)
 	{
 		if (bone->pParentBone == nullptr)
 		{
-			
+
 		}
 		break;
 	}
 
 #endif 
 
-	
+
 	case FbxNodeAttribute::eMesh:
 	{
 		if (m_pMesh->pNodeParentMesh == nullptr)
@@ -2081,7 +2197,7 @@ void JMFBXParser::SetTransform(fbxsdk::FbxNode* node, JMParserData::Bone* bone)
 		m_pMesh->tmRow1 = DirectX::SimpleMath::Vector3(r2);
 		m_pMesh->tmRow2 = DirectX::SimpleMath::Vector3(r3);
 		m_pMesh->tmRow3 = DirectX::SimpleMath::Vector3(r4);
-		
+
 		if (m_pMesh->isParentExist == true)
 		{
 			m_pMesh->worldTM = DirectX::SimpleMath::Matrix();

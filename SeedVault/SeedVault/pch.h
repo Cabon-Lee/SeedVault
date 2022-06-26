@@ -70,10 +70,14 @@ using namespace physx;
 #include "Text.h"
 #include "Billboard.h"
 #include "Sprite2D.h"
-#include "Sprite2DBundle.h"
 #include "button.h"
+#include "CSVLoader.h"
 
 #include "TransformAnimation.h"
+
+#include "Audio.h"
+#include "AudioListener.h"
+#include "SoundEvent.h"
 
 
 // Render
@@ -106,8 +110,10 @@ using ulong = unsigned long;
 #include "CLInput.h"
 #include "Settings.h"
 #include "ResourcesPathDef.h"
-#include "UIManager.h"
+#include "IngameUIManager.h"
+#include "PauseUIManager.h"
 
+#include "UtilityFunction.h"
 #pragma endregion Client
 //////////////////////////////
 

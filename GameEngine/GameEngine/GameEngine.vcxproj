@@ -141,7 +141,7 @@ copy "$(solutiondir)GameEngine\Navigation.h" "..\..\Library\Headers"</Command>
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(ProjectDir)..\..\GameEngine\DXTK\Inc;$(ProjectDir)..\Imgui;$(ProjectDir)..\ComponentEngine;$(SolutionDir)..\GameEngine\IdSystem;$(ProjectDir)..\;$(SolutionDir)..\Graphic\DirectX11Engine;$(SolutionDir)..\Graphic\Includes\FBXsdk;$(SolutionDir)..\Graphic\Includes;$(ProjectDir)..\..\SubSystem\Includes;$(ProjectDir)..\..\ResourceManager\Includes;$(ProjectDir)..\PhysX\include;$(ProjectDir)..\JsonSerializer;$(SolutionDir)..\GameEngine\Includes;%(AdditionalIncludeDirectories);$(ProjectDir)..\..\FmodAudioEngine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(ProjectDir)..\..\GameEngine\DXTK\Inc;$(ProjectDir)..\Imgui;$(ProjectDir)..\ComponentEngine;$(SolutionDir)..\GameEngine\IdSystem;$(ProjectDir)..\;$(SolutionDir)..\Graphic\DirectX11Engine;$(SolutionDir)..\Graphic\Includes\FBXsdk;$(SolutionDir)..\Graphic\Includes;$(ProjectDir)..\..\SubSystem\Includes;$(ProjectDir)..\..\ResourceManager\Includes;$(ProjectDir)..\PhysX\include;$(ProjectDir)..\JsonSerializer;$(SolutionDir)..\GameEngine\Includes;%(AdditionalIncludeDirectories);$(ProjectDir)..\..\FmodAudioEngine;$(ProjectDir)..\..\FmodAudioEngine\Include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4244;4018;4267;26451;26812;4305;4514;4820;4127;4710;4711;4577;4996;26495;4005;33010</DisableSpecificWarnings>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalOptions>/Ylsymbol %(AdditionalOptions)</AdditionalOptions>
@@ -153,7 +153,7 @@ copy "$(solutiondir)GameEngine\Navigation.h" "..\..\Library\Headers"</Command>
       </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)..\DXTK\Lib;$(ProjectDir)..\..\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DirectXTKd_x64.lib;libfbxsdkd_x64.lib;PhysX_64_Debug.lib;PhysXCommon_64_Debug.lib;PhysXFoundation_64_Debug.lib;PhysXCharacterKinematic_static_64_Debug.lib;PhysXCooking_64_Debug.lib;PhysXExtensions_static_64_Debug.lib;PhysXPvdSDK_static_64_Debug.lib;PhysXVehicle_static_64_Debug.lib;SubSystem_Debug.lib;%(AdditionalDependencies);IdSystem.lib</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTKd_x64.lib;libfbxsdkd_x64.lib;PhysX_64_Debug.lib;PhysXCommon_64_Debug.lib;PhysXFoundation_64_Debug.lib;PhysXCharacterKinematic_static_64_Debug.lib;PhysXCooking_64_Debug.lib;PhysXExtensions_static_64_Debug.lib;PhysXPvdSDK_static_64_Debug.lib;PhysXVehicle_static_64_Debug.lib;SubSystem_Debug.lib;%(AdditionalDependencies);IdSystem.lib;FmodAudioEngine_Debug.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OutputPath)*.dll" "..\..\Lib"
@@ -211,7 +211,7 @@ copy "$(OutputPath)*.lib" "..\..\Lib"</Command>
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\GameEngine\IdSystem;$(ProjectDir)..\DXTK\Inc;$(ProjectDir)..\Imgui;$(ProjectDir)..\ComponentEngine;$(ProjectDir)..\;$(SolutionDir)..\Graphic\DirectX11Engine;$(SolutionDir)..\Graphic\Includes\FBXsdk;$(SolutionDir)..\Graphic\Includes;$(ProjectDir)..\..\SubSystem\Includes;$(ProjectDir)..\..\ResourceManager\Includes;$(ProjectDir)..\PhysX\include;$(ProjectDir)..\JsonSerializer;$(SolutionDir)..\GameEngine\Includes;%(AdditionalIncludeDirectories);$(ProjectDir)..\..\FmodAudioEngine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\GameEngine\IdSystem;$(ProjectDir)..\DXTK\Inc;$(ProjectDir)..\Imgui;$(ProjectDir)..\ComponentEngine;$(ProjectDir)..\;$(SolutionDir)..\Graphic\DirectX11Engine;$(SolutionDir)..\Graphic\Includes\FBXsdk;$(SolutionDir)..\Graphic\Includes;$(ProjectDir)..\..\SubSystem\Includes;$(ProjectDir)..\..\ResourceManager\Includes;$(ProjectDir)..\PhysX\include;$(ProjectDir)..\JsonSerializer;$(SolutionDir)..\GameEngine\Includes;%(AdditionalIncludeDirectories);$(ProjectDir)..\..\FmodAudioEngine;$(ProjectDir)..\..\FmodAudioEngine\Include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -226,7 +226,7 @@ copy "$(OutputPath)*.lib" "..\..\Lib"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)..\DXTK\Lib;$(ProjectDir)..\..\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DirectXTKr_x64.lib;libfbxsdk.lib;IdSystem.lib;PhysX_64_Release.lib;PhysXCommon_64_Release.lib;PhysXFoundation_64_Release.lib;PhysXCharacterKinematic_static_64_Release.lib;PhysXCooking_64_Release.lib;PhysXExtensions_static_64_Release.lib;PhysXPvdSDK_static_64_Release.lib;PhysXVehicle_static_64_Release.lib;SubSystem_Release.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTKr_x64.lib;libfbxsdk.lib;IdSystem.lib;PhysX_64_Release.lib;PhysXCommon_64_Release.lib;PhysXFoundation_64_Release.lib;PhysXCharacterKinematic_static_64_Release.lib;PhysXCooking_64_Release.lib;PhysXExtensions_static_64_Release.lib;PhysXPvdSDK_static_64_Release.lib;PhysXVehicle_static_64_Release.lib;SubSystem_Release.lib;FmodAudioEngine_Release.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OutputPath)*.dll" "..\..\Lib"
@@ -268,6 +268,7 @@ copy "$(OutputPath)*.lib" "..\..\Lib"</Command>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="Audio.h" />
+    <ClInclude Include="AudioListener.h" />
     <ClInclude Include="BaseEventCallBack.h" />
     <ClInclude Include="Billboard.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -317,10 +318,10 @@ copy "$(OutputPath)*.lib" "..\..\Lib"</Command>
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="CSVLoader.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SkinningAnimation.h" />
     <ClInclude Include="Sprite2D.h" />
-    <ClInclude Include="Sprite2DBundle.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h">
@@ -342,6 +343,7 @@ copy "$(OutputPath)*.lib" "..\..\Lib"</Command>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationSystem.cpp" />
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="AudioListener.cpp" />
     <ClCompile Include="BaseEventCallBack.cpp" />
     <ClCompile Include="Billboard.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -395,9 +397,9 @@ copy "$(OutputPath)*.lib" "..\..\Lib"</Command>
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneBase.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="CSVLoader.cpp" />
     <ClCompile Include="SkinningAnimation.cpp" />
     <ClCompile Include="Sprite2D.cpp" />
-    <ClCompile Include="Sprite2DBundle.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp">

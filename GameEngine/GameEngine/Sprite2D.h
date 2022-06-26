@@ -14,7 +14,6 @@ class PlaneAnimation;
 class Transform;
 struct SpriteRender_Save;
 
-
 /// <summary>
 /// 스프라이트 컴포넌트 
 /// 
@@ -35,7 +34,7 @@ public:
 
 	_DLL void SetProportion(float x, float y);
 	_DLL void SetPivot(float pivotX, float pivotY);
-	_DLL void SetUIAxis(UIAxis uiAxis);
+	_DLL void SetUIAxis(eUIAxis uiAxis);
 
 	_DLL void SetspriteIndex(unsigned int index);
 
@@ -54,7 +53,7 @@ private:
 	unsigned int m_NowSpriteIndex = 0;
 
 	eResourceType m_resourceType;				// 스프라이트의 이미지 타입(단일이미지, 애니메이션 낱장, 애니메이션 여러장 )
-	UIAxis m_UIAxis;
+	eUIAxis m_UIAxis;
 
 	float m_width;
 	float m_height;

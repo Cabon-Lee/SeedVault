@@ -48,7 +48,7 @@ private:
 public:
 	std::vector<GameObject*>& FindGameObjectVByTag(std::string tag);
 	void AddToTagManager(const std::string& newTag, GameObject* object);
-
+	const std::string& GetTagList(unsigned int index);
 	
 	friend class GameObject;
 };

@@ -8,7 +8,7 @@
 /// 
 /// Scene(Map)별로 1개씩 존재해야 함.
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// </summary>
 
 class NavMesh

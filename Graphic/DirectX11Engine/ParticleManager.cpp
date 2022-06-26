@@ -234,8 +234,6 @@ unsigned int ParticleManager::AddParticle(
 	_nowParticle->particleCore.size = *particle->Particlesize;
 	_nowParticle->pTexture = pTexture;
 
-	//_nowParticle->particleProperty->birthTime *= 0.01f;
-
 	m_ActiveParticle_Q.push(_nowParticle);
 
 	_nowParticle->index = m_ParticleCount;
@@ -413,5 +411,16 @@ void ParticleManager::DrawParticle(
 	pDeviceContext->VSSetShader(nullptr, nullptr, 0);
 	pDeviceContext->GSSetShader(nullptr, nullptr, 0);
 	pDeviceContext->PSSetShader(nullptr, nullptr, 0);
+}
+
+void ParticleManager::ResetParticle()
+{
+	if (m_RenderParticle_Q.empty() != true)
+	{
+		while (m_RenderParticle_Q.empty() == false)
+		{
+			m_RenderParticle_Q.front();
+		}
+	}
 }
 

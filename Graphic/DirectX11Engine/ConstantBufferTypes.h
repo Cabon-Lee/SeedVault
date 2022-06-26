@@ -136,10 +136,13 @@ struct CB_GS_PaticleProperty : public AlignedAllocationPolicy<16>
 
 struct CB_PS_Amibent : public AlignedAllocationPolicy<16>
 {
+	/*
 	DirectX::XMFLOAT3 LowerAmbinet;
 	float pad;
 	DirectX::XMFLOAT3 RangeAmbinet;
 	float pad2;
+	*/
+	DirectX::XMFLOAT4 frustumCorner[4];
 };
 
 
@@ -148,11 +151,13 @@ struct CB_VS_PER_OBJECT : public AlignedAllocationPolicy<16>
 	DirectX::XMMATRIX WorldViewProjection;
 	DirectX::XMMATRIX World;
 	DirectX::XMMATRIX WorldInverse;
+	DirectX::XMMATRIX TextTransform;
 };
 
 struct CB_PS_Camera : public AlignedAllocationPolicy<16>
 {
 	DirectX::XMFLOAT4 CameraPos;
+	DirectX::XMMATRIX viewProjTex;
 };
 
 struct CB_PS_ROUGHNESS : public AlignedAllocationPolicy<16>

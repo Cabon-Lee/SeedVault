@@ -25,7 +25,7 @@ struct VS_OUTPUT
     float3 outWorldPos : POSITION;
     float3 outNormal : NORMAL;
     float2 outTexCoord : TEXCOORD;
-    float3 outTangent : TANGENT;
+    float4 outTangent : TANGENT;
 };
 
 Texture2D objTexture : TEXTURE : register(t0);

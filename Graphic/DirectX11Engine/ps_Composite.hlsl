@@ -19,8 +19,8 @@ float4 main(VS_OUTPUT pin) : SV_TARGET
     float revealage = reveal.Sample(pointSampler, pin.Tex).w;
     
     // save the blending and color texture fetch cost if there is not a transparent fragment
-    if (isApproximatelyEqual(revealage, 1.0f))
-        discard;
+    if (isApproximatelyEqual(revealage, 1.0f))discard;
+        
 
     // fragment color
     float4 accumulation = float4(accum.Sample(pointSampler, pin.Tex));

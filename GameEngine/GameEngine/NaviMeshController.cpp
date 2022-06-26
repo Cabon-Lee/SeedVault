@@ -78,7 +78,7 @@ _DLL void NaviMeshController::MakeNaviMesh()
 	m_MyNaviMesh.reset();
 	m_MyNaviMesh = m_pResourceManager->MakeNeviMesh(const_cast<std::string&>(m_MyMeshFilter->GetCurrentMeshName()));
 
-	// Added by YoKing
+	// Added by 최 요 환
 	// 내비메쉬 만들어지면 매니져에 등록해준다.
 	Managers::GetInstance()->GetNavMeshManager()->AddNavMesh(m_MyMeshFilter->GetCurrentMeshName(), m_MyNaviMesh);
 }

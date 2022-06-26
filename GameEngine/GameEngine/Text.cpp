@@ -42,7 +42,8 @@ void Text::SetSpriteTextInfo(
 	float lineWidth,
 	float lineSpace,
 	float fontSize,
-	UIAxis PivotType)
+	eUIAxis PivotType,
+	eTextPoint TextPoint)
 {
 	std::shared_ptr<Text_Queue_Info> _textInfo = std::make_shared<Text_Queue_Info>();
 
@@ -61,6 +62,7 @@ void Text::SetSpriteTextInfo(
 	_textInfo->fontSize = fontSize;
 
 	_textInfo->pivotType = (unsigned int)PivotType;
+	_textInfo->textpoint = (unsigned int)TextPoint;
 
 	m_FontDesc.swap(_textInfo);
 }

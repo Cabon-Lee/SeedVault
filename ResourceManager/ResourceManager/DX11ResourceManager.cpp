@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "DirectXTex.h"
 #include "IRenderer.h"
 #include "DX11ResourceManager.h"
 #include "DX11MeshFactory.h"
@@ -13,6 +14,9 @@
 
 #include "MatSerializer.h"
 #include "MatDeserializer.h"
+
+#include "EffectUIEnum.h"
+#include "TextLoader.h"
 
 #include "COMException.h"
 #include "ErrorLogger.h"
@@ -34,14 +38,15 @@ DX11ResourceManager::~DX11ResourceManager()
 void DX11ResourceManager::Initialize(std::shared_ptr<IRenderer> pRenderer)
 {
 	pRenderer->GetDeviceAndDeviceContext((void**)&m_pDevice, (void**)&m_pDeviceContext);
+	m_pRenderer = pRenderer;
 
 	m_Deserializer = std::make_shared<BinaryDeserializer>();
-	
+
 	m_pMatSerializer = std::make_shared<MatSerializer>();
 	m_pMatDeserializer = std::make_shared<MatDeserializer>();
-	
-	m_pMeshFactory = std::make_shared<DX11MeshFactory>();
 
+	m_pMeshFactory = std::make_shared<DX11MeshFactory>();
+	m_pTextLoader = std::make_shared<TextLoader>();
 
 	// 기본이 되는 머트리얼을 하나 넣어준다
 	// mat가 추가되면 그리로 빼야지
@@ -72,7 +77,7 @@ void DX11ResourceManager::Initialize(std::shared_ptr<IRenderer> pRenderer)
 		m_TextureInfo_UM.insert({ "None", _nowSpriteData });
 		m_TextureNames_V.push_back({ "None", m_Texture_V.size() - 1 });
 	}
-	
+
 	{
 		// null 포인터를 넣어두고 시작한다
 		// unsigned int에서 0일떄 nullptr을 활용할 수 있게끔
@@ -80,6 +85,7 @@ void DX11ResourceManager::Initialize(std::shared_ptr<IRenderer> pRenderer)
 		m_IBL_UM.insert({ "None" ,nullptr });
 		m_IBLNames_V.push_back({ "None", m_Texture_V.size() - 1 });
 	}
+
 
 }
 
@@ -121,9 +127,9 @@ void DX11ResourceManager::LoadBinaryFile(std::string& fileName)
 		for (auto& _nowMatNames : m_MaterialNames_V)
 		{
 			if (_nowMatNames.first.compare(_pMaterial_V[i]->materialName) == 0)
-			{ 
-				_exist = true; 
-				break; 
+			{
+				_exist = true;
+				break;
 			}
 		}
 
@@ -162,7 +168,7 @@ std::shared_ptr<GraphicMaterial> DX11ResourceManager::CreateGraphicMaterial(std:
 	_nowGraphicMat->transparentFactor = matDesc->transparentFactor;
 	_nowGraphicMat->specularPower = matDesc->specularPower;
 	_nowGraphicMat->smoothness = matDesc->shineness;
-	
+
 
 	_nowGraphicMat->fresnelR0 = matDesc->fresnelR0;
 	_nowGraphicMat->albedoColor = DirectX::SimpleMath::Vector4(matDesc->diffuse);
@@ -195,7 +201,9 @@ void DX11ResourceManager::LoadMatFile(std::string& fileName)
 	_nowGraphicMat->smoothness = _nowMatFile->matData.shineness;
 	_nowGraphicMat->normalFactor = _nowMatFile->matData.normalFactor;
 	_nowGraphicMat->emissiveFactor = _nowMatFile->matData.emissiveFactor;
-		
+
+	_nowGraphicMat->isTransparency = _nowMatFile->matData.isTransparency;
+
 	// 디시리얼라이즈를 한다
 	// 디시리얼라이즈된 정보를 GraphicMaterial 형식으로 만든다
 	// 그 정보를 여기에 넣는다
@@ -261,6 +269,24 @@ void DX11ResourceManager::LoadIBLFile(std::string& fileName)
 	m_IBLNames_V.push_back({ _nowTextureName, m_IBL_V.size() - 1 });
 }
 
+void DX11ResourceManager::LoadQuestTextFile(std::string& fileName)
+{
+	std::vector<QuestBlock> _QuestBlock_V;
+	m_pTextLoader->LoadQuestText(fileName, _QuestBlock_V);
+
+	std::string _nowQuestTextName = StringHelper::GetFileName(fileName, false);
+	m_QuestText_UM.insert({ _nowQuestTextName ,_QuestBlock_V });
+}
+
+void DX11ResourceManager::LoadDialogueTextFile(std::string& fileName)
+{
+	std::vector<DialogueBlock> _DialogueBlock_V;
+	m_pTextLoader->LoadDialogueText(fileName, _DialogueBlock_V);
+
+	std::string _nowDialogueTextName = StringHelper::GetFileName(fileName, false);
+	m_DialogueText_UM.insert({ _nowDialogueTextName ,_DialogueBlock_V });
+}
+
 void DX11ResourceManager::LinkMaterialToNode(std::shared_ptr<ModelMesh> pMesh)
 {
 	std::vector<std::shared_ptr<GraphicMaterial>> _nowMat;
@@ -318,23 +344,54 @@ void DX11ResourceManager::LoadTextureFile(std::string& fileName)
 	std::wstring _path;
 	_path.assign(fileName.begin(), fileName.end());
 
+
 	try
 	{
 		HRESULT _hr;
 
-		// DDS로 먼저 텍스쳐 로드를 시도하고, 그 후 WIC로 시도한다.
-		// DDS 확장자를 검사해서 실행하는 방법도 있지만 단순하게 실행시켰다.
-		_hr = CreateDDSTextureFromFile(m_pDevice, _path.c_str(), &_texResource, &_tempBitmap);
+		auto _extens = StringHelper::GetFileExtension(fileName);
 
-		if (_hr != S_OK && _tempBitmap == nullptr)
+		if (_extens == "hdr")
 		{
-			_hr = CreateWICTextureFromFile(m_pDevice, _path.c_str(), &_texResource, &_tempBitmap);
+			DirectX::ScratchImage _scratchImage;
+
+			_hr = LoadFromHDRFile(_path.c_str(), nullptr, _scratchImage);
+
+			COM_ERROR_IF_FAILED(_hr, "LoadFromHDRFile Fail");
+
+			if (_hr == S_OK)
+			{
+				_hr = CreateShaderResourceView(m_pDevice,
+					_scratchImage.GetImages(), _scratchImage.GetImageCount(), _scratchImage.GetMetadata(),
+					_tempBitmap.GetAddressOf());
+
+				COM_ERROR_IF_FAILED(_hr, "CreateShaderResourceView Fail");
+			}
 		}
-
-		if (_texResource != nullptr)
+		else
 		{
-			_hr = _texResource.As(&tex);
-			tex->GetDesc(&desc);
+			// DeviceContext를 사용 중이라면 기다린다
+			while (m_pRenderer->ContextInUse(TRUE) == TRUE)
+				Sleep(0);
+
+			if (_extens == "dds")
+			{
+				_hr = CreateDDSTextureFromFile(m_pDevice, m_pDeviceContext, _path.c_str(), &_texResource, &_tempBitmap);
+			}
+			else
+			{
+				_hr = CreateWICTextureFromFile(m_pDevice, m_pDeviceContext, _path.c_str(), &_texResource, &_tempBitmap);
+			}
+
+			// 사용이 끝났다면 다시 써라
+			m_pRenderer->ContextInUse(FALSE);
+
+
+			if (_texResource != nullptr)
+			{
+				_hr = _texResource.As(&tex);
+				tex->GetDesc(&desc);
+			}
 		}
 
 		COM_ERROR_IF_FAILED(_hr, "CreateWICTextureFromFile Fail");
@@ -357,6 +414,15 @@ void DX11ResourceManager::LoadTextureFile(std::string& fileName)
 
 	m_TextureNames_V.push_back({ _nowTextureName, m_Texture_V.size() - 1 });
 	m_TextureInfoNames_V.push_back({ _nowTextureName, m_TextureInfo_V.size() - 1 });
+
+	/*
+	while (m_pRenderer->ContextInUse(TRUE) == TRUE)
+		Sleep(0);
+
+	m_pRenderer->ExecuteCommandLine();
+
+	m_pRenderer->ContextInUse(FALSE);
+	*/
 }
 
 void DX11ResourceManager::CreateInputLayout()
@@ -469,7 +535,7 @@ void DX11ResourceManager::LoadShaderFile(std::string& path)
 	}
 }
 
-void DX11ResourceManager::SaveMatFile(unsigned int modelIdx , int idx)
+void DX11ResourceManager::SaveMatFile(unsigned int modelIdx, int idx)
 {
 
 	std::shared_ptr<GraphicMaterial> _graphicMat = m_ModelMesh_V[modelIdx]->m_pGraphicMaterial_V[idx];
@@ -600,6 +666,26 @@ std::shared_ptr<GeometryShader> DX11ResourceManager::GetGeometryShader(unsigned 
 	return m_GeometryShader_V[idx];
 }
 
+std::vector<QuestBlock> DX11ResourceManager::GetQuestText(const std::string& name)
+{
+	return m_QuestText_UM.at(name.c_str());
+}
+
+std::vector<DialogueBlock> DX11ResourceManager::GetDialogueText(const std::string& name)
+{
+	return m_DialogueText_UM.at(name.c_str());
+}
+
+std::unordered_map<std::string, std::vector<struct QuestBlock>> DX11ResourceManager::GetWholeQuestText()
+{
+	return m_QuestText_UM;
+}
+
+std::unordered_map<std::string, std::vector<struct DialogueBlock>> DX11ResourceManager::GetWholeDialogueText()
+{
+	return m_DialogueText_UM;
+}
+
 Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> DX11ResourceManager::GetIBLImage(unsigned int idx)
 {
 	return m_IBL_V[idx];
@@ -641,25 +727,25 @@ void DX11ResourceManager::SetMaterialTextureName(
 
 	switch (attIndex)
 	{
-	case DIFFUSE_TEXUTRE	: 
+	case DIFFUSE_TEXUTRE:
 	{
 		_nowMesh->m_pGraphicMaterial_V[matIndex]->albedoMap = name;
 		_nowMesh->m_pGraphicMaterial_V[matIndex]->textureArray[DIFFUSE_TEXUTRE] = GetTextureIndex(name);
 		break;
 	}
-	case BUMP_TEXUTRE		: 
+	case BUMP_TEXUTRE:
 	{
 		_nowMesh->m_pGraphicMaterial_V[matIndex]->normalMap = name;
 		_nowMesh->m_pGraphicMaterial_V[matIndex]->textureArray[BUMP_TEXUTRE] = GetTextureIndex(name);
 		break;
 	}
-	case SHININESS_TEXUTRE	: 
+	case SHININESS_TEXUTRE:
 	{
-		_nowMesh->m_pGraphicMaterial_V[matIndex]->metalRoughMap = name; 
+		_nowMesh->m_pGraphicMaterial_V[matIndex]->metalRoughMap = name;
 		_nowMesh->m_pGraphicMaterial_V[matIndex]->textureArray[SHININESS_TEXUTRE] = GetTextureIndex(name);
 		break;
 	}
-	case EMISSIVE_TEXUTRE	: 
+	case EMISSIVE_TEXUTRE:
 	{
 		_nowMesh->m_pGraphicMaterial_V[matIndex]->emissiveMap = name;
 		_nowMesh->m_pGraphicMaterial_V[matIndex]->textureArray[EMISSIVE_TEXUTRE] = GetTextureIndex(name);
@@ -701,7 +787,7 @@ RECT DX11ResourceManager::GetTextureRect(unsigned int idx)
 	_newRect.top = 0;
 	_newRect.right = static_cast<LONG>(m_TextureInfo_V[idx]->width);
 	_newRect.bottom = static_cast<LONG>(m_TextureInfo_V[idx]->height);
-	
+
 	return _newRect;
 }
 

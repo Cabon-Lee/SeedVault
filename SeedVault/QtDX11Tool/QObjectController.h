@@ -7,22 +7,6 @@ class QGameObject;
 class GameObject;
 class SceneBase;
 
-struct PhysicsActorWidget
-{
-	QLabel*			m_label_BSize = nullptr;
-	QLineEdit*		m_lineEdit_BX = nullptr;
-	QLineEdit*		m_lineEdit_BY = nullptr;
-	QLineEdit*		m_lineEdit_BZ = nullptr;
-	QLabel*			m_label_BX = nullptr;
-	QLabel*			m_label_BY = nullptr;
-	QLabel*			m_label_BZ = nullptr;
-
-	QLabel*			m_label_SSize = nullptr;
-	QLineEdit*		m_lineEdit_SRadius = nullptr;
-
-	QString			m_PrevRigidType = "";
-};
-
 class QObjectController : public QWidget
 {
 	Q_OBJECT
@@ -44,7 +28,7 @@ private slots:
 
 	void createObject();
 	void deleteObject();
-	void setCameraTocurrObj();
+	void setDebugRender();
 
 public slots:
 	void clickRenderWidget();
@@ -54,6 +38,7 @@ public slots:
 	void editObjectName();
 	void selectCurrentObject();
 	void checkEnable();
+	void editTag();
 	void editPosX();
 	void editPosY();
 	void editPosZ();
@@ -97,9 +82,18 @@ public slots:
 	void checkReflectionRender(int state);
 
 	void addPhysicsActor();
-	void initializePhysicsAcotrList();
+	void setPhysicsActorType(const QString& type);
 	void deletePhysicsActor();
-	void updateRigidType();
+	void editBoxSize();
+
+	void editSphereRadius();
+	void checkUseGravity(int value);
+	void checkIsKinematic(int value);
+	void checkFreezePosition();
+	void checkFreezeRotation();
+	void clickDynamic();
+	void clickStatic();
+	void setRigidType();
 	void updatePhysicsActor();
 
 
@@ -119,8 +113,5 @@ private:
 private:
 	SceneBase* m_pCurrentScene;
 	GameObject* m_pCurrentGameObject;
-
-	PhysicsActorWidget m_PhysicsWidgets;
-
 };
 

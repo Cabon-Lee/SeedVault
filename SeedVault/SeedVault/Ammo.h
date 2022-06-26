@@ -5,7 +5,7 @@
 /// <summary>
 /// 총기에 들어가는 탄 기초 클래스
 
-/// 작성자 : Yoking
+/// 작성자 : 최 요 환
 /// </summary>
 
 class Ammo : public IItem
@@ -27,7 +27,7 @@ private:
 /// <summary>
 /// 장총(1번 주무기) 탄 클래스
 /// 
-/// 작성자 : Yoking
+/// 작성자 : 최 요 환
 /// </summary>
 class LongGunAmmo : public Ammo
 {
@@ -45,7 +45,7 @@ private:
 /// <summary>
 /// 권총(2번 보조무기) 탄 클래스
 ///
-/// 작성자 : Yoking
+/// 작성자 : 최 요 환
 /// </summary>
 class HandGunAmmo : public Ammo
 {

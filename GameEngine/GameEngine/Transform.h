@@ -23,8 +23,8 @@ public:
 	_DLL void SetScale(const DirectX::SimpleMath::Vector3& scl);
 	_DLL const DirectX::SimpleMath::Quaternion& GetRotation() const;
 	_DLL void SetRotation(const DirectX::SimpleMath::Quaternion& rot);
-	_DLL void SetRotationFromVec(const DirectX::SimpleMath::Vector2& rot);   // Added by YoKing
-	_DLL void SetRotationFromVec(const DirectX::SimpleMath::Vector3& rot);   // Added by YoKing
+	_DLL void SetRotationFromVec(const DirectX::SimpleMath::Vector2& rot);   // Added by 최 요 환
+	_DLL void SetRotationFromVec(const DirectX::SimpleMath::Vector3& rot);   // Added by 최 요 환
 	_DLL const DirectX::SimpleMath::Vector3& GetLocalPosition() const;
 	_DLL void SetPosition(const DirectX::SimpleMath::Vector3& pos);
 	_DLL const DirectX::SimpleMath::Vector3& GetWorldPosition() const;
@@ -65,7 +65,7 @@ public:
 
 	DirectX::SimpleMath::Vector3 m_WorldPosition;
 
-	// Modified by YoKing
+	// Modified by 최 요 환
 	// 임시로 여기에 만들고 나중에 개선... 일단 되는지 확인
 	// Quaternion 을 Euler로 변환하기 위한 함수 -> 안됨...
 	DirectX::SimpleMath::Vector3 QuaternionToEuler(const DirectX::SimpleMath::Quaternion quat) const;  // 특정 범위에선 올바른 값을 가지나 특정 범위에서 값이 이상해짐....

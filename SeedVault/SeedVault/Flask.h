@@ -12,7 +12,7 @@
 /// 플라스크 + 알코올 = 화염 플라스크
 /// 플라스크 + 허브   = 힐 주사기
 /// 
-/// 작성자 : Yoking
+/// 작성자 : 최 요 환
 /// </summary>
 
 class Flask : public EquipmentItem
@@ -39,7 +39,7 @@ private:
 /// 
 /// 투척하면 화염플라스크를 생성해서 던진다
 /// 
-/// 작성자 : Yoking
+/// 작성자 : 최 요 환
 /// </summary>
 class FireFlask : public Flask
 {

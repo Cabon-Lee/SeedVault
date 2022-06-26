@@ -43,7 +43,7 @@ public:
 	_DLL const char* GetName_char(const char* name);
 	_DLL const char* GetName_char();
 
-	// Added by YoKing
+	// Added by 최 요 환
 	// string name에 해당하는 메쉬를 찾아서 현재 메쉬를 설정함
 	_DLL void SetMesh(const std::string name);
 	_DLL void SetMesh();

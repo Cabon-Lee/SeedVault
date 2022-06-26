@@ -239,7 +239,7 @@ GameObject* ObjectManager::FindGameObectBinary(const unsigned int& objectId)
 			return m_pGameObject_V[_mid];
 		}
 	}
-	
+
 	CA_TRACE("Object Manager : 일치하는 오브젝트가 없습니다.");
 	// 데이터를 찾지 못하면 -1를 반환한다.
 	//현재 씬에서는 존재하지 않는 오브젝트
@@ -264,6 +264,7 @@ void ObjectManager::AddToTagManager(const std::string& newTag, GameObject* objec
 	if (object->GetTag() == "Untagged")
 	{
 		//Untagged는 예외
+
 	}
 	else
 	{
@@ -284,5 +285,25 @@ void ObjectManager::AddToTagManager(const std::string& newTag, GameObject* objec
 	///map["존재하지 않는 키"]를 하면 새로운 값이 insert된다.
 	m_TagObject_M[newTag].push_back(object);
 	object->SetTagName(newTag);
+}
+
+const std::string& ObjectManager::GetTagList(unsigned int index)
+{
+	std::map<std::string, std::vector<GameObject*>>::iterator _iter = m_TagObject_M.begin();
+
+	if (index >= m_TagObject_M.size())
+	{
+		return std::string("");
+	}
+	else
+	{
+		for (int i = 0; i <= index; i++)
+		{
+			//왜 이렇게 해야함..?
+			_iter++;
+		}
+		std::string a = _iter->first;
+		return _iter->first;
+	}
 }
 

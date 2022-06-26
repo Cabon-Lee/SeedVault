@@ -31,7 +31,8 @@ VS_OUTPUT main(VS_INPUT In)
     In.Pos = mul(In.Pos, worldMatrix);
     
     Out.Pos = mul(In.Pos, matViewProjection);
-    Out.Normal = mul(float4(In.Normal, 0.f), matView);
+    Out.Normal = mul(float4(0.0f, 0.0f, 0.0f, 0.f), matView);
+    //Out.Normal = mul(float4(In.Normal, 0.f), matView);
         
     //Out.C0 = float4(normal * 0.5 + 0.5, 1);
     

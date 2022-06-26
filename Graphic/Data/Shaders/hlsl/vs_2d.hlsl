@@ -24,7 +24,7 @@ VS_OUTPUT main(VS_INPUT input)
     output.outTexCoord = input.inTexCoord;
     
     // orthogonal matrix가 사용되면 z값이 0보다 커야한다 
-    output.outPosition.z = 0.5;
+    output.outPosition.z = input.inPos.z;
     
     return output;
 }

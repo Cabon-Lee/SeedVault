@@ -50,6 +50,9 @@
     <Filter Include="DX11\Center">
       <UniqueIdentifier>{b3cd8210-8c53-4c48-8d3f-d5377091602a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TextLoader">
+      <UniqueIdentifier>{e647be3b-f449-46c8-9a01-1c8af3a5510e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -94,6 +97,9 @@
     <ClInclude Include="CenterCreator.h">
       <Filter>DX11\Center</Filter>
     </ClInclude>
+    <ClInclude Include="TextLoader.h">
+      <Filter>TextLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -128,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="CenterCreator.cpp">
       <Filter>DX11\Center</Filter>
+    </ClCompile>
+    <ClCompile Include="TextLoader.cpp">
+      <Filter>TextLoader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

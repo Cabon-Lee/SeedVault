@@ -5,7 +5,7 @@
 /// 
 /// 처음 시작 시 시작 아이템들을 생성해서 추가해놓고 이후에 얻을 때는 갯수를 카운팅한다
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// </summary>
 
 #include "IItem.h"
@@ -49,5 +49,7 @@ public:
 	
 	uint m_EquiptedSlotIndex;												// 현재 장비한 슬롯 idx
 	std::shared_ptr<class EquipmentItem> m_EquipedItem;						// 현재 장비한 아이템
+
+	GameObject* _Owner;														// 인벤토리 주인 Obj
 };
 

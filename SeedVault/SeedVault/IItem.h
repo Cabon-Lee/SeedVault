@@ -3,7 +3,7 @@
 /// <summary>
 /// 아이템 정보 클래스
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// </summary>
 
 class IItem

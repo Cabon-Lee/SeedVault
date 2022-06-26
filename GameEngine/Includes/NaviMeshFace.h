@@ -21,7 +21,7 @@ struct NaviMeshFace
 		m_Vertex_Arr[1] = DirectX::SimpleMath::Vector3();
 		m_Vertex_Arr[2] = DirectX::SimpleMath::Vector3();
 
-		/// Added by YoKing
+		/// Added by 최 요 환
 		// 인접 Face 
 		m_AdjoinFace_V.reserve(3);
 
@@ -49,7 +49,7 @@ struct NaviMeshFace
 	DirectX::SimpleMath::Vector3 m_Vertex_Arr[3];				// 페이스를 이루는 정점 A, B, C
 	DirectX::SimpleMath::Vector3 m_FaceNormal;					// 노말
 	
-	// Added by Yoking
+	// Added by 최 요 환
 	DirectX::SimpleMath::Vector3 m_CenterPosition;				// 페이스의 위치(삼각형의 중앙)
 	DirectX::SimpleMath::Vector3 m_EdgeMid_Arr[3];				// Edge의 중점( [0] -> (A,B) 의 가운데, [1] -> (B,C)의 가운데, [2] -> (C,A) 의 가운데
 	DirectX::SimpleMath::Vector3 m_CycleEdgeVector_Arr[3];		// Face의 각 Edge들에 대한 유향벡터

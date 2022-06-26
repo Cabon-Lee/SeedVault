@@ -7,7 +7,7 @@
 /// 
 /// 힐 주사기의 재료로 사용된다.
 /// 
-/// 작성자 : Yoking
+/// 작성자 : 최 요 환
 /// </summary>
 
 class Herb : public IItem

@@ -39,7 +39,8 @@ public:
 		float lineWidth,
 		float lineSpace,
 		float fontSize,
-		UIAxis PivotType
+		eUIAxis PivotType,
+		eTextPoint textPoint
 		);
 
 	_DLL void PrintSpriteText(

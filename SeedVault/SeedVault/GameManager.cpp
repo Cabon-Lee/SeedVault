@@ -27,7 +27,7 @@ void GameManager::SetDebugMode(const bool& val)
 	s_bDebugMode = val;
 
 	// 엔진 디버그모드 설정
-	DLLEngine::SetDebugRenderMode(val);
+	//DLLEngine::SetDebugRenderMode(val);
 }
 
 /// <summary>

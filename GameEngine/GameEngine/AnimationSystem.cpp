@@ -94,7 +94,7 @@ void State::SetNoneAnimLayer(AnimLayer* pAnimLayer)
 
 void State::Update()
 {
-	// Modified by Yoking
+	// Modified by 최 요 환
 	if (m_Event_V.size() > 0)
 	{
 		for (const auto& event : m_Event_V)
@@ -212,7 +212,7 @@ void AnimLayer::LayerStart()
 
 void AnimLayer::LayerUpdate(GameObject* pGameObject, MeshFilter* pMeshFilter, std::shared_ptr<IRenderer> pRenderer)
 {
-	// Modified by YoKing
+	// Modified by 최 요 환
 	// 비활성화 레이어면 업데이트 하지 않는다.
 	if (m_bEnabled == false)
 	{
@@ -356,7 +356,7 @@ void AnimLayer::LayerUpdate(GameObject* pGameObject, MeshFilter* pMeshFilter, st
 	
 }
 
-// Modified by YoKing
+// Modified by 최 요 환
 _DLL void AnimLayer::SetEnabled(const bool val)
 {
 	m_bEnabled = val;
@@ -414,7 +414,7 @@ _DLL void Animator::AddAnimLayer(std::string name)
 
 _DLL std::shared_ptr<AnimLayer> Animator::GetAnimLayer(const std::string& name)
 {
-	// Modified by YoKing
+	// Modified by 최 요 환
 	// 바로 UM 에서 값을 리턴하다가는 잘못된 string 이 들어왔을 때 프로그램이 바로 터져버려서 어찌할 수가 없다..(out of range)
 	// 먼저 find로 찾아서 없으면 nullptr 리턴하고 caller 쪽에서 예외처리를 하자.
 	if (m_AnimLayer_UM.find(name) == m_AnimLayer_UM.end())
@@ -472,8 +472,9 @@ _DLL bool Animator::SetNoneAnimLayer(std::string noneLayer)
 /// noneLayer 은 영향 X
 /// </summary>
 /// <param name="overrideLayer">선택할 override layer</param>
+/// /// <param name="reset">애니메이션 프레임 리셋 여부</param>
 /// <returns>성공 여부</returns>
-_DLL bool Animator::SetOverrideAnimLayer(std::string overrideLayer)
+_DLL bool Animator::SetOverrideAnimLayer(std::string overrideLayer, bool reset)
 {
 	bool _ret = false;
 
@@ -490,7 +491,12 @@ _DLL bool Animator::SetOverrideAnimLayer(std::string overrideLayer)
 
 				_ret = true;
 
-				layer->GetNowState()->m_NowKeyFrame = 0;
+				// 리셋 요청이 들어오면
+				if (reset == true)
+				{
+					// 키프레임을 0으로 초기화
+					layer->GetNowState()->m_NowKeyFrame = 0;
+				}
 			}
 
 			// 이외의 레이어는 비활성화

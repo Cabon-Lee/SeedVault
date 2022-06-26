@@ -86,7 +86,7 @@ public:
 		const DirectX::XMMATRIX& pWorldTM,
 		DirectX::XMMATRIX* pBoneOFfsetTM);
 
-	void AddRenderQueueParticle(
+	void AddRenderQueueBillboard(
 		class VertexShader* pVertexShader,
 		class PixelShader* pPixelShader,
 		unsigned int spriteIndex,
@@ -105,7 +105,7 @@ public:
 	void ProcessOpaqueQueue(Renderer* pRenderer);
 	void ProcessQueueByInstance(Renderer* pRenderer);
 	void ProcessTransparentQueue(Renderer* pRenderer);
-	void ProcessParticleQueue(Renderer* pRenderer);
+	void ProcessBillboardQueue(Renderer* pRenderer);
 	void ProcessDebugQueue(Renderer* pRenderer);
 	void ProcessOutLineQueue(Renderer* pRenderer, bool isQT);
 
@@ -115,6 +115,7 @@ public:
 	void GetSelectedObjectTM(const DirectX::XMMATRIX& worldTM);
 	const DirectX::XMMATRIX& GetSelectedObjectTM();
 
+	unsigned int m_NowParticleIndex;
 private:
 	unsigned int m_OpaqueCount;
 	unsigned int m_TransparentCount;
@@ -138,7 +139,6 @@ private:
 	// 이게 없으면 항상 사용하지 않고 있는 것을 검색해야한다
 	unsigned int m_NowIndex;
 	unsigned int m_SelectedObjectIndex;
-	unsigned int m_NowParticleIndex;
 
 	DirectX::XMMATRIX m_SelectedWorldTM;
 

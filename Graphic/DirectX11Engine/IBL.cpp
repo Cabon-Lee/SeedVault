@@ -535,14 +535,24 @@ IBL::IBL()
 
 IBL::~IBL()
 {
+	m_ReflectionProbe_V.clear();
+	m_BaseReflectionProbe.reset();
+}
 
+void IBL::Initialize(Microsoft::WRL::ComPtr <ID3D11Device> pDevice)
+{
+	m_BaseReflectionProbe = std::make_unique<ReflectionProbe>();
+	m_BaseReflectionProbe->Initialize(pDevice);
 }
 
 unsigned int IBL::AddReflectionProbe(Microsoft::WRL::ComPtr <ID3D11Device> pDevice)
 {
-	std::shared_ptr<ReflectionProbe> _newReflectionProbe = std::make_shared<ReflectionProbe>();
-	_newReflectionProbe->Initialize(pDevice);
-	m_ReflectionProbe_V.push_back(_newReflectionProbe);
+	//std::shared_ptr<ReflectionProbe> _newReflectionProbe = std::make_shared<ReflectionProbe>();
+	//_newReflectionProbe->Initialize(pDevice);
+	//m_ReflectionProbe_V.push_back(_newReflectionProbe);
+	m_ReflectionProbe_V.emplace_back(std::make_unique<ReflectionProbe>());
+	m_ReflectionProbe_V[m_ReflectionProbe_V.size() - 1]->Initialize(pDevice);
+
 
 	return static_cast<unsigned int>(m_ReflectionProbe_V.size() - 1);
 }
@@ -553,9 +563,14 @@ bool IBL::IsProbeExist()
 	else return true;
 }
 
-std::shared_ptr<ReflectionProbe>& IBL::GetReflectionProbe(unsigned int idx)
+ReflectionProbe* IBL::GetReflectionProbe(unsigned int idx)
 {
-	return m_ReflectionProbe_V[idx];
+	return m_ReflectionProbe_V[idx].get();
+}
+
+ReflectionProbe* IBL::GetBasicIBL()
+{
+	return m_BaseReflectionProbe.get();
 }
 
 Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> IBL::GetIrradianceMapSRV(unsigned int idx)
@@ -588,7 +603,7 @@ void IBL::ReflectionProbeRenderTargetViewBind(
 	ID3D11DepthStencilView* pDepth)
 {
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _nowRTV;
-	std::shared_ptr<ReflectionProbe> _nowReflectionProbe = m_ReflectionProbe_V[probeIndex];
+	auto _nowReflectionProbe = m_ReflectionProbe_V[probeIndex].get();
 
 	_nowRTV = _nowReflectionProbe->GetEnviormentCubeRenderTarget()->GetRenderTargetView(faceIndex);
 
@@ -616,6 +631,7 @@ void IBL::BakeReflectionProbe(
 	std::shared_ptr<PixelShader> pIrradianceShader,
 	std::shared_ptr<PixelShader> pBakePixelShader,
 	unsigned int sceneIndex,
+	const std::string& sceneName,
 	unsigned int reflectionProbeIndex)
 {
 
@@ -623,7 +639,9 @@ void IBL::BakeReflectionProbe(
 
 	// 이 단계에서는 이미 ReflectionProbeRender에서 그림을 그린 뒤라는 전제
 	// 따라서 IrradianceMap, PreFilterMap을 만들면 된다 IBL에서 필요한게 그 두개니까
-	std::shared_ptr<ReflectionProbe> _nowReflectionProbe = m_ReflectionProbe_V[reflectionProbeIndex];
+	//std::shared_ptr<ReflectionProbe> _nowReflectionProbe = m_ReflectionProbe_V[reflectionProbeIndex];
+	auto _nowReflectionProbe = m_ReflectionProbe_V[reflectionProbeIndex].get();
+
 	Microsoft::WRL::ComPtr <ID3D11ShaderResourceView> _environment = _nowReflectionProbe->GetEnvironmentMap();
 
 	UINT offset = 0;
@@ -720,9 +738,13 @@ void IBL::BakeReflectionProbe(
 
 	{
 		// 각 텍스쳐 성분을 구분하기 위한 네이밍 작업
-		std::string _environmentMapName(std::to_string(sceneIndex));
-		std::string _irradianceMapName(std::to_string(sceneIndex));
-		std::string _prefilterMapName(std::to_string(sceneIndex));
+		//std::string _environmentMapName(std::to_string(sceneIndex));
+		//std::string _irradianceMapName(std::to_string(sceneIndex));
+		//std::string _prefilterMapName(std::to_string(sceneIndex));
+
+		std::string _environmentMapName(sceneName);
+		std::string _irradianceMapName(sceneName);
+		std::string _prefilterMapName(sceneName);
 
 		_environmentMapName += ENV_MAP;
 		_irradianceMapName += IRR_MAP;
@@ -752,7 +774,7 @@ void IBL::BakeReflectionProbe(
 	_cubeFaces.clear();
 }
 
-void IBL::BakeIrradiancePreFilterMap(
+bool IBL::BasicIrradiancePreFilterMap(
 	Microsoft::WRL::ComPtr <ID3D11Device> pDevice,
 	Microsoft::WRL::ComPtr <ID3D11DeviceContext> pDeviceContext,
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pEnviormentTexture,
@@ -763,24 +785,23 @@ void IBL::BakeIrradiancePreFilterMap(
 	unsigned int reflectionProbeIndex)
 {
 
-	std::shared_ptr<ReflectionProbe> _pReflectionProbe = m_ReflectionProbe_V[reflectionProbeIndex];
-	_pReflectionProbe->m_BakingTimer++;
+	//m_BaseReflectionProbe->m_BakingTimer++;
+	//
+	//if (m_BaseReflectionProbe->m_BakingTimer > 2)
+	//{
+	//	return true;
+	//}
 
-	if (_pReflectionProbe->m_BakingTimer > 2)
-	{
-		_pReflectionProbe->m_BakingTimer = 3;
-		return;
-	}
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _pTextrue;
 	if (pEnviormentTexture != nullptr) { _pTextrue = pEnviormentTexture; }
-	else _pTextrue = _pReflectionProbe->GetTextrue();
+	else _pTextrue = m_BaseReflectionProbe->GetTextrue();
 
 
 	// 베이킹 하는데 2프레임에 걸쳐서 진행됨
 	// 베이킹이 오래걸렸던 이유는 큐브맵의 크기가 컸던 것(1024였음)
 	pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	pDeviceContext->RSSetState(RasterizerState::GetSolidNormal());
+	pDeviceContext->RSSetState(RasterizerState::GetNoCullingRS());
 	pDeviceContext->OMSetDepthStencilState(RasterizerState::GetDepthStencilState(), 0);
 	pDeviceContext->OMSetBlendState(RasterizerState::GetBlenderState(), NULL, 0xFFFFFFFF);
 	pDeviceContext->PSSetSamplers(0, 1, RasterizerState::GetLinearSamplerStateAddressOf());
@@ -789,8 +810,8 @@ void IBL::BakeIrradiancePreFilterMap(
 	float ClearColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
 
 
-	std::shared_ptr<ProbeHelper> _cube = _pReflectionProbe->GetCube();
-	std::shared_ptr<CubeMapRenderTarget> _EnvironmentCubeMap = _pReflectionProbe->GetEnviormentCubeRenderTarget();
+	std::shared_ptr<ProbeHelper> _cube = m_BaseReflectionProbe->GetCube();
+	std::shared_ptr<CubeMapRenderTarget> _EnvironmentCubeMap = m_BaseReflectionProbe->GetEnviormentCubeRenderTarget();
 	// 매핑 패스
 	for (int i = 0; i < 6; i++)
 	{
@@ -805,7 +826,7 @@ void IBL::BakeIrradiancePreFilterMap(
 		pDeviceContext->VSSetShader(pVertexShader->GetVertexShader(), NULL, 0);
 		pDeviceContext->PSSetShader(pEnvironmentShader->GetPixelShader(), NULL, 0);
 
-		ConstantBufferManager::GetWVPMatrix()->data.wvpMatrix = _pReflectionProbe->GetViewTM(i) * _pReflectionProbe->GetProjTM();
+		ConstantBufferManager::GetWVPMatrix()->data.wvpMatrix = m_BaseReflectionProbe->GetViewTM(i) * m_BaseReflectionProbe->GetProjTM();
 		ConstantBufferManager::GetWVPMatrix()->ApplyChanges();
 
 		pDeviceContext->VSSetConstantBuffers(0, 1, ConstantBufferManager::GetWVPMatrix()->GetAddressOf());
@@ -822,7 +843,7 @@ void IBL::BakeIrradiancePreFilterMap(
 	}
 
 	// Irradiance Map 패스
-	std::shared_ptr<CubeMapRenderTarget> _irradianceCubeMap = _pReflectionProbe->GetIrrdaianceCubeRenderTarget();
+	std::shared_ptr<CubeMapRenderTarget> _irradianceCubeMap = m_BaseReflectionProbe->GetIrrdaianceCubeRenderTarget();
 	for (int i = 0; i < 6; i++)
 	{
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _nowRTV = _irradianceCubeMap->GetRenderTargetView(i);
@@ -836,7 +857,7 @@ void IBL::BakeIrradiancePreFilterMap(
 		pDeviceContext->VSSetShader(pVertexShader->GetVertexShader(), NULL, 0);
 		pDeviceContext->PSSetShader(pIrradianceShader->GetPixelShader(), NULL, 0);
 
-		ConstantBufferManager::GetWVPMatrix()->data.wvpMatrix = _pReflectionProbe->GetViewTM(i) * _pReflectionProbe->GetProjTM();
+		ConstantBufferManager::GetWVPMatrix()->data.wvpMatrix = m_BaseReflectionProbe->GetViewTM(i) * m_BaseReflectionProbe->GetProjTM();
 		ConstantBufferManager::GetWVPMatrix()->ApplyChanges();
 
 		pDeviceContext->VSSetConstantBuffers(0, 1, ConstantBufferManager::GetWVPMatrix()->GetAddressOf());
@@ -883,11 +904,11 @@ void IBL::BakeIrradiancePreFilterMap(
 			pDeviceContext->VSSetShader(pVertexShader->GetVertexShader(), NULL, 0);
 			pDeviceContext->PSSetShader(pBakePixelShader->GetPixelShader(), NULL, 0);
 
-			ConstantBufferManager::GetWVPMatrix()->data.wvpMatrix = _pReflectionProbe->GetViewTM(i) * _pReflectionProbe->GetProjTM();
+			ConstantBufferManager::GetWVPMatrix()->data.wvpMatrix = m_BaseReflectionProbe->GetViewTM(i) * m_BaseReflectionProbe->GetProjTM();
 			ConstantBufferManager::GetWVPMatrix()->ApplyChanges();
 
 			pDeviceContext->VSSetConstantBuffers(0, 1, ConstantBufferManager::GetWVPMatrix()->GetAddressOf());
-			pDeviceContext->PSSetShaderResources(0, 1, _pReflectionProbe->GetEnviormentCubeRenderTarget()->GetShaderResourceViewAddressOf());
+			pDeviceContext->PSSetShaderResources(0, 1, m_BaseReflectionProbe->GetEnviormentCubeRenderTarget()->GetShaderResourceViewAddressOf());
 			pDeviceContext->PSSetConstantBuffers(0, 1, ConstantBufferManager::GetPSRoughnessBuffer()->GetAddressOf());
 
 			pDeviceContext->PSSetSamplers(0, 1, RasterizerState::GetLinearSamplerStateAddressOf());
@@ -900,15 +921,43 @@ void IBL::BakeIrradiancePreFilterMap(
 			pDeviceContext->DrawIndexed(_cube->m_IndexCount, 0, 0);
 		}
 
-		_pReflectionProbe->GetPreFilterCubeRenderTarget()->CreateMipMap(pDeviceContext, _cubeFaces, mipWidth, mipHeight, mip);
+		m_BaseReflectionProbe->GetPreFilterCubeRenderTarget()->CreateMipMap(pDeviceContext, _cubeFaces, mipWidth, mipHeight, mip);
 	}
 
 
-	TextureCapture::SaveTextureToDDSFile(pDevice, pDeviceContext, _pReflectionProbe->GetPreFilterCubeRenderTarget()->GetTexture2D(),
-		L"../Data/environment.dds");
+	{
+		std::string _environmentMapName("basic");
+		std::string _irradianceMapName("basic");
+		std::string _prefilterMapName("basic");
 
+		_environmentMapName += ENV_MAP;
+		_irradianceMapName += IRR_MAP;
+		_prefilterMapName += FILTER_MAP;
+
+		// .ibl 자원을 관리하기 위해 확장자 명을 수정
+		_environmentMapName += std::to_string(reflectionProbeIndex) + ".ibl";
+		_irradianceMapName += std::to_string(reflectionProbeIndex) + ".ibl";
+		_prefilterMapName += std::to_string(reflectionProbeIndex) + ".ibl";
+
+		_environmentMapName = ENV_PATH + _environmentMapName;
+		_irradianceMapName = IRR_PATH + _irradianceMapName;
+		_prefilterMapName = FILTER_PATH + _prefilterMapName;
+
+		// DirectXTex 라이브러리에서 DDS 포맷으로 텍스쳐를 저장하는 함수를 만들어 호출
+		TextureCapture::SaveTextureToDDSFile(pDevice, pDeviceContext,
+			m_BaseReflectionProbe->GetEnviormentCubeRenderTarget()->GetTexture2D(), StringHelper::StringToWchar(_environmentMapName));
+
+		TextureCapture::SaveTextureToDDSFile(pDevice, pDeviceContext,
+			m_BaseReflectionProbe->GetIrrdaianceCubeRenderTarget()->GetTexture2D(), StringHelper::StringToWchar(_irradianceMapName));
+
+		TextureCapture::SaveTextureToDDSFile(pDevice, pDeviceContext,
+			m_BaseReflectionProbe->GetPreFilterCubeRenderTarget()->GetTexture2D(), StringHelper::StringToWchar(_prefilterMapName));
+	}
 
 	_cubeFaces.clear();
+
+
+	return true;
 }
 
 void IBL::RenderProbe(

@@ -315,7 +315,7 @@ void ComponentSystem::Update(float dTime)
 
 		
 		/*
-		// Added By Yoking
+		// Added By 최 요 환
 		// 컴포넌트들을 쓰레드를 사용해 병렬로 업데이트 해보려고 시도해봄..
 		// 그러나 잘못 쓰고 있는지 오히려 느려짐... 
 		// 아래의 코드는 해결되기 전까지 사용 금지

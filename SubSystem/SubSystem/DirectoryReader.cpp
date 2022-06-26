@@ -2,6 +2,7 @@
 #include "pch.h"	// DLL일때만 등장하도록
 #include <windows.h>
 #include "DirectoryReader.h"
+#include "StringHelper.h"
 
 std::vector<std::string> DirectoryReader::m_TextureNames;
 std::vector<std::string> DirectoryReader::m_MeshNames;
@@ -11,6 +12,8 @@ std::vector<std::string> DirectoryReader::m_AnimNames;
 std::vector<std::string> DirectoryReader::m_MatNames;
 std::vector<std::string> DirectoryReader::m_IBLNames;
 std::vector<std::string> DirectoryReader::m_BankNames;
+std::vector<std::string> DirectoryReader::m_QuestNames;
+std::vector<std::string> DirectoryReader::m_DialogueNames;
 
 void DirectoryReader::ReverseString(std::string& str)
 {
@@ -69,6 +72,16 @@ std::vector<std::string>& DirectoryReader::GetIBLNames()
 std::vector<std::string>& DirectoryReader::GetBankNames()
 {
 	return m_BankNames;
+}
+
+std::vector<std::string>& DirectoryReader::GetQuestNames()
+{
+	return m_QuestNames;
+}
+
+std::vector<std::string>& DirectoryReader::GetDialogueNames()
+{
+	return m_DialogueNames;
 }
 
 std::string DirectoryReader::GetFileName(std::string& name, bool ex)
@@ -257,6 +270,23 @@ void DirectoryReader::StorePath(std::string& path)
 			else if (_sample == ".bank" || _sample == ".strings.bank")
 			{
 				m_BankNames.push_back(path);
+				return;
+			}
+			else if (_sample == ".qst")
+			{
+				m_QuestNames.push_back(path);
+				return;
+			}
+			else if (_sample == ".csv")
+			{
+				if (StringHelper::GetFileName(path, false).front() == 'Q')
+				{
+					m_QuestNames.push_back(path);
+				}
+				else if (StringHelper::GetFileName(path, false).front() == 'D')
+				{
+					m_DialogueNames.push_back(path);
+				}
 				return;
 			}
 		}

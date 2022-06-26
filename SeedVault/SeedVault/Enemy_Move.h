@@ -4,32 +4,39 @@
 /// <summary>
 /// 적 캐릭터들의 행동(액션)을 만드는 클래스
 /// 
-/// 작성자 : Yoking
+/// 작성자 : 최 요 환
 /// </summary>
-
-struct ViewSight
-{
-	ViewSight()
-		: angle(0)
-		, leftSight(0)
-		, rightSight(0) {}
-
-	float angle;		// 시야 각
-	float leftSight;	// 현재 시야의 좌측에 해당하는 각
-	float rightSight;	// 현재 시야의 우측에 해당하는 각
-};
 
 class Enemy_Move : public ComponentBase
 {
 public:
 	enum State : uint
 	{
-		eDead	= 1 << 0,
-		eWait	= 1 << 1,
-		ePatrol = 1 << 2,
-		eHunt	= 1 << 3,
-		eAttack = 1 << 4,
-		eReturn = 1 << 5,
+		eDead			= 1 <<	0,
+		eWait			= 1 <<	1,
+		ePatrol			= 1 <<	2,
+		eHunt			= 1 <<	3,
+		eAttackPartner	= 1 <<	4,
+		eAttackPlayer	= 1 <<	5,
+		eReturn			= 1 <<	6,
+		eAwakenSight	= 1 <<	7,
+		eAwakenSound	= 1 <<	8,
+		eAssassinated	= 1 <<	9,
+		eExplore		= 1 << 10,
+	};
+
+	struct Target
+	{
+		enum class Type
+		{
+			eNone,			// 현재 감지한 타겟 없음
+			ePartner,		// 조수가 타겟으로 설정
+			ePlayer,		// 플레이어가 타겟으로 설정
+			eMax,
+		};
+		
+		Type type;			// 타겟 타입
+		GameObject* object;	// 타겟 오븢게트
 	};
 
 public:
@@ -43,36 +50,43 @@ public:
 
 	// Behavior Tree Node에 대응되는 함수
 	virtual bool IsDead() abstract;								// 죽었는지 판단
-	virtual bool IsWait() abstract;								// 대기상태인지 판단
-	virtual bool IsPatrol() abstract;							// 순찰중인가 판단
-	virtual bool IsAttack() abstract;							// 공격상태 판단
-	virtual bool IsReturn() abstract;							// 귀환상태 판단
+	virtual bool IsWait();										// 대기상태인지 판단
+	virtual bool IsPatrol();									// 순찰중인가 판단
+	virtual bool IsAttackPartner() abstract;					// 조수 공격상태 판단
+	virtual bool IsAttackPlayer() abstract;						// 플레이어 공격상태 판단
+	virtual bool IsReturn();									// 귀환상태 판단
+	virtual bool IsAssassinated();								// 암살당하는 상태 판단
 
-	virtual bool FindPlayer() abstract;							// 플레이어 찾기
-	virtual bool MoveForPlayer() abstract;						// 플레이어 추적
+	virtual bool MoveToReturnPoint();							// 귀환 위치로 이동
+	bool FinishReturn();										// 귀환 종료
+
+	virtual bool AwakenSight() abstract;						// 시야 발견 상태
+	virtual bool PostAwakenSight() abstract;					// 시야 발견 후 처리
+	virtual bool MoveToTarget() abstract;						// 타겟 추적
 
 	virtual bool AttackToPlayer() abstract;
 	virtual bool AttackToPartner() abstract;
 
-	virtual bool MoveForTargetWayPoint() abstract;				// 타겟으로 이동
-	virtual bool UpdateTargetWayPoint() abstract;				// 웨이 포인트 갱신
+	bool MoveForTargetWayPoint();								// 타겟으로 이동
+	bool UpdateTargetWayPoint();								// 웨이 포인트 갱신
 
-	virtual bool Wait() abstract;								// 대기
+	bool Wait();												// 대기
 
 public:
-	virtual void AddWayPoint(GameObject* wayPoint) abstract;	// 웨이포인트 추가
-	virtual void SetWaitTime(const float time) abstract;		// 외부에서 대기시간 조절할 때 사용
-
-	virtual void PostAttack() abstract;							// 공격(애니메이션 종료)후 처리
+	void AddWayPoint(GameObject* wayPoint);						// 웨이포인트 추가
+	void SetWaitTime(const float time);							// 외부에서 대기시간 조절할 때 사용
 
 	virtual void FinshDie() abstract;							// Die 애니메이션 재생후 Dead로 상태전환 하는 함수
 
-protected:
-	void UpdateViewSight();										// 시야각 업데이트
-	void NormalizeAngle(float& angle);							// 각도 정규화 [0 ~ 360]
-	float CalcAngleToTarget(const GameObject& target) const;
+	bool HearSound(GameObject* obj, SoundEvent* sound);
 
-	void UpdateAnimationVar();
+	bool AwakenSound();											// 사운드 발견 상태
+	bool PostAwakenSound();										// 사운드 발견 후 처리
+
+	virtual bool Explore();										// 탐색
+
+
+protected:
 	void SetPatrol();
 	void SetWait();
 
@@ -83,27 +97,43 @@ public:
 	class Animator* m_Animator;
 
 	uint m_State;						// 현재 상태 체크 변수
-	float m_DetectionRange;				// 탐지 거리
-	ViewSight m_ViewSight;				// 시야 범위
+
 
 	float m_AttackRange;				// 공격 사거리
 	float m_AttackPower;				// 공격력
 
 	float m_MoveSpeed;					// 이동 속도
 
-	bool m_bHasPlayer;					// 플레이어 감지 여부
-	GameObject* m_Player;				// 플레이어 Obj
+	/// 적(플레이어, 조수) 감지
+	Target m_Target;						// 현재 타겟
+	
+	GameObject*			m_Player;			// 플레이어 Obj
+	class Health*		m_PlayerHealth;		// 플레이어 헬쓰
+	GameObject*			m_Partner;			// 조수 Obj
+	class Partner_Move* m_PartnerMove;		// 조수 Obj
+	class Health*		m_PartnerHealth;	// 조수 헬쓰
 
 	std::vector<uint> m_WayPointsComponentId_V;		// 웨이포인트 트랜스폼 컴포넌트의 아이디
 	std::vector<GameObject*> m_WayPoints_V;			// 웨이포인트 리스트
 	uint m_CurrentWayPointIndex;					// 현재 웨이 포인트의 인덱스
 
-	// var for Animator
+	// 귀환할 때 이동할 위치
+	SimpleMath::Vector3 m_ReturnPosition;
+
+	// 사운드 들린 위치(탐색할 위치)
+	SimpleMath::Vector3 m_HearSoundPosition;
+
+	// 상태 체크 변수
 	bool m_bIsDie;
 	bool m_bIsDead;
 	bool m_bIsPatrol;
 	bool m_bIsWait;
 	bool m_bIsHunt;
+	bool m_bIsReturn;
+	bool m_bCanBeAssassinated;			// 암살 당할 수 있는 상태
+	bool m_bIsAssassinated;				// 암살당하는 상태 판별
+	bool m_bIsAttackPartner_Middle;		// 조수 공격 중간 애니메이션 판별
+	bool m_bIsAttackPartner_End;		// 조수 공격 후 릴리즈 애니메이션 판별
 
 protected:
 	float m_WaitTime;					// 대기 시간

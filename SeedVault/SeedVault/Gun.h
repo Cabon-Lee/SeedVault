@@ -5,11 +5,11 @@
 /// 주무기와, 보조무기로 나뉘며 각각 Ammo를 사용해서 공격한다.
 /// 공격은 RayCast(히트스캔)으로 한다.
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// </summary>
 
 #include "IItem.h"
-
+class Audio;
 class Gun : public EquipmentItem
 {
 public:
@@ -26,6 +26,8 @@ public:
 
 	// 탄창에 탄이 비었나 검사
 	bool IsMagazineEmpty() const;
+	// 탄창에 탄이 꽉찼나 검사
+	bool IsMagazineFull() const;
 	
 	bool SetCurrentAmmoCount(const uint ammo);
 	uint GetCurrentAmmoCount() const;
@@ -45,6 +47,7 @@ protected:
 	Transform* m_CameraTf;				// 공격할 때 사용할 카메라
 	class MuzzleFlash* m_MuzzleFlash;	// 공격할 때 사용할 머즐플래쉬
 	class HitPoint* m_HitPoint;			// 공격한 지점을 알아내는 HitPoint 컴포넌트
+	class Audio* m_pAudio;
 
 	float m_Damage;						// 대미지(공격력)
 	float m_ShootRange;					// 사격 거리(범위)

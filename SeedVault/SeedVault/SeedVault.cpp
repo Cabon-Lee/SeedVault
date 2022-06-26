@@ -1,9 +1,8 @@
 ﻿// SeedVault.cpp : 애플리케이션에 대한 진입점을 정의합니다.
-//
+
 
 #include "pch.h"
 #include "framework.h"
-
 
 #include "EngineDLL.h"
 #include "Managers.h"
@@ -17,13 +16,15 @@
 #include "CLMaterialTest.h"
 #include "CLAnimation.h"
 #include "CLTestInGameUI.h"
-
+#include "CLStartScene.h"
 
 #include "JsonLoader.h"
 #include "JsonLoader_CL.h";
 
 #include "SeedVault.h"
 
+const int g_ScreenWidth = 1920;
+const int g_ScreenHeight = 1080;
 
 #define MAX_LOADSTRING 100
 
@@ -52,6 +53,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
    LoadStringW(hInstance, IDC_SEEDVAULT, szWindowClass, MAX_LOADSTRING);
    MyRegisterClass(hInstance);
+
 
    // 애플리케이션 초기화를 수행합니다:
    if (!InitInstance(hInstance, nCmdShow))
@@ -103,14 +105,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    DLLEngine::SetSceneName(_CLUI, "CLTestInGameUI");
    DLLEngine::AddScene("CLTestInGameUI", _CLUI);
 
-   DLLEngine::AddScene("Gen_Room_SH_01", DLLEngine::CreateScene(_JsonLoader, "../Data/Scene", "Gen_Room_SH_01"));
+   SceneBase* _CLStartScene = new CLStartScene();
+   DLLEngine::SetSceneName(_CLStartScene, "CLStartScene");
+   DLLEngine::AddScene("CLStartScene", _CLStartScene);
 
-
+   DLLEngine::AddScene("Gen_Room_SH_01", DLLEngine::CreateScene(_JsonLoader, "../Data/Scene", "Scene_Gen_Room_SH_01"));
 
    //DLLEngine::SelectScene("TestSceneYH");
-   DLLEngine::SelectScene("CLMaterialTest");
+   //DLLEngine::SelectScene("TestNavMeshScene");
+   //DLLEngine::SelectScene("CLMaterialTest");
    //DLLEngine::SelectScene("CLTestInGameUI");
-
+   DLLEngine::SelectScene("CLStartScene");
 
    while (true)
    {
@@ -129,6 +134,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
           
          DLLEngine::Loop();
 
+         ///루프를 돌고나면 씬을 변경한다.
+         DLLEngine::SceneChange();
          //dynamic_cast<CLTestScene*>(_newScene)->Update(CL::Input::s_DeltaTime);
       }
    }
@@ -178,31 +185,54 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+	//현재 모니터의 최대 크기 해상도
+   int _screenWidth = GetSystemMetrics(SM_CXSCREEN);     // 현재 모니터 가로 해상도
+   int _screenHeight = GetSystemMetrics(SM_CYSCREEN);    // 현재 모니터 세로 해상도
+
+   int _posX = 0;
+   int _posY = 0;
+
+   bool _isFullScreen = false;
+
+   if (_isFullScreen)
+   {
+	   DEVMODE _dmScreenSettings;
+	   memset(&_dmScreenSettings, 0, sizeof(_dmScreenSettings));
+	   _dmScreenSettings.dmSize = sizeof(_dmScreenSettings);
+	   _dmScreenSettings.dmPelsWidth = static_cast<unsigned long>(_screenWidth);
+	   _dmScreenSettings.dmPelsHeight = static_cast<unsigned long>(_screenHeight);
+	   _dmScreenSettings.dmBitsPerPel = 32;
+	   _dmScreenSettings.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+
+	   ChangeDisplaySettings(&_dmScreenSettings, CDS_FULLSCREEN);
+   }
+   else
+   {
+       _screenWidth = 1680;
+       _screenHeight = 960;
+
+       _posX = (GetSystemMetrics(SM_CXSCREEN) - _screenWidth) / 2;
+       _posY = (GetSystemMetrics(SM_CYSCREEN) - _screenHeight) / 2;
+       
+   }
+
+   HWND hWnd = CreateWindowEx(WS_EX_APPWINDOW, szWindowClass, szTitle,
+	   WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
+	   _posX, _posY, _screenWidth, _screenHeight, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
       return FALSE;
    }
 
-
-   DLLEngine::CreateEngine();
-   DLLEngine::Initialize(reinterpret_cast<int>(hWnd), 800, 600);
-
-
-   //ComponentSystem::GetInstance();
-   //Managers::GetInstance()->GetManagersToClient(
-   //   DLLEngine::GetManagers()->GetSceneManager(), 
-   //   DLLEngine::GetManagers()->GetObjectManager(),
-   //   DLLEngine::GetManagers()->GetCameraManager(),
-   //   DLLEngine::GetManagers()->GetComponentSystem());
-
-
-   ShowWindow(hWnd, nCmdShow);
+   
+   ShowWindow(hWnd, SW_SHOW);
    UpdateWindow(hWnd);
 
-   return TRUE;
+   DLLEngine::CreateEngine();
+  
+   DLLEngine::Initialize(reinterpret_cast<int>(hWnd), _screenWidth, _screenHeight);
+    return TRUE;
 }
 
 //

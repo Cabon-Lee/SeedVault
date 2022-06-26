@@ -33,6 +33,9 @@ struct AnimationClipData;
 struct SpriteData;
 class MatSerializer;
 class MatDeserializer;
+struct QuestBlock;
+struct DialogueBlock;
+
 
 class DX11ResourceManager : public IResourceManager
 {
@@ -52,6 +55,8 @@ public:
 	virtual void LoadShaderFile(std::string& fileName) override;
 	virtual void LoadMatFile(std::string& fileName) override;
 	virtual void LoadIBLFile(std::string& fileName) override;
+	virtual void LoadQuestTextFile(std::string& fileName) override;
+	virtual void LoadDialogueTextFile(std::string& fileName) override;
 
 	virtual void SaveMatFile(unsigned int, int idx) override;
 	virtual void LoadMatFile(unsigned int, int idx) override;
@@ -86,6 +91,11 @@ public:
 	virtual std::shared_ptr<PixelShader> GetPixelShader(unsigned int idx) override;
 	virtual std::shared_ptr<GeometryShader> GetGeometryShader(unsigned int idx) override;
 
+	virtual std::vector<QuestBlock> GetQuestText(const std::string& name) override;
+	virtual std::vector<DialogueBlock> GetDialogueText(const std::string& name) override;
+
+	virtual std::unordered_map<std::string, std::vector<struct QuestBlock>> GetWholeQuestText() override;
+	virtual std::unordered_map<std::string, std::vector<struct DialogueBlock>> GetWholeDialogueText() override;
 
 	virtual Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> GetIBLImage(const std::string& name) override;
 	virtual Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> GetIBLImage(unsigned int idx) override;
@@ -133,6 +143,7 @@ private:
 
 private:
 	// 자원 생성용 디바이스
+	std::shared_ptr<IRenderer> m_pRenderer;
 	ID3D11Device* m_pDevice;
 	ID3D11DeviceContext* m_pDeviceContext;
 	
@@ -142,6 +153,9 @@ private:
 	std::shared_ptr<MatDeserializer> m_pMatDeserializer;
 
 	std::shared_ptr<DX11MeshFactory> m_pMeshFactory;
+
+	std::shared_ptr<class TextLoader> m_pTextLoader;
+
 
 	// 각 정보들을 인덱싱하는데 성공하면 벡터로 접근하고자 한다
 	// 메쉬 정보
@@ -185,6 +199,11 @@ private:
 	std::vector<std::pair<std::string, unsigned int>> m_VertexShaderNames_V;
 	std::vector<std::pair<std::string, unsigned int>> m_PixelShaderNames_V;
 	std::vector<std::pair<std::string, unsigned int>> m_GeometryShaderNames_V;
+
+	// 퀘스트 텍스트 정보
+	std::unordered_map<std::string, std::vector<struct QuestBlock>> m_QuestText_UM;
+	// 대화 텍스트 정보
+	std::unordered_map<std::string, std::vector<struct DialogueBlock>> m_DialogueText_UM;
 
 
 private:

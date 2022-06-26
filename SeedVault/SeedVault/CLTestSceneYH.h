@@ -6,7 +6,7 @@
 /// 
 /// 일단 오브젝트 하나 생성하고 렌더링하고 움직이는 내용을 구현해야 한다.
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// </summary>
 
 #include "Scene.h"
@@ -40,15 +40,22 @@ private:
 
 	GameObject* m_FreeCamera;
 
+	GameObject* m_pPartner;
+
 	GameObject* m_pTestCube_1;
 	GameObject* m_pTestCube_2;
 
 	GameObject* m_pZombie_Runner_1;
-	GameObject* m_pMonster_2;
+	GameObject* m_pZombie_Runner_2;
 	GameObject* m_pMonster_3;
 
 	/// UI Object
 	GameObject* m_InGameUI;
+	GameObject* m_PauseUI;
 
+	// Test
+	GameObject* m_TestCube;
+
+	bool m_BGM_Playing;
 };
 

@@ -11,8 +11,8 @@
 
 RenderQueue::RenderQueue()
 	: m_NowIndex(0)
+	, m_NowParticleIndex(0)
 {
-
 
 }
 
@@ -42,7 +42,6 @@ void RenderQueue::Initialize(Microsoft::WRL::ComPtr<ID3D11Device> pDevice)
 		m_RenderQueueObejctPool_V[i] = &_newArray[i];
 		m_RenderQueueParticleObejctPool_V[i] = &_newEffectArray[i];
 	}
-
 
 	// 실제 값을 넣는 곳
 	m_InstancedData.resize(MAX_RENDER_NODEDATA);
@@ -167,7 +166,7 @@ void RenderQueue::AddRenderQueue(
 	m_NowIndex++;
 }
 
-void RenderQueue::AddRenderQueueParticle(
+void RenderQueue::AddRenderQueueBillboard(
 	class VertexShader* pVertexShader,
 	class PixelShader* pPixelShader,
 	unsigned int spriteIndex,
@@ -262,6 +261,8 @@ void RenderQueue::ProcessOpaqueQueue(Renderer* pRenderer)
 		unsigned int _nowReflectionProbe = _pTempNode->reflectionProbe;
 		if (_nowReflectionProbe != 9999)
 			pRenderer->SetReflectionProbeBuffer(_nowReflectionProbe);
+		else
+			pRenderer->SetBasicIrradiance();
 
 		pRenderer->SetVertexShader(_pTempNode->pVertexShader);
 		pRenderer->SetPixelShader(_pTempNode->pPixelShader);
@@ -436,7 +437,7 @@ void RenderQueue::ProcessTransparentQueue(Renderer* pRenderer)
 	}
 }
 
-void RenderQueue::ProcessParticleQueue(Renderer* pRenderer)
+void RenderQueue::ProcessBillboardQueue(Renderer* pRenderer)
 {
 	while (m_ParticleRenderQueue_Q.empty() != true)
 	{
@@ -453,7 +454,7 @@ void RenderQueue::ProcessParticleQueue(Renderer* pRenderer)
 
 		while (_pTempNode != nullptr)
 		{
-			pRenderer->RenderParticleProcess(
+			pRenderer->RenderBillboardProcess(
 				_pTempNode->spriteIndex,
 				_pTempNode->WorldTM);
 
@@ -540,7 +541,7 @@ void RenderQueue::GetObjectCount(unsigned int& __out opaque, unsigned int& __out
 void RenderQueue::Clear()
 {
 	m_NowIndex = 0;
-	m_NowParticleIndex = 0;
+	//m_NowParticleIndex = 0;
 
 	m_OpaqueCount = 0;
 	m_TransparentCount = 0;

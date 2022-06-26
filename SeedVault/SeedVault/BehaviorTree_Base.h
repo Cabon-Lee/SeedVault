@@ -4,7 +4,7 @@
 /// Behavior Tree Base
 /// NPC 들의 행동 전환을 위한 기초 클래스
 /// 
-/// 작성자 : YoKing
+/// 작성자 : 최 요 환
 /// 
 /// </summary>
 
